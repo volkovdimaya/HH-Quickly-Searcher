@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.HHQuicklySearcher" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
     </style>
 
-    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
+    <style name="Theme.HHQuicklySearcher" parent="Base.Theme.HHQuicklySearcher" />
 </resources>
