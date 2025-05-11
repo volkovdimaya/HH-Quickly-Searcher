@@ -27,7 +27,8 @@ class FiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /* B граф навигации заложен navArgs для  @Parcelize класса
+        /* Вариант передачи данных.
+         B граф навигации заложен navArgs для  @Parcelize-класса
          FilterParameters с defaultValue="@null"
          для использования при необходимости  */
         navigateToSearchFragment(FilterParameters())
