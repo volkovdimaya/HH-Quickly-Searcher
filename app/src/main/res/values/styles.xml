@@ -41,11 +41,4 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="cornerRadius">12dp</item>
     </style>
-
-    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemIconTint">@color/bottom_nav_item_selector</item>
-        <item name="itemTextColor">@color/bottom_nav_item_selector</item>
-        <item name="itemActiveIndicatorStyle">@null</item>
-        <item name="backgroundTint">?attr/colorSurface</item>
-    </style>
 </resources>
