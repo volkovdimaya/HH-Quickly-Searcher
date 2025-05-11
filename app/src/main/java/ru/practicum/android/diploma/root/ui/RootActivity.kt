@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,67 +15,46 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
 class RootActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityRootBinding
-    private lateinit var bottomNavigationView : BottomNavigationView
-    private lateinit var topToolbar : Toolbar
-    private lateinit var navController : NavController
+
+    private var _binding: ActivityRootBinding? = null
+    private val binding get() = _binding!!
+
+    private var _bottomNavigationView: BottomNavigationView? = null
+    private val bottomNavigationView get() = _bottomNavigationView!!
+
+    private var _topToolbar: Toolbar? = null
+    private val topToolbar get() = _topToolbar!!
+
+    private var _navController: NavController? = null
+    private val navController get() = _navController!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRootBinding.inflate(layoutInflater)
+        _binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        topToolbar = binding.topToolbar
+        _topToolbar = binding.topToolbar
         // Пример использования access token для HeadHunter API
         networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
-        navController = navHostFragment.navController
+        _navController = navHostFragment.navController
 
-        bottomNavigationView = binding.bottomNavigationView
+        _bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.searchFragment -> {
-                    searchFragmentState()
-                }
-                R.id.favoritesFragment -> {
-                    favoritesFragmentState()
-                }
-                R.id.teamFragment -> {
-                    teamFragmentState()
-                }
-                R.id.filtersFragment -> {
-                    filtersFragmentState()
-                }
-                R.id.vacancyDetailsFragment -> {
-                    vacancyDetailsFragmentState()
-                }
-                R.id.choosingWorkTerritoryFragment -> {
-                    choosingWorkterritoryFragmentState()
-                }
-                R.id.choosingCountryFragment -> {
-                    choosingCountryFragmentState()
-                }
-                R.id.choosingRegionFragment -> {
-                    choosingRegionFragmentState()
-                }
-
-                else -> {
-                    elseFragmentState()
-                }
-            }
+            renderStateViews(destination)
         }
 
         topToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.actionSharing -> {
-                    // TODO
+                    // ..
                     true
                 }
 
                 R.id.action_favorite -> {
-                    // TODO
+                    // ..
                     true
                 }
 
@@ -86,6 +66,46 @@ class RootActivity : AppCompatActivity() {
                 else -> {
                     false
                 }
+            }
+        }
+    }
+
+    private fun renderStateViews(destination: NavDestination) {
+        when (destination.id) {
+            R.id.searchFragment -> {
+                searchFragmentState()
+            }
+
+            R.id.favoritesFragment -> {
+                favoritesFragmentState()
+            }
+
+            R.id.teamFragment -> {
+                teamFragmentState()
+            }
+
+            R.id.filtersFragment -> {
+                filtersFragmentState()
+            }
+
+            R.id.vacancyDetailsFragment -> {
+                vacancyDetailsFragmentState()
+            }
+
+            R.id.workTerritoriesFragment -> {
+                workTerritoriesFragmentState()
+            }
+
+            R.id.countriesFragment -> {
+                countriesFragmentState()
+            }
+
+            R.id.regionsFragment -> {
+                regionsFragmentState()
+            }
+
+            else -> {
+                elseFragmentState()
             }
         }
     }
@@ -125,27 +145,26 @@ class RootActivity : AppCompatActivity() {
         setNavigationIcon()
     }
 
-    private fun choosingWorkterritoryFragmentState() {
+    private fun workTerritoriesFragmentState() {
         bottomNavigationView.visibility = View.GONE
         binding.topToolbar.title = getString(R.string.choosing_work_territory)
         topToolbar.menu.clear()
         setNavigationIcon()
     }
 
-    private fun choosingCountryFragmentState() {
+    private fun countriesFragmentState() {
         bottomNavigationView.visibility = View.GONE
         binding.topToolbar.title = getString(R.string.choosing_country)
         topToolbar.menu.clear()
         setNavigationIcon()
     }
 
-    private fun choosingRegionFragmentState() {
+    private fun regionsFragmentState() {
         bottomNavigationView.visibility = View.GONE
         topToolbar.title = getString(R.string.choosing_region)
         topToolbar.menu.clear()
         setNavigationIcon()
     }
-
 
     private fun elseFragmentState() {
         bottomNavigationView.visibility = View.GONE
@@ -160,13 +179,11 @@ class RootActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteNavigationIcon(){
+    private fun deleteNavigationIcon() {
         topToolbar.setNavigationIcon(null)
     }
 
     private fun networkRequestExample(accessToken: String) {
         // ...
     }
-
-
 }

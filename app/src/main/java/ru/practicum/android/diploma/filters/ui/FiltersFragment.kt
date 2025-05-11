@@ -1,26 +1,27 @@
 package ru.practicum.android.diploma.filters.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import ru.practicum.android.diploma.common.ui.models.FilterParameters
 import ru.practicum.android.diploma.databinding.FragmentFiltersBinding
 
 class FiltersFragment : Fragment() {
 
-    private lateinit var binding : FragmentFiltersBinding
+    private var _binding: FragmentFiltersBinding? = null
+    private val binding get() = _binding!!
 
     private val args: FiltersFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFiltersBinding.inflate(inflater, container, false)
+        _binding = FragmentFiltersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,9 +35,8 @@ class FiltersFragment : Fragment() {
         navigateToSearchFragment(FilterParameters())
     }
 
-
     private fun navigateToSearchFragment(filterParameters: FilterParameters) {
-        val action = FiltersFragmentDirections.actionFiltersFragmentToSearchFragment(filterParameters)
-        findNavController().navigate(action)
+//        val action = FiltersFragmentDirections.actionFiltersFragmentToSearchFragment(filterParameters)
+//        findNavController().navigate(action)
     }
 }

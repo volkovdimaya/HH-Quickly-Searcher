@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/choosingWorkTerritoryFragment"
-    tools:context=".choosing_work_territory.ui.ChoosingWorkTerritoryFragment">
+    tools:context=".regions.ui.RegionsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
