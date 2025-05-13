@@ -26,6 +26,10 @@
     <string name="apply">Применить</string>
     <!-- team fragment-->
     <string name="have_been_working_app">Над приложением\nработали</string>
+    <string name="team_name_liza">Евсюкова Елизавета Валерьевна</string>
+    <string name="team_name_sasha">Александра</string>
+    <string name="team_name_lesha">Алексей</string>
+    <string name="team_name_dima">Дмитрий</string>
     <!-- search fragment-->
     <string name="enter_request">Введите запрос</string>
     <!-- favorites fragment-->

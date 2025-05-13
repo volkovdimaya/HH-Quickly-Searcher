@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/teamFragment"
+    android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".team.ui.TeamFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="@string/have_been_working_app"
+        style="@style/TheBiggestTitleText"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:layout_marginVertical="16dp"/>
+    
+    <TextView
+        style="@style/TeamNameText"
+        android:text="@string/team_name_dima"/>
 
-</FrameLayout>
+    <TextView
+        style="@style/TeamNameText"
+        android:text="@string/team_name_lesha"/>
+
+    <TextView
+        style="@style/TeamNameText"
+        android:text="@string/team_name_sasha"/>
+
+    <TextView
+        style="@style/TeamNameText"
+        android:text="@string/team_name_liza"/>
+
+</LinearLayout>
