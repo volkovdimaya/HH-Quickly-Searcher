@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:id="@+id/teamFragment"
     android:orientation="vertical"
-    android:theme="@style/Base.Theme.HHQuicklySearcher"
     tools:context=".team.ui.TeamFragment">
 
     <TextView
