@@ -51,4 +51,6 @@
     <string name="share">Поделиться</string>
     <string name="necessary_experience">Требуемый опыт</string>
     <string name="vacancy_description">Описание вакансии</string>
+    <string name="salary_is_not_said">зарплата не указана</string>
+    <string name="key_skills">Ключевые навыки</string>
 </resources>

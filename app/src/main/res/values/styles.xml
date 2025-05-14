@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ToolbarTitle">
+    <style name="ToolbarTitleAppearance">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textSize">@dimen/text_size_large</item>
@@ -42,6 +42,11 @@
         <item name="cornerRadius">12dp</item>
     </style>
 
+    <style name="BottomNavigationAppearance" parent="TextAppearance.MaterialComponents.Caption" >
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+      
     <style name="TheBiggestTitleText">
         <item name="android:textSize">32sp</item>
         <item name="fontFamily">@font/ys_display_bold</item>
