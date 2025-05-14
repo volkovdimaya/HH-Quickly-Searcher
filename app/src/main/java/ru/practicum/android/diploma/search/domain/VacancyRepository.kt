@@ -1,7 +1,8 @@
 package ru.practicum.android.diploma.search.domain
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 interface VacancyRepository {
 
@@ -16,6 +17,6 @@ interface VacancyRepository {
         perPage: Int = 20
     ): Flow<List<Vacancy>?>
 
-    fun getVacancyDetails(id: String): Flow<Vacancy?>
+    fun getVacancyDetails(id: String): Flow<VacancyDetail?>
 
 }
