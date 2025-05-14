@@ -26,6 +26,10 @@
     <string name="apply">Применить</string>
     <!-- team fragment-->
     <string name="have_been_working_app">Над приложением\nработали</string>
+    <string name="team_name_liza">Евсюкова Елизавета Валерьевна</string>
+    <string name="team_name_sasha">Рогалева Александра Евгеньевна</string>
+    <string name="team_name_lesha">Писаный Алексей Андреевич</string>
+    <string name="team_name_dima">Волков Дмитрий Вячеславович</string>
     <!-- search fragment-->
     <string name="enter_request">Введите запрос</string>
     <!-- favorites fragment-->
@@ -47,4 +51,6 @@
     <string name="share">Поделиться</string>
     <string name="necessary_experience">Требуемый опыт</string>
     <string name="vacancy_description">Описание вакансии</string>
+    <string name="salary_is_not_said">зарплата не указана</string>
+    <string name="key_skills">Ключевые навыки</string>
 </resources>

@@ -10,10 +10,16 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/top_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/vacancy_description"
-        tools:menu="@menu/vacancy_details_fragment_toolbar_menu"/>
-
+        android:layout_height="@dimen/height_64"
+        android:paddingVertical="@dimen/margin_4"
+        android:paddingEnd="@dimen/margin_4"
+        app:contentInsetStartWithNavigation="@dimen/margin_16"
+        android:gravity="center_vertical"
+        app:titleTextAppearance="@style/ToolbarTitleAppearance"
+        tools:menu="@menu/vacancy_details_fragment_toolbar_menu"
+        tools:navigationIcon="@drawable/ic_back_arrow"
+        tools:title="@string/key_skills">
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
@@ -24,10 +30,18 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/root_navigation_graph" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemTextAppearanceActive="@style/BottomNavigationAppearance"
+        app:itemTextAppearanceInactive="@style/BottomNavigationAppearance"
+        app:itemBackground="?attr/colorSurface"
         app:menu="@menu/bottom_navigation_menu"/>
-
 </LinearLayout>
