@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.root.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -48,6 +49,23 @@ class RootActivity : AppCompatActivity() {
         )
 
         topToolbar.setupWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.filtersFragment,
+                R.id.industriesFragment,
+                R.id.countriesFragment,
+                R.id.regionsFragment,
+                R.id.workTerritoriesFragment,
+                R.id.vacancyDetailsFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
 
     }
 
