@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
-import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -20,21 +19,9 @@ private const val SHARED_PREFERENCES_NAME = "shared_preferences"
 
 val dataModule = module {
 
-    single {
-        OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("User-Agent", "HH Quickly Searcher/1.0 (pisanyy95@gmail.com)")
-                    .build()
-                chain.proceed(request)
-            }
-            .build()
-    }
-
     single<HhApiService> {
         Retrofit.Builder()
             .baseUrl(API_BASE_URL)
-            .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiService::class.java)

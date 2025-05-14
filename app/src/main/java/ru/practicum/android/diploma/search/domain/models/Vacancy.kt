@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.search.domain.models
 
-import ru.practicum.android.diploma.search.data.dto.AreaDto
+import ru.practicum.android.diploma.regions.data.dto.AreaDto
 import ru.practicum.android.diploma.search.data.dto.EmployerDto
 import ru.practicum.android.diploma.search.data.dto.ExperienceDto
 import ru.practicum.android.diploma.search.data.dto.SalaryRangeDto
