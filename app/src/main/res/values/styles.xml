@@ -46,4 +46,22 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
+      
+    <style name="TheBiggestTitleText">
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/ys_display_bold</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TeamNameText">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="android:layout_marginVertical">8dp</item>
+    </style>
 </resources>
