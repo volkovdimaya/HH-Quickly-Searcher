@@ -22,10 +22,10 @@ class VacancyRepositoryImpl(
         page: Int,
         perPage: Int
     ): Flow<List<Vacancy>?> = flow {
-        emit(null) // TODO
+        emit(null)
     }
 
     override fun getVacancyDetails(id: String): Flow<Vacancy?> = flow {
-        emit(null) // TODO
+        emit(null)
     }
 }

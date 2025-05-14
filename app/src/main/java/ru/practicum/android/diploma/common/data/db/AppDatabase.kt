@@ -5,6 +5,4 @@ import androidx.room.RoomDatabase
 import ru.practicum.android.diploma.favorites.data.entity.VacancyEntity
 
 @Database(version = 1, entities = [VacancyEntity::class])
-abstract class AppDatabase : RoomDatabase() {
-    // TODO
-}
+abstract class AppDatabase : RoomDatabase()

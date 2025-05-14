@@ -18,7 +18,6 @@ interface HhApiService {
     @GET("/vacancies")
     suspend fun searchVacancies(@QueryMap filters: Map<String, String>): VacanciesResponse
 
-
     @Headers(
         "Authorization: Bearer GTMFA6J7BBJQM5TEJHI3I05DDI4SSGC60CTA73LP4JN8T9KF9N9DT16H9K8DRFB0",
         "HH-User-Agent: HH Quickly Searcher (rogalevas@live.com)"

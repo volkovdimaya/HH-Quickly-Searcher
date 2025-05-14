@@ -9,15 +9,15 @@ data class VacanciesRequest(
     val onlyWithSalary: Boolean = false,
     val page: Int = 0,
     val perPage: Int = 20
-) {
-    fun toMap(): Map<String, String> = buildMap {
-        put("text", text)
-        area?.let { put("area", it) }
-        professionalRole?.let { put("professional_role", it) }
-        industry?.let { put("industry", it) }
-        salary?.let { put("salary", it.toString()) }
-        if (onlyWithSalary) put("only_with_salary", "true")
-        put("page", page.toString())
-        put("per_page", perPage.toString())
-    }
+)
+
+fun VacanciesRequest.toMap(): Map<String, String> = buildMap {
+    put("text", text)
+    area?.let { put("area", it) }
+    professionalRole?.let { put("professional_role", it) }
+    industry?.let { put("industry", it) }
+    salary?.let { put("salary", it.toString()) }
+    if (onlyWithSalary) put("only_with_salary", "true")
+    put("page", page.toString())
+    put("per_page", perPage.toString())
 }
