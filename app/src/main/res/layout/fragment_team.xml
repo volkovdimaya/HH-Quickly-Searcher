@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/teamFragment"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:theme="@style/Base.Theme.HHQuicklySearcher"
     tools:context=".team.ui.TeamFragment">
 
     <TextView
@@ -13,13 +13,17 @@
         android:layout_height="wrap_content"
         android:text="@string/have_been_working_app"
         style="@style/TheBiggestTitleText"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:layout_marginVertical="16dp"/>
+        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingVertical="@dimen/padding_8"
+        android:layout_marginVertical="@dimen/padding_16"/>
     
     <TextView
         style="@style/TeamNameText"
         android:text="@string/team_name_dima"/>
+
+    <TextView
+        style="@style/TeamNameText"
+        android:text="@string/team_name_liza"/>
 
     <TextView
         style="@style/TeamNameText"
@@ -28,9 +32,5 @@
     <TextView
         style="@style/TeamNameText"
         android:text="@string/team_name_sasha"/>
-
-    <TextView
-        style="@style/TeamNameText"
-        android:text="@string/team_name_liza"/>
 
 </LinearLayout>
