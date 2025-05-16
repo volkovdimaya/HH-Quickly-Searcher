@@ -9,7 +9,10 @@ class TopSpacingItemDecoration(
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
-        outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
     ) {
         val position = parent.getChildAdapterPosition(view)
         if (position == 0) {
@@ -18,5 +21,5 @@ class TopSpacingItemDecoration(
     }
 }
 
-//val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycler_top_spacing) //38dp
-//recyclerViewHistoryTrack.addItemDecoration(TopSpacingItemDecoration(spacingInPixels))
+// val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycler_top_spacing) //38dp
+// recyclerViewHistoryTrack.addItemDecoration(TopSpacingItemDecoration(spacingInPixels))
