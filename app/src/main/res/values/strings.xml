@@ -32,6 +32,7 @@
     <string name="team_name_dima">Волков Дмитрий Вячеславович</string>
     <!-- search fragment-->
     <string name="enter_request">Введите запрос</string>
+    <string name="response_search_empty">Таких вакансий нет</string>
     <!-- favorites fragment-->
     <!-- filters fragment-->
     <string name="work_territory">Место работы</string>

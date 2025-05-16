@@ -8,5 +8,8 @@
     <dimen name="margin_8">8dp</dimen>
     <dimen name="height_64">64dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
     <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
 </resources>
