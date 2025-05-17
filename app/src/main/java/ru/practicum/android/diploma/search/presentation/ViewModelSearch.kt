@@ -44,7 +44,7 @@ class ViewModelSearch(private val interactor : InteractorSearchListVacancy) : Vi
                              )
                          }
 
-                          _state.value = StateSearchFragment.Success(vacancy.data)
+                          _state.value = StateSearchFragment.Success(vacancyUi)
                          Log.d("ViewModelSearch", "loadvacancy: ${vacancy.data.size}")
                          vacancyUi.forEach { vacancy ->
                              Log.d("ViewModelSearch", "loadvacancy: ${vacancy}")
