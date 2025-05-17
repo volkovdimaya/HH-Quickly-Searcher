@@ -29,6 +29,24 @@ class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<ViewModelSearch>()
 
+
+    private val progressBar by lazy {
+        binding.loading
+    }
+    private val idle by lazy {
+        binding.imageSearchIdle
+    }
+    private val noInternet by lazy {
+        binding.noInternet
+    }
+    private val noContent by lazy {
+        binding.responseEmpty
+    }
+    private val listVacancy by lazy {
+        binding.layoutListVacancy
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
