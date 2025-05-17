@@ -4,9 +4,17 @@
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
     <dimen name="height_64">64dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
     <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_1">1dp</dimen>
+
+    <dimen name="size_logo">48dp</dimen>
+
 </resources>
