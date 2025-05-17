@@ -1,5 +1,13 @@
 [versions]
-
+retrofit = "2.9.0"
+glide = "4.14.2"
+glideCompiler = "4.14.2"
+roomCompilerVersion = "2.5.2"
+roomKtx = "2.6.1"
+roomruntime = "2.5.2"
+navigation = "2.8.9"
+koin = "3.5.0"
+viewmodel = "2.8.7"
 java = "VERSION_1_8"
 
 # Build constants
@@ -36,5 +44,29 @@ unitTests-junit = "junit:junit:4.13.2"
 # UI tests
 uiTests-junitExt = "androidx.test.ext:junit:1.1.5"
 uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.5.1"
+
+#retrofit
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
+#glide
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideCompiler" }
+
+#room
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomruntime" }
+
+#viewmodel lifecycle
+view-model = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "viewmodel" }
+
+#koin
+koin-core = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+#navigation
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+
 
 [bundles]

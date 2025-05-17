@@ -1,12 +1,16 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "Practicum-Android-Diploma"
+rootProject.name = "HH-Quickly-Searcher"
 
 pluginManagement {
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
+    }
+
+    plugins {
+        id("androidx.navigation.safeargs.kotlin") version "2.8.9"
     }
 }
 
