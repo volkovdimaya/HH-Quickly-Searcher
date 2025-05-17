@@ -50,6 +50,10 @@ class RootActivity : AppCompatActivity() {
 
         topToolbar.setupWithNavController(navController, appBarConfiguration)
 
+        navController.currentDestination?.let {
+            title = it.label
+        }
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.searchFragment,
