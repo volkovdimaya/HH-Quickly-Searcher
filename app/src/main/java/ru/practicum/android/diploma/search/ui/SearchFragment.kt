@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.ui.models.FilterParameters
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.search.presentation.ViewModelSearch
 
 class SearchFragment : Fragment() {
 
@@ -24,6 +26,8 @@ class SearchFragment : Fragment() {
 
     private val args: SearchFragmentArgs by navArgs()
     private var filterParameters: FilterParameters? = null
+
+    private val viewModel by viewModel<ViewModelSearch>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +62,8 @@ class SearchFragment : Fragment() {
         /* B граф навигации заложен navArgs  @Parcelize класса
          FilterParameters с defaultValue="@null"
          для использования при необходимости  */
+
+        viewModel.updateRequest("Android")
 
         filterParameters = args.filterParameters
         filterParameters?.let {

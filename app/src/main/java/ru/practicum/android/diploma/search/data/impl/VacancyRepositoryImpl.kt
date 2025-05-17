@@ -1,19 +1,22 @@
 package ru.practicum.android.diploma.search.data.impl
 
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.models.VacancyShort
+import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
+import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
-import ru.practicum.android.diploma.search.domain.VacancyRepository
+import ru.practicum.android.diploma.search.domain.api.VacancyRepository
+import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
+import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val gson: Gson,
+    private val vacancyResponseMapper: ShortVacancyResponseMapper
 ) : VacancyRepository {
 
-    override fun searchVacancy(
+    override fun searchVacancies(
         text: String,
         area: String?,
         professionalRole: String?,
@@ -22,8 +25,18 @@ class VacancyRepositoryImpl(
         onlyWithSalary: Boolean,
         page: Int,
         perPage: Int
-    ): Flow<List<Vacancy>?> = flow {
-        emit(null)
+    ): Flow<Resource<List<VacancyShort>>> = flow {
+        val response = networkClient.doRequest(VacanciesRequest(text))
+
+        when (response.resultCode) {
+            200 -> (response as VacanciesResponse)
+                .items.map(vacancyResponseMapper::map)
+                .let { emit(Resource.Success(it)) }
+
+            404 -> emit(Resource.Error(404))
+            else -> emit(Resource.Error(400))
+
+        }
     }
 
     override fun getVacancyDetails(id: String): Flow<VacancyDetail?> = flow {

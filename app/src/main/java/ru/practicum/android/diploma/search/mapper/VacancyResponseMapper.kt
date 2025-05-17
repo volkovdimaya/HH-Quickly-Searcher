@@ -11,7 +11,7 @@ object ShortVacancyResponseMapper {
             employer = vacancyDto.employer?.name ?: "",
             city = vacancyDto.area?.name ?: "",
             salary = SalaryResponseMapper.map(vacancyDto.salary),
-            logoUrl = vacancyDto.employer?.logoUrls?.firstOrNull() ?: ""
+            logoUrl = vacancyDto.employer?.logoUrls?.original ?: ""
         )
     }
 }

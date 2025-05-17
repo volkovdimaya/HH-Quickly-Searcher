@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.common.domain.models.WorkTerritory
 import ru.practicum.android.diploma.industries.domain.models.Industry
 
 data class VacancyDetail(
-    override val vacancyId: Int,
+    override val vacancyId: String,
     override val vacancyName: String,
     override val workTerritory: WorkTerritory,
     override val industry: Industry,
