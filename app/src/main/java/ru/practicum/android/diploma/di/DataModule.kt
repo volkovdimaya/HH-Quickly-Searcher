@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
 
 private const val API_BASE_URL = "https://api.hh.ru/"
 private const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -45,4 +46,5 @@ val dataModule = module {
     single {
         androidApplication()
     }
+    single { ShortVacancyResponseMapper }
 }
