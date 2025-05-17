@@ -17,16 +17,9 @@ class VacancyRepositoryImpl(
 ) : VacancyRepository {
 
     override fun searchVacancies(
-        text: String,
-        area: String?,
-        professionalRole: String?,
-        industry: String?,
-        salary: Int?,
-        onlyWithSalary: Boolean,
-        page: Int,
-        perPage: Int
+        vacanciesRequest : VacanciesRequest
     ): Flow<Resource<List<VacancyShort>>> = flow {
-        val response = networkClient.doRequest(VacanciesRequest(text))
+        val response = networkClient.doRequest(vacanciesRequest)
 
         when (response.resultCode) {
             200 -> (response as VacanciesResponse)
