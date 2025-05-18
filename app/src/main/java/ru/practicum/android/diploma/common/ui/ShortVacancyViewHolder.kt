@@ -19,7 +19,7 @@ abstract class ShortVacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(
             .load(vacancyShort.logoUrl).centerInside()
             .placeholder(R.drawable.ic_placeholder_32px)
             .centerCrop()
-            .transform(RoundedCorners(SizeFormatter.dpToPx(12f, itemView.context)))
+            .transform(RoundedCorners(SizeFormatter.dpToPx(ROUNDED_CORNER_RADIUS_DP, itemView.context)))
             .into(binding.logoImage)
         binding.nameVacancyWorkterritoryVacancy.text = buildString {
             append(vacancyShort.vacancyName)
@@ -45,5 +45,9 @@ abstract class ShortVacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(
                 this.append(itemView.context.getString(R.string.salary_is_not_said))
             }
         }
+    }
+
+    companion object {
+        const val ROUNDED_CORNER_RADIUS_DP = 12f
     }
 }
