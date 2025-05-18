@@ -1,15 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/vacancyDetailsFragment"
     tools:context=".vacancy.ui.VacancyDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_gl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_16"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_gl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_16"/>
+
+        <TextView
+            android:id="@+id/vacancy_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TheBiggestTitleText"
+            tools:text="@string/test_item_name_vacancy"
+            android:gravity="start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            android:layout_marginTop="@dimen/margin_24"/>
+
+        <TextView
+            android:id="@+id/vacancy_salary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/ToolbarTitleAppearance"
+            tools:text="@string/test_salary"
+            app:layout_constraintTop_toBottomOf="@+id/vacancy_name"
+            app:layout_constraintStart_toStartOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"/>
+
+        <View
+            android:id="@+id/company_info_bg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_80"
+            android:background="@drawable/bg_text_input_layout"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_salary"
+            app:layout_constraintStart_toStartOf="@id/start_gl"
+            app:layout_constraintEnd_toEndOf="@id/end_gl"
+            android:layout_marginTop="@dimen/margin_24"/>
+
+        <ImageView
+            android:id="@+id/company_logo"
+            android:layout_width="@dimen/size_logo"
+            android:layout_height="@dimen/size_logo"
+            android:background="@drawable/bg_rounded_corners_12"
+            app:layout_constraintTop_toTopOf="@id/company_info_bg"
+            app:layout_constraintBottom_toBottomOf="@id/company_info_bg"
+            app:layout_constraintStart_toStartOf="@id/company_info_bg"
+            android:layout_marginStart="@dimen/margin_16"
+            android:scaleType="centerCrop"/>
+        
+        <TextView
+            android:id="@+id/company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ToolbarTitleAppearance"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            tools:text="@string/test_name_employer"
+            app:layout_constraintStart_toEndOf="@id/company_logo"
+            app:layout_constraintTop_toTopOf="@id/company_logo"
+            android:layout_marginStart="@dimen/margin_8"/>
+
+        <TextView
+            android:id="@+id/vacancy_region"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            tools:text="@string/team"
+            app:layout_constraintStart_toStartOf="@id/company_name"
+            app:layout_constraintTop_toBottomOf="@id/company_name"/>
+
+        <TextView
+            android:id="@+id/required_experience_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Medium16Text"
+            android:text="@string/necessary_experience"
+            app:layout_constraintTop_toBottomOf="@id/company_info_bg"
+            app:layout_constraintStart_toStartOf="@id/start_gl"
+            app:layout_constraintEnd_toEndOf="@id/end_gl"
+            android:layout_marginTop="@dimen/margin_24"/>
+
+        <TextView
+            android:id="@+id/required_experience"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            android:maxLines="1"
+            tools:text="@string/team"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/required_experience_title"/>
+
+        <TextView
+            android:id="@+id/working_hours"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            android:maxLines="1"
+            tools:text="@string/team"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/required_experience"
+            android:layout_marginTop="@dimen/margin_8"/>
+
+        <TextView
+            android:id="@+id/vacancy_info_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Medium22Text"
+            android:text="@string/vacancy_description"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/working_hours"
+            android:layout_marginTop="@dimen/margin_32"/>
+
+        <TextView
+            android:id="@+id/vacancy_duties_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Medium16Text"
+            android:text="@string/vacancy_duties"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_info_title"
+            android:layout_marginTop="@dimen/margin_16"/>
+
+        <TextView
+            android:id="@+id/vacancy_duties"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            tools:text="@string/team"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_duties_title"
+            android:layout_marginTop="@dimen/margin_4"/>
+
+        <TextView
+            android:id="@+id/vacancy_requirements_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Medium16Text"
+            android:text="@string/vacancy_requirements"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_duties"
+            android:layout_marginTop="@dimen/margin_16"/>
+
+        <TextView
+            android:id="@+id/vacancy_requirements"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            tools:text="@string/team"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_requirements_title"
+            android:layout_marginTop="@dimen/margin_4"/>
+
+        <TextView
+            android:id="@+id/vacancy_conditions_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Medium16Text"
+            android:text="@string/vacancy_conditions"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_requirements"
+            android:layout_marginTop="@dimen/margin_16"/>
+
+        <TextView
+            android:id="@+id/vacancy_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            tools:text="@string/team"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_conditions_title"
+            android:layout_marginTop="@dimen/margin_4"/>
+
+        <TextView
+            android:id="@+id/vacancy_key_skills_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Medium22Text"
+            android:text="@string/vacancy_key_skills"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_conditions"
+            android:layout_marginTop="@dimen/margin_24"/>
+
+        <TextView
+            android:id="@+id/vacancy_key_skills"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Regular16Text"
+            tools:text="@string/team"
+            app:layout_constraintStart_toEndOf="@id/start_gl"
+            app:layout_constraintEnd_toStartOf="@id/end_gl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_key_skills_title"
+            android:layout_marginTop="@dimen/margin_16"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
