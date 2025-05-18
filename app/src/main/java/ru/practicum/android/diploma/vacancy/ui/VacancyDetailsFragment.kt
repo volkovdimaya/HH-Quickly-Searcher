@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.vacancy.ui
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -64,11 +63,17 @@ class VacancyDetailsFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        viewModel.getScreenStateLiveData().observe(viewLifecycleOwner){state ->
+        viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is VacancyDetailsScreenState.Loading -> renderLoadingState()
-                is VacancyDetailsScreenState.ServerError -> renderErrorState(getString(R.string.server_error), R.drawable.img_vacancy_server_error)
-                is VacancyDetailsScreenState.NothingFound -> renderErrorState(getString(R.string.vacancy_was_not_found_or_deleted), R.drawable.img_vacancy_is_not_avaliable)
+                is VacancyDetailsScreenState.ServerError -> renderErrorState(
+                    getString(R.string.server_error),
+                    R.drawable.img_vacancy_server_error
+                )
+                is VacancyDetailsScreenState.NothingFound -> renderErrorState(
+                    getString(R.string.vacancy_was_not_found_or_deleted),
+                    R.drawable.img_vacancy_is_not_avaliable
+                )
                 is VacancyDetailsScreenState.Data -> renderData(state.vacancyDetails, state.isFavourite)
             }
         }
@@ -91,7 +96,7 @@ class VacancyDetailsFragment : Fragment() {
     private fun renderErrorState(
         errorText: String,
         errorDrawable: Int
-    ){
+    ) {
         binding.vacancyDetailsLayout.isVisible = false
         binding.progressBar.isVisible = false
 
@@ -104,13 +109,13 @@ class VacancyDetailsFragment : Fragment() {
     private fun renderData(
         vacancyDetails: VacancyDetail,
         isFavourite: Boolean
-    ){
+    ) {
         binding.vacancyErrorImg.isVisible = false
         binding.vacancyErrorTxt.isVisible = false
         binding.progressBar.isVisible = false
 
         binding.vacancyDetailsLayout.isVisible = true
         binding.vacancyName.text = vacancyDetails.vacancyName
-        //TODO доделать все данные
+        // TODO доделать все данные
     }
 }

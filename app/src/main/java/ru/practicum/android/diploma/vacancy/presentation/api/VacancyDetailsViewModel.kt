@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 class VacancyDetailsViewModel(
     private val interactor: VacancyDetailsInteractor
-): ViewModel() {
+) :ViewModel() {
 
     private val screenStateLiveData = MutableLiveData<VacancyDetailsScreenState>(VacancyDetailsScreenState.Loading)
     fun getScreenStateLiveData(): LiveData<VacancyDetailsScreenState> = screenStateLiveData
@@ -19,23 +19,23 @@ class VacancyDetailsViewModel(
         viewModelScope.launch {
             var details: VacancyDetail? = null
             var isFavourite = false
-            try{
-                interactor.getVacancyDetails(vacancyId).collect{ vacancyDetails ->
-                    details = vacancyDetails
-                }
-                interactor.isVacancyFavourite(vacancyId).collect{ isVacancyFavourite ->
+            try {
+                interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
                     isFavourite = isVacancyFavourite
+                }
+                interactor.getVacancyDetails(vacancyId, isFavourite).collect { vacancyDetails ->
+                    details = vacancyDetails
                 }
                 screenStateLiveData.postValue(VacancyDetailsScreenState.Data(details!!, isFavourite))
             } catch (e: Exception) {
                 screenStateLiveData.postValue(VacancyDetailsScreenState.ServerError)
             }
-            //TODO Добавить нормальную обработку ошибок
+            // TODO Добавить нормальную обработку ошибок
 
         }
     }
 
-    fun onFavouriteClick(vacancyId: Int){
-        //TODO реализовать
+    fun onFavouriteClick(vacancyId: Int) {
+        // TODO реализовать
     }
 }

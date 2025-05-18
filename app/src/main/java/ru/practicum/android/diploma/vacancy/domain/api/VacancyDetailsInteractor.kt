@@ -5,6 +5,6 @@ import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 interface VacancyDetailsInteractor {
 
-    fun getVacancyDetails(vacancyId: Int): Flow<VacancyDetail>
+    fun getVacancyDetails(vacancyId: Int, isFavourite: Boolean): Flow<VacancyDetail>
     fun isVacancyFavourite(vacancyId: Int): Flow<Boolean>
 }
