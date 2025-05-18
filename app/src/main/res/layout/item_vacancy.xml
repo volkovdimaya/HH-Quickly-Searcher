@@ -11,6 +11,8 @@
         android:layout_width="@dimen/size_logo"
         android:layout_height="@dimen/size_logo"
         android:padding="@dimen/padding_1"
+        android:background="@drawable/bg_item_logo"
+        android:scaleType="center"
         tools:scr="@drawable/ic_placeholder_32px"
         android:contentDescription="@null"
         app:layout_constraintStart_toStartOf="parent"
