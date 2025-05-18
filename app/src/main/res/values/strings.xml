@@ -57,8 +57,5 @@
     <string name="test_item_name_vacancy">Android-разработчик, Москва</string>
     <string name="test_name_employer">Маркет</string>
     <string name="test_salary">от 1 500 $</string>
-    <string name="vacancy_duties">Обязанности</string>
-    <string name="vacancy_requirements">Требования</string>
-    <string name="vacancy_conditions">Условия</string>
     <string name="vacancy_key_skills">Ключевые навыки</string>
 </resources>

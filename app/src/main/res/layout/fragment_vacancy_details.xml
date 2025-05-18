@@ -187,7 +187,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/Regular16Text"
-                tools:text="@string/vacancy_duties"
+                tools:text="@string/team"
                 app:layout_constraintStart_toEndOf="@id/start_gl"
                 app:layout_constraintEnd_toStartOf="@id/end_gl"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_info_title"
