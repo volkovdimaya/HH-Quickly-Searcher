@@ -56,6 +56,6 @@ class FavoritesRepositoryImpl(private val localClient: LocalClient) : FavoritesR
 
     companion object {
         private const val INTERNAL_ERROR_CODE = 500
-        private const val ERROR = "LocalDbClient error"
+        const val ERROR = "LocalDbClient error"
     }
 }
