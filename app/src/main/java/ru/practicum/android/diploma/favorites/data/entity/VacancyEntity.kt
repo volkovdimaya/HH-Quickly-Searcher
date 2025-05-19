@@ -20,7 +20,7 @@ data class VacancyEntity(
     val employer: String,
     val description: String,
     val address: String,
-    val keySkills: List<String>,
+    val keySkills: List<String>?,
     val employment: String,
     val experience: String
 )
