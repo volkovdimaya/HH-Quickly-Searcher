@@ -27,12 +27,12 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
     private val viewModel: FavoritesViewModel by viewModel()
 
     override fun createBinding(
-        increateBindingflater: LayoutInflater,
+        createBindinginflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentFavoritesBinding {
         _errorBinding = LayoutErrorVacancyPlaceholderBinding.inflate(layoutInflater)
         _emptyBinding = LayoutEmptyPlaceholderBinding.inflate(layoutInflater)
-        return FragmentFavoritesBinding.inflate(increateBindingflater, container, false)
+        return FragmentFavoritesBinding.inflate(createBindinginflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
