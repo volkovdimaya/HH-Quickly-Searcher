@@ -10,6 +10,8 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.common.data.db.AppDatabase
+import ru.practicum.android.diploma.favorites.data.local.DbClient
+import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
@@ -46,5 +48,10 @@ val dataModule = module {
     single {
         androidApplication()
     }
+
+    single<LocalClient> {
+        DbClient(get())
+    }
+
     single { ShortVacancyResponseMapper }
 }

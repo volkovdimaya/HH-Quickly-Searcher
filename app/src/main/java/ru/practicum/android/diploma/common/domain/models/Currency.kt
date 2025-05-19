@@ -23,5 +23,11 @@ enum class Currency(
     AZERBAIJANI_MANAT("AZN", currencyName = "Азербайджанский манат", symbol = '\u20BC'.toString()),
     UZBEKISTANI_SOM("UZS", currencyName = "Узбекский сум", symbol = "so'm"),
     GEORGIAN_LARI("GEL", currencyName = "Грузинский лари", symbol = '\u20BE'.toString()),
-    KYRGYZSTANI_SOM("KGS", currencyName = "Киргизский сом", symbol = "сом")
+    KYRGYZSTANI_SOM("KGS", currencyName = "Киргизский сом", symbol = "сом");
+
+    companion object {
+        fun currencyFromAbbr(abbr: String): Currency? {
+            return entries.find { it.abbr == abbr }
+        }
+    }
 }
