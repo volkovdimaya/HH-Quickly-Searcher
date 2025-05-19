@@ -1,62 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="9dp">
 
-    <FrameLayout
-        android:id="@+id/logo"
+    <ImageView
+        android:id="@+id/logoImage"
         android:layout_width="@dimen/size_logo"
         android:layout_height="@dimen/size_logo"
-        android:background="@drawable/bg_item_logo"
         android:padding="@dimen/padding_1"
+        android:background="@drawable/bg_item_logo"
+        android:scaleType="center"
+        tools:scr="@drawable/ic_placeholder_32px"
+        android:contentDescription="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/logoImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_rounded_corners_12"
-            android:clipToOutline="true"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop" />
-    </FrameLayout>
 
     <TextView
-        android:id="@+id/name_vacancy"
-        android:layout_width="wrap_content"
+        android:id="@+id/name_vacancy_workterritory_vacancy"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
         android:fontFamily="@font/ys_display_medium"
-        android:text="@string/test_item_name_vacancy"
+        tools:text="Разработчик на С++ в команду внутрnn ffff nnnn нних сервисов, Москва"
         android:textColor="?attr/colorOnBackground"
         android:textSize="@dimen/text_size_large"
-        app:layout_constraintStart_toEndOf="@+id/logo"
+        app:layout_constraintStart_toEndOf="@+id/logoImage"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/employer_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
         android:text="@string/test_name_employer"
         android:textColor="?attr/colorOnBackground"
         android:textSize="@dimen/text_size_medium"
-        app:layout_constraintStart_toStartOf="@+id/name_vacancy"
-        app:layout_constraintTop_toBottomOf="@+id/name_vacancy" />
+        app:layout_constraintStart_toStartOf="@+id/name_vacancy_workterritory_vacancy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_vacancy_workterritory_vacancy" />
 
     <TextView
         android:id="@+id/salary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:text="@string/test_salary"
+        tools:text="@string/test_salary"
         android:textColor="?attr/colorOnBackground"
         android:textSize="@dimen/text_size_medium"
-        app:layout_constraintStart_toStartOf="@+id/name_vacancy"
+        app:layout_constraintStart_toStartOf="@+id/name_vacancy_workterritory_vacancy"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/employer_name" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
