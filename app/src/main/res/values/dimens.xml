@@ -16,5 +16,7 @@
     <dimen name="padding_1">1dp</dimen>
 
     <dimen name="size_logo">48dp</dimen>
+    <dimen name="margin_171">171dp</dimen>
+    <dimen name="margin_158">158dp</dimen>
 
 </resources>
