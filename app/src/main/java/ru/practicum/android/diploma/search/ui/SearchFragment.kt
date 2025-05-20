@@ -28,6 +28,7 @@ import ru.practicum.android.diploma.databinding.ItemVacancyProgressbarBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
 import ru.practicum.android.diploma.databinding.LayoutNoInternetBinding
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
+import ru.practicum.android.diploma.util.TopSpacingItemDecoration
 
 class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
@@ -75,9 +76,21 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         }
     }
 
+    override fun initShortVacancyListView() {
+        super.initShortVacancyListView()
+
+        recyclerView.addItemDecoration(
+            TopSpacingItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.search_recycler_top_spacing)
+            )
+        )
+    }
+
     override fun updateIncludeViewByEmpty() {
         binding.imageSearchIdle.visibility = View.GONE
         binding.includeView.visibility = View.VISIBLE
+        binding.responseHeader.visibility = View.VISIBLE
+        binding.responseHeader.setText(R.string.response_search_empty)
         updateIncludeView(emptyBinding.root)
         hideKeyboard()
     }
@@ -85,6 +98,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     override fun updateIncludeViewByError() {
         binding.imageSearchIdle.visibility = View.GONE
         binding.includeView.visibility = View.VISIBLE
+        binding.responseHeader.visibility = View.GONE
         updateIncludeView(noInternetErrorBinding.root)
         hideKeyboard()
     }
@@ -92,6 +106,11 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     override fun updateIncludeViewByList(list: List<VacancyShort>) {
         binding.imageSearchIdle.visibility = View.GONE
         binding.includeView.visibility = View.VISIBLE
+        binding.responseHeader.visibility = View.VISIBLE
+
+        val headerText = getString(R.string.search_result_count, list.size.toString()) // Поменять при пейджинге
+        binding.responseHeader.text = headerText
+
         super.updateIncludeViewByList(list)
         hideKeyboard()
     }
@@ -99,12 +118,14 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     override fun updateIncludeViewByProgressBar() {
         binding.imageSearchIdle.visibility = View.GONE
         binding.includeView.visibility = View.VISIBLE
+        binding.responseHeader.visibility = View.GONE
         updateIncludeView(progressBarBinding.root)
     }
 
     override fun updateIncludeViewByClear() {
         binding.imageSearchIdle.visibility = View.VISIBLE
         binding.includeView.visibility = View.GONE
+        binding.responseHeader.visibility = View.GONE
         super.updateIncludeViewByClear()
     }
 

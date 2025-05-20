@@ -31,24 +31,37 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:hint="@string/enter_request"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:textCursorDrawable="@drawable/blue_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/image_search_idle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:contentDescription="@null"
-            android:src="@drawable/img_search_idle"
-            android:visibility="visible" />
-
         <FrameLayout
-            android:id="@+id/include_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/image_search_idle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/img_search_idle"
+                android:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/include_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/response_header"
+                style="@style/ResponseSearchText"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/response_search_empty"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </FrameLayout>
     </LinearLayout>
 </FrameLayout>
