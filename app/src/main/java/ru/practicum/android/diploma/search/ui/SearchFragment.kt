@@ -77,34 +77,34 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
     override fun updateIncludeViewByEmpty() {
         binding.imageSearchIdle.visibility = View.GONE
-        binding.includeView.root.visibility = View.VISIBLE
+        binding.includeView.visibility = View.VISIBLE
         updateIncludeView(emptyBinding.root)
         hideKeyboard()
     }
 
     override fun updateIncludeViewByError() {
         binding.imageSearchIdle.visibility = View.GONE
-        binding.includeView.root.visibility = View.VISIBLE
+        binding.includeView.visibility = View.VISIBLE
         updateIncludeView(noInternetErrorBinding.root)
         hideKeyboard()
     }
 
     override fun updateIncludeViewByList(list: List<VacancyShort>) {
         binding.imageSearchIdle.visibility = View.GONE
-        binding.includeView.root.visibility = View.VISIBLE
+        binding.includeView.visibility = View.VISIBLE
         super.updateIncludeViewByList(list)
         hideKeyboard()
     }
 
     override fun updateIncludeViewByProgressBar() {
         binding.imageSearchIdle.visibility = View.GONE
-        binding.includeView.root.visibility = View.VISIBLE
+        binding.includeView.visibility = View.VISIBLE
         updateIncludeView(progressBarBinding.root)
     }
 
     override fun updateIncludeViewByClear() {
         binding.imageSearchIdle.visibility = View.VISIBLE
-        binding.includeView.root.visibility = View.GONE
+        binding.includeView.visibility = View.GONE
         super.updateIncludeViewByClear()
     }
 
