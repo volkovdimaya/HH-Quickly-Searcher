@@ -65,7 +65,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         currentQuery = text
 
         if (currentQuery.isEmpty()) {
-            screenStateLiveData.postValue(ShortVacancyListUiState.Default)
             searchDebounceJob?.cancel()
             return
         } else if (textChanged) {
