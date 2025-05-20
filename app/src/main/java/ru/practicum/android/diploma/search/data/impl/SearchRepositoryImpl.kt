@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
-import java.io.IOException
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -38,11 +37,7 @@ class SearchRepositoryImpl(
             } else {
                 emit(emptyList())
             }
-        } catch (e: IOException) {
-            // Ошибки сети (отсутствие интернета) пробрасываем дальше
-            throw e
         } catch (e: Exception) {
-            // Прочие ошибки (парсинг, ошибки сервера) тоже пробрасываем
             throw e
         }
     }.flowOn(Dispatchers.IO)
