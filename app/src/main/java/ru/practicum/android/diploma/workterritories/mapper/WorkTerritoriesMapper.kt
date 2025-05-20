@@ -12,7 +12,7 @@ object WorkTerritoriesMapper {
     private const val INTERNAL_ERROR_CODE = 500
     private const val ERROR = "LocalDbClient error"
 
-    suspend fun createWorkTerritory(localClient: LocalClient, areaId: String) : WorkTerritory {
+    suspend fun createWorkTerritory(localClient: LocalClient, areaId: String): WorkTerritory {
         val response = localClient.doAreaRequest(AreaRequest(areaId))
         val workTerritory = if (response.resultCode == INTERNAL_ERROR_CODE) {
             error(ERROR)

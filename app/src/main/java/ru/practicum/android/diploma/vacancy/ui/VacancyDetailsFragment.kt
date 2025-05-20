@@ -116,6 +116,6 @@ class VacancyDetailsFragment : Fragment() {
 
         binding.vacancyDetailsLayout.isVisible = true
         binding.vacancyName.text = vacancyDetails.vacancyName
-        // TODO доделать все данные
+        TODO("доделать все данные")
     }
 }

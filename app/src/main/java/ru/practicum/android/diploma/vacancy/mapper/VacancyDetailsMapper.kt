@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.workterritories.mapper.WorkTerritoriesMapper
 
 object VacancyDetailsMapper {
 
-    suspend fun mapFromEntity(localClient: LocalClient, vacancyEntity: VacancyEntity) : VacancyDetail {
+    suspend fun mapFromEntity(localClient: LocalClient, vacancyEntity: VacancyEntity): VacancyDetail {
         return VacancyDetail(
             vacancyEntity.id,
             vacancyEntity.vacancyName,
@@ -42,7 +42,7 @@ object VacancyDetailsMapper {
         )
     }
 
-    suspend fun mapToEntity(vacancyDetail: VacancyDetail) : VacancyEntity {
+    suspend fun mapToEntity(vacancyDetail: VacancyDetail): VacancyEntity {
         return VacancyEntity(
             vacancyDetail.vacancyId,
             vacancyDetail.vacancyName,
@@ -88,10 +88,7 @@ object VacancyDetailsMapper {
     }
 
     private suspend fun makeAddressStr(address: AddressDto?): String {
-        if (address == null ||
-            address.city == null &&
-            address.street == null &&
-            address.building == null) {
+        if (address == null) {
             return ""
         }
         var str = ""

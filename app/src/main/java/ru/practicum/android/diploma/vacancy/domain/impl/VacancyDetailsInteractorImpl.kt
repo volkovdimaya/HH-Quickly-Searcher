@@ -9,11 +9,11 @@ class VacancyDetailsInteractorImpl(
     private val repository: VacancyDetailsRepository
 ) : VacancyDetailsInteractor {
 
-    override fun getVacancyDetails(vacancyId: String, isFavourite: Boolean) : Flow<OverallDetailsResponse> {
+    override fun getVacancyDetails(vacancyId: String, isFavourite: Boolean): Flow<OverallDetailsResponse> {
         return repository.getVacancyDetails(vacancyId, isFavourite)
     }
 
-    override fun isVacancyFavourite(vacancyId: String) : Flow<Boolean> {
+    override fun isVacancyFavourite(vacancyId: String): Flow<Boolean> {
         return repository.isVacancyFavourite(vacancyId)
     }
 

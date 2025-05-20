@@ -24,7 +24,10 @@ class VacancyDetailsViewModel(
             interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
                 val code = detailsResponse.resultCode
                 if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.Data(detailsResponse.vacancyDetail[0], isFavourite))
+                    screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
+                        detailsResponse.vacancyDetail[0],
+                        isFavourite
+                    ))
                 } else if (code == NOT_FOUND_CODE || detailsResponse.vacancyDetail.isNullOrEmpty()) {
                     screenStateLiveData.postValue(VacancyDetailsScreenState.NothingFound)
                 } else {
@@ -44,11 +47,14 @@ class VacancyDetailsViewModel(
                 }
                 if (currentFavouriteState) {
                     interactor.deleteFavourite(vacancyId)
-                } else (
+                } else {
                     interactor.addFavourite(vacancyId)
-                )
+                }
             }
-            screenStateLiveData.postValue(VacancyDetailsScreenState.Data(currentScreenState.vacancyDetails, !currentFavouriteState))
+            screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
+                currentScreenState.vacancyDetails,
+                !currentFavouriteState
+            ))
         }
     }
 
