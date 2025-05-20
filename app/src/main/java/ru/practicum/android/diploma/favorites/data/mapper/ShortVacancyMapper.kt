@@ -20,7 +20,7 @@ object ShortVacancyMapper {
                 salaryTo = this.salaryTo,
                 salaryCurrency = Currency.currencyFromAbbr(this.salaryCurrencyAbbr)
             ),
-            workTerritory = createWorkTerritory(this.workTerritoryId),
+            workTerritory = this.workTerritory,
             logoUrl = this.logoUrl,
             employer = this.employer
         )

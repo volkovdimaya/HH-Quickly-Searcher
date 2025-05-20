@@ -12,13 +12,11 @@ import ru.practicum.android.diploma.workterritories.mapper.WorkTerritoriesMapper
 
 object VacancyDetailsMapper {
 
-    suspend fun mapFromEntity(localClient: LocalClient, vacancyEntity: VacancyEntity): VacancyDetail {
+    suspend fun mapFromEntity(vacancyEntity: VacancyEntity): VacancyDetail {
         return VacancyDetail(
             vacancyEntity.id,
             vacancyEntity.vacancyName,
-            WorkTerritoriesMapper.createWorkTerritory(localClient, vacancyEntity.workTerritoryId).apply {
-                country.countryId = vacancyEntity.workTerritoryCountryId.toInt()
-            },
+            vacancyEntity.workTerritory,
             Salary(
                 vacancyEntity.salaryFrom,
                 vacancyEntity.salaryTo,
@@ -46,8 +44,7 @@ object VacancyDetailsMapper {
         return VacancyEntity(
             vacancyDetail.vacancyId,
             vacancyDetail.vacancyName,
-            vacancyDetail.workTerritory.regionWork?.regionId.toString(),
-            vacancyDetail.workTerritory.country.countryId.toString(),
+            vacancyDetail.workTerritory,
             vacancyDetail.salary.salaryFrom,
             vacancyDetail.salary.salaryTo,
             vacancyDetail.salary.salaryCurrency.abbr,
@@ -63,11 +60,11 @@ object VacancyDetailsMapper {
         )
     }
 
-    suspend fun mapFromDto(localClient: LocalClient, dto: VacancyDetailsDto): VacancyDetail {
+    suspend fun mapFromDto(dto: VacancyDetailsDto): VacancyDetail {
         return VacancyDetail(
             dto.id,
             dto.name,
-            WorkTerritoriesMapper.createWorkTerritory(localClient, dto.area.id),
+            dto.area.name,
             Salary(
                 dto.salaryRange?.from,
                 dto.salaryRange?.to,
