@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
+import ru.practicum.android.diploma.vacancy.mapper.StringListConverter
 
 private const val API_BASE_URL = "https://api.hh.ru/"
 private const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -35,7 +36,8 @@ val dataModule = module {
     }
 
     single<AppDatabase> {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+        Room.databaseBuilder(get(), AppDatabase::class.java, "database.db")
+            .addTypeConverter(StringListConverter(get()))
             .build()
     }
 
