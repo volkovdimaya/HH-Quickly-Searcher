@@ -67,7 +67,11 @@
         android:id="@+id/vacancyDetailsFragment"
         android:name="ru.practicum.android.diploma.vacancy.ui.VacancyDetailsFragment"
         android:label="@string/vacancy"
-        tools:layout="@layout/fragment_vacancy_details" />
+        tools:layout="@layout/fragment_vacancy_details">
+        <argument
+            android:name="vacancyId"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/workTerritoriesFragment"
         android:name="ru.practicum.android.diploma.workterritories.ui.WorkTerritoriesFragment"

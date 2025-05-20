@@ -31,7 +31,7 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
     abstract val adapter: ShortVacancyAdapter
     abstract val navigateIdAction: Int
 
-    abstract fun createBinding(increateBindingflater: LayoutInflater, container: ViewGroup?): T
+    abstract fun createBinding(createBindingInflater: LayoutInflater, container: ViewGroup?): T
 
     override fun onCreateView(
         inflater: LayoutInflater,
