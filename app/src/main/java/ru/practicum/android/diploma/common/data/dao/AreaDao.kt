@@ -12,7 +12,7 @@ interface AreaDao {
 
     // area_table
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArea(areaEntities: List<AreaEntity>)
+    suspend fun insertArea(areaEntity: AreaEntity)
 
     @Delete(entity = AreaEntity::class)
     suspend fun deleteArea(areaEntity: AreaEntity)

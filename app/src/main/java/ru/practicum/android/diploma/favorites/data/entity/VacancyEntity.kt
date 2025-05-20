@@ -10,7 +10,7 @@ data class VacancyEntity(
     @PrimaryKey
     val id: String,
     val vacancyName: String,
-    val workTerritoryId: String?,
+    val workTerritoryId: String,
     val workTerritoryCountryId: String,
     val industry: String,
     val salaryFrom: Int?,

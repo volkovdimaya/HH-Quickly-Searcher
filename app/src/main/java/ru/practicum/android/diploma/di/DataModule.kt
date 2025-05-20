@@ -51,6 +51,6 @@ val dataModule = module {
     }
 
     single<LocalClient> {
-        DbClient()
+        DbClient(get())
     }
 }
