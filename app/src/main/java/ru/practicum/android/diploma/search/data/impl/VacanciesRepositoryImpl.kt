@@ -9,19 +9,20 @@ import ru.practicum.android.diploma.common.ui.models.FilterParameters
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
-import ru.practicum.android.diploma.search.domain.api.SearchRepository
+import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
+import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
-class SearchRepositoryImpl(
+class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
     private val vacancyResponseMapper: ShortVacancyResponseMapper
-) : SearchRepository {
+) : VacanciesRepository {
 
     override fun searchVacancies(
         text: String,
         filters: FilterParameters?
     ): Flow<List<VacancyShort>> = flow {
-        val request = createRequest(text, filters)
+        val request = createSearchRequest(text, filters)
         try {
             val response = networkClient.doRequest(request)
             if (response is VacanciesResponse) {
@@ -29,7 +30,6 @@ class SearchRepositoryImpl(
                     try {
                         vacancyResponseMapper.map(vacancyDto)
                     } catch (e: Exception) {
-                        // Игнорируем ошибки маппинга отдельных элементов
                         null
                     }
                 }
@@ -42,7 +42,11 @@ class SearchRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    private fun createRequest(text: String, filters: FilterParameters?): VacanciesRequest {
+    override fun getVacancyDetails(id: Int): Flow<VacancyDetail?> = flow {
+        emit(null)
+    }
+
+    private fun createSearchRequest(text: String, filters: FilterParameters?): VacanciesRequest {
         return VacanciesRequest(
             text = text,
             area = filters?.let { buildAreaParameter(it) },

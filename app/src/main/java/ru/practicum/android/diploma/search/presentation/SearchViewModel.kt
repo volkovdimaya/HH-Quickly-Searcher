@@ -11,10 +11,10 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
 import ru.practicum.android.diploma.common.ui.models.FilterParameters
-import ru.practicum.android.diploma.search.presentation.api.SearchInteractor
+import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
 
     private var searchJob: Job? = null
     private var searchDebounceJob: Job? = null
@@ -110,7 +110,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
 
         searchJob = viewModelScope.launch {
-            searchInteractor.searchVacancies(currentQuery, currentFilters)
+            vacanciesInteractor.searchVacancies(currentQuery, currentFilters)
                 .catch {
                     screenStateLiveData.postValue(ShortVacancyListUiState.Error)
                 }
