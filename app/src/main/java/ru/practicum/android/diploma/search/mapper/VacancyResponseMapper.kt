@@ -1,16 +1,20 @@
 package ru.practicum.android.diploma.search.mapper
 
+import ru.practicum.android.diploma.common.domain.models.Currency
+import ru.practicum.android.diploma.common.domain.models.Salary
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
+import ru.practicum.android.diploma.industries.domain.models.Industry
 import ru.practicum.android.diploma.search.data.dto.VacancyDto
 
 object ShortVacancyResponseMapper {
     fun map(vacancyDto: VacancyDto): VacancyShort {
         return VacancyShort(
-            id = vacancyDto.id,
-            name = vacancyDto.name,
+            vacancyId = vacancyDto.id,
+            vacancyName = vacancyDto.name,
             employer = vacancyDto.employer?.name ?: "",
-            city = vacancyDto.area?.name ?: "",
-            salary = SalaryResponseMapper.map(vacancyDto.salary),
+            workTerritory = WorkTerritoryMapper.map(vacancyDto.area),
+            industry = Industry(null, ""),
+            salary = SalaryResponseMapper.map(vacancyDto.salary) ?: Salary(0, 0, Currency.EURO), // тут заглушка
             logoUrl = vacancyDto.employer?.logoUrls?.original ?: ""
         )
     }

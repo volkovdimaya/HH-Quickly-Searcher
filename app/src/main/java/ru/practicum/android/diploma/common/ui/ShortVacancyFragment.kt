@@ -19,7 +19,7 @@ import ru.practicum.android.diploma.util.SizeFormatter
 abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
 
     private var nullableBinding: T? = null
-    private val binding get() = nullableBinding!!
+    val binding get() = nullableBinding!!
 
     private var _recyclerView: RecyclerView? = null
     private val recyclerView get() = _recyclerView!!
@@ -31,7 +31,7 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
     abstract val adapter: ShortVacancyAdapter
     abstract val navigateIdAction: Int
 
-    abstract fun createBinding(increateBindingflater: LayoutInflater, container: ViewGroup?): T
+    abstract fun createBinding(inflater: LayoutInflater, container: ViewGroup?): T
 
     override fun onCreateView(
         inflater: LayoutInflater,

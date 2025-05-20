@@ -18,5 +18,6 @@
     <dimen name="size_logo">48dp</dimen>
     <dimen name="margin_171">171dp</dimen>
     <dimen name="margin_158">158dp</dimen>
+    <dimen name="search_recycler_top_spacing">25dp</dimen>
 
 </resources>

@@ -11,15 +11,15 @@ import ru.practicum.android.diploma.search.data.dto.VacancyDetailsResponse
 
 interface HhApiService {
 
-//    @Headers(
-//        "Authorization: Bearer GTMFA6J7BBJQM5TEJHI3I05DDI4SSGC60CTA73LP4JN8T9KF9N9DT16H9K8DRFB0",
-//        "HH-User-Agent: HH Quickly Searcher (rogalevas@live.com)"
-//    )
+    @Headers(
+//        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: HH Quickly Searcher (rogalevas@live.com)"
+    )
     @GET("/vacancies")
     suspend fun searchVacancies(@QueryMap filters: Map<String, String>): VacanciesResponse
 
     @Headers(
-        "Authorization: Bearer GTMFA6J7BBJQM5TEJHI3I05DDI4SSGC60CTA73LP4JN8T9KF9N9DT16H9K8DRFB0",
+//        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: HH Quickly Searcher (rogalevas@live.com)"
     )
     @GET("/vacancies/{vacancy_id}")

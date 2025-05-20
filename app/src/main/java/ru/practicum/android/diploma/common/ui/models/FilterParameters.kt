@@ -4,10 +4,10 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class FilterParameters(
+data class FilterParameters(
     var countryId: Int? = null,
     var regionId: Int? = null,
     var industryId: Int? = null,
-    var salaryFrom: Int? = null,
-    var salaryTo: Int? = null,
+    var salary: Int? = null,
+    var onlyWithSalary: Boolean = false,
 ) : Parcelable

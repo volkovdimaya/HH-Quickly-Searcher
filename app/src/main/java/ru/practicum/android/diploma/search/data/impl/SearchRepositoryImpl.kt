@@ -1,0 +1,66 @@
+package ru.practicum.android.diploma.search.data.impl
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import ru.practicum.android.diploma.common.domain.models.VacancyShort
+import ru.practicum.android.diploma.common.ui.models.FilterParameters
+import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
+import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
+import ru.practicum.android.diploma.search.data.network.NetworkClient
+import ru.practicum.android.diploma.search.domain.api.SearchRepository
+import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
+import java.io.IOException
+
+class SearchRepositoryImpl(
+    private val networkClient: NetworkClient,
+    private val vacancyResponseMapper: ShortVacancyResponseMapper
+) : SearchRepository {
+
+    override fun searchVacancies(
+        text: String,
+        filters: FilterParameters?
+    ): Flow<List<VacancyShort>> = flow {
+        val request = createRequest(text, filters)
+        try {
+            val response = networkClient.doRequest(request)
+            if (response is VacanciesResponse) {
+                val vacancyList = response.items.mapNotNull { vacancyDto ->
+                    try {
+                        vacancyResponseMapper.map(vacancyDto)
+                    } catch (e: Exception) {
+                        // Игнорируем ошибки маппинга отдельных элементов
+                        null
+                    }
+                }
+                emit(vacancyList)
+            } else {
+                emit(emptyList())
+            }
+        } catch (e: IOException) {
+            // Ошибки сети (отсутствие интернета) пробрасываем дальше
+            throw e
+        } catch (e: Exception) {
+            // Прочие ошибки (парсинг, ошибки сервера) тоже пробрасываем
+            throw e
+        }
+    }.flowOn(Dispatchers.IO)
+
+    private fun createRequest(text: String, filters: FilterParameters?): VacanciesRequest {
+        return VacanciesRequest(
+            text = text,
+            area = filters?.let { buildAreaParameter(it) },
+            industry = filters?.industryId?.toString(),
+            salary = filters?.salary,
+            onlyWithSalary = filters?.onlyWithSalary ?: false,
+        )
+    }
+
+    private fun buildAreaParameter(filters: FilterParameters): String? {
+        return listOfNotNull(
+            filters.countryId?.toString(),
+            filters.regionId?.toString()
+        ).takeIf { it.isNotEmpty() }?.joinToString(",")
+    }
+}
