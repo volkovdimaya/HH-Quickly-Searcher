@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.vacancy.mapper.StringListConverter
 import ru.practicum.android.diploma.workterritories.data.entity.AreaEntity
 
 @Database(
-    version = 3,
+    version = 4,
     entities = [
         VacancyEntity::class,
         AreaEntity::class,

@@ -60,6 +60,6 @@ class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor) :
     }
 
     private fun onClickDebounce(item: VacancyShort) {
-        screenStateLiveData.postValue(ShortVacancyListUiState.AnyItem(item.vacancyId))
+        screenStateLiveData.postValue(ShortVacancyListUiState.AnyItem(item.vacancyId.toInt()))
     }
 }

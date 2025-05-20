@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.favorites.data.mapper.ShortVacancyMapper
 import ru.practicum.android.diploma.favorites.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.regions.mapper.RegionMapper.toRegion
+import ru.practicum.android.diploma.workterritories.mapper.WorkTerritoriesMapper
 
 class FavoritesRepositoryImpl(private val localClient: LocalClient) : FavoritesRepository {
 
@@ -34,16 +35,7 @@ class FavoritesRepositoryImpl(private val localClient: LocalClient) : FavoritesR
             val pair = if (response.resultCode != INTERNAL_ERROR_CODE) {
                 val items = (response as FavoritesResponse).items
                 val mappedList = ShortVacancyMapper.mapVacancyEntityToVacancyShort(items) { areaId ->
-                    val response = localClient.doAreaRequest(AreaRequest(areaId))
-                    val workTerritory = if (response.resultCode == INTERNAL_ERROR_CODE) {
-                        error(ERROR)
-                    } else {
-                        WorkTerritory(
-                            (response as AreaResponse).areaEntity.toRegion(),
-                            (response as AreaResponse).areaEntity.toCountry()
-                        )
-                    }
-                    workTerritory
+                    WorkTerritoriesMapper.createWorkTerritory(localClient, areaId)
                 }
 
                 Pair(response.resultCode, mappedList)
@@ -56,6 +48,5 @@ class FavoritesRepositoryImpl(private val localClient: LocalClient) : FavoritesR
 
     companion object {
         private const val INTERNAL_ERROR_CODE = 500
-        const val ERROR = "LocalDbClient error"
     }
 }

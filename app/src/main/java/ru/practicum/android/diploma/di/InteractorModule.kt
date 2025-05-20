@@ -9,8 +9,9 @@ import ru.practicum.android.diploma.favorites.domain.interactors.FavoritesIntera
 val interactorModule = module {
 
     single<VacancyDetailsInteractor> {
-        VacancyDetailsInteractorImpl()
+        VacancyDetailsInteractorImpl(get())
     }
+
     single<FavoritesInteractor> {
         FavoritesInteractorImpl(get())
     }

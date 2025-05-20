@@ -10,6 +10,7 @@ val viewModelModule = module {
     viewModel {
         VacancyDetailsViewModel(get())
     }
+
     viewModel {
         FavoritesViewModel(get())
     }

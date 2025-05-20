@@ -1,22 +1,28 @@
 package ru.practicum.android.diploma.vacancy.domain.impl
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
-import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
+import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.vacancy.domain.models.OverallDetailsResponse
 
-class VacancyDetailsInteractorImpl: VacancyDetailsInteractor {
+class VacancyDetailsInteractorImpl(
+    private val repository: VacancyDetailsRepository
+) : VacancyDetailsInteractor {
 
-    override fun getVacancyDetails(vacancyId: Int, isFavourite: Boolean): Flow<VacancyDetail> = flow {
-        if (isFavourite) {
-            // get vacancy from db
-        } else {
-            // get vacancy from server
-        }
+    override fun getVacancyDetails(vacancyId: String, isFavourite: Boolean) : Flow<OverallDetailsResponse> {
+        return repository.getVacancyDetails(vacancyId, isFavourite)
     }
 
-    override fun isVacancyFavourite(vacancyId: Int): Flow<Boolean> {
-        TODO("Not yet implemented")
+    override fun isVacancyFavourite(vacancyId: String) : Flow<Boolean> {
+        return repository.isVacancyFavourite(vacancyId)
+    }
+
+    override suspend fun addFavourite(vacancyId: String) {
+        repository.addFavourite(vacancyId)
+    }
+
+    override suspend fun deleteFavourite(vacancyId: String) {
+        repository.deleteFavourite(vacancyId)
     }
 
 }

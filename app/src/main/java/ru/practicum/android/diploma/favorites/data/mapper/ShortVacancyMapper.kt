@@ -13,17 +13,16 @@ object ShortVacancyMapper {
         createWorkTerritory: suspend (areaId: String) -> WorkTerritory
     ): VacancyShort {
         return VacancyShort(
-            vacancyId = this.id.toInt(),
+            vacancyId = this.id,
             vacancyName = this.vacancyName,
             salary = Salary(
                 salaryFrom = this.salaryFrom,
                 salaryTo = this.salaryTo,
-                salaryCurrency = Currency.currencyFromAbbr(this.salaryCurrencyAbbr)!!
+                salaryCurrency = Currency.currencyFromAbbr(this.salaryCurrencyAbbr)
             ),
             workTerritory = createWorkTerritory(this.workTerritoryId),
             logoUrl = this.logoUrl,
-            industry = Industry(industryName = this.industry),
-            employer = this.employer,
+            employer = this.employer
         )
     }
 

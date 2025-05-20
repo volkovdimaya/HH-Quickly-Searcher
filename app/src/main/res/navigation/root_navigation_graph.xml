@@ -70,7 +70,7 @@
         tools:layout="@layout/fragment_vacancy_details">
         <argument
             android:name="vacancyId"
-            app:argType="integer"/>
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/workTerritoriesFragment"
