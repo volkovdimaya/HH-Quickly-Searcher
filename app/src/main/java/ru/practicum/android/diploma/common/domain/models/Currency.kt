@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.common.domain.models
 
+import ru.practicum.android.diploma.R
+
 enum class Currency(
     val abbr: String,
     val abbrVariant: String? = null,
@@ -27,7 +29,7 @@ enum class Currency(
 
     companion object {
         fun currencyFromAbbr(abbr: String): Currency? {
-            return entries.find { it.abbr == abbr }
+            return entries.find { it.abbr == abbr } ?: RUSSIAN_RUBLE
         }
     }
 }
