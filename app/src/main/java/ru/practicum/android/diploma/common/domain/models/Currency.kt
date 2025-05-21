@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.common.domain.models
 
-import ru.practicum.android.diploma.R
-
 enum class Currency(
     val abbr: String,
     val abbrVariant: String? = null,

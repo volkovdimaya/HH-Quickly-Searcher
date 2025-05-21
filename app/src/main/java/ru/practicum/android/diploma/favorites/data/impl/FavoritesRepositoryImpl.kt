@@ -48,7 +48,7 @@ class FavoritesRepositoryImpl(
 
     override fun insertFavoriteVacancy(vacancyDetail: VacancyDetail): Flow<Int> = flow {
         val response = localClient.doWrite(vacancyDetail) {
-                appDatabase.vacancyDao().insertVacancy((it as VacancyDetail).toVacancyEntity())
+            appDatabase.vacancyDao().insertVacancy((it as VacancyDetail).toVacancyEntity())
         }
         emit(response.resultCode)
         if (response.resultCode != INTERNAL_ERROR_CODE) {
@@ -58,7 +58,7 @@ class FavoritesRepositoryImpl(
 
     override fun deleteFavoriteVacancy(vacancyDetail: VacancyDetail): Flow<Int> = flow {
         val response = localClient.doWrite(vacancyDetail) {
-                appDatabase.vacancyDao().deleteVacancy((it as VacancyDetail).toVacancyEntity())
+            appDatabase.vacancyDao().deleteVacancy((it as VacancyDetail).toVacancyEntity())
         }
         emit(response.resultCode)
         if (response.resultCode != INTERNAL_ERROR_CODE) {

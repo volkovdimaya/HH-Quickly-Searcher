@@ -1,16 +1,13 @@
 package ru.practicum.android.diploma.favorites.data.mapper
 
-import ru.practicum.android.diploma.common.data.models.VacancyWithWorkTerritory
 import ru.practicum.android.diploma.common.domain.models.Country
 import ru.practicum.android.diploma.common.domain.models.Currency
 import ru.practicum.android.diploma.common.domain.models.RegionWork
 import ru.practicum.android.diploma.common.domain.models.Salary
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.domain.models.WorkTerritory
-import ru.practicum.android.diploma.countries.mapper.CountryMapper.toCountry
 import ru.practicum.android.diploma.favorites.data.entity.VacancyEntity
 import ru.practicum.android.diploma.industries.domain.models.Industry
-import ru.practicum.android.diploma.regions.mapper.RegionMapper.toRegion
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 object ShortVacancyMapper {
@@ -32,7 +29,6 @@ object ShortVacancyMapper {
     }
 
     fun mapWorkTerritoryFromString(workTerritoryString: String): WorkTerritory {
-
         val country = Country(
             countryId = 0,
             countryName = "Россия" // Значение по умолчанию
