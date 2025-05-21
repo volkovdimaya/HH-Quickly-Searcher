@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.util.debounce
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
 
     private var searchJob: Job? = null
+    private var loadMoreJob: Job? = null
     private var searchDebounceJob: Job? = null
 
     private var screenStateLiveData = MutableLiveData<ShortVacancyListUiState>(ShortVacancyListUiState.Default)
@@ -26,6 +27,12 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
     private var currentQuery: String = ""
     private var currentFilters: FilterParametersUi? = null
     private var lastSearchedQuery: String = ""
+
+    private var currentPage: Int = 0
+    private var maxPages: Int = 0
+    private var totalFound: Int = 0
+    private var isNextPageLoading: Boolean = false
+    private var vacanciesList: MutableList<VacancyShort> = mutableListOf()
 
     val observeState = MediatorLiveData<ShortVacancyListUiState>().apply {
         addSource(screenStateLiveData) { newValue ->
@@ -44,6 +51,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
             useLastParam = true
         ) { query ->
             if (query.isNotEmpty() && query == currentQuery && query != lastSearchedQuery) {
+                resetPaginationState()
                 searchVacancies()
             }
         }
@@ -92,9 +100,18 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         }
 
         if (queryChanged || filtersChanged || lastSearchedQuery != query) {
+            resetPaginationState()
             screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
             searchVacancies()
         }
+    }
+
+    private fun resetPaginationState() {
+        currentPage = 0
+        maxPages = 0
+        totalFound = 0
+        vacanciesList.clear()
+        isNextPageLoading = false
     }
 
     private fun searchVacancies() {
@@ -107,24 +124,74 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
         lastSearchedQuery = currentQuery
 
-        screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
-
         searchJob = viewModelScope.launch {
             val domainFilters = currentFilters.toDomain()
 
-            vacanciesInteractor.searchVacancies(currentQuery, domainFilters)
+            vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
                     screenStateLiveData.postValue(ShortVacancyListUiState.Error)
                 }
-                .collectLatest { vacancies ->
-                    val screenState = if (vacancies.isNotEmpty()) {
-                        ShortVacancyListUiState.Content(vacancies)
+                .collectLatest { searchResult ->
+                    maxPages = searchResult.pages
+                    totalFound = searchResult.found
+
+                    val vacancies = searchResult.vacancies
+                    vacanciesList.clear()
+                    vacanciesList.addAll(vacancies)
+
+                    val screenState = if (vacanciesList.isNotEmpty()) {
+                        ShortVacancyListUiState.ContentWithMetadata(
+                            contentList = vacanciesList.toList(),
+                            totalFound = totalFound,
+                            pages = maxPages,
+                            currentPage = currentPage
+                        )
                     } else {
                         ShortVacancyListUiState.Empty
                     }
 
                     screenStateLiveData.postValue(screenState)
                 }
+        }
+    }
+
+    private fun loadNextPage() {
+        if (isNextPageLoading || currentPage >= maxPages - 1) {
+            return
+        }
+
+        isNextPageLoading = true
+        currentPage++
+
+        screenStateLiveData.postValue(ShortVacancyListUiState.LoadingMore(vacanciesList.toList()))
+
+        loadMoreJob = viewModelScope.launch {
+            val domainFilters = currentFilters.toDomain()
+
+            vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
+                .catch {
+                    isNextPageLoading = false
+                    screenStateLiveData.postValue(ShortVacancyListUiState.LoadingMoreError(vacanciesList.toList()))
+                }
+                .collectLatest { searchResult ->
+                    isNextPageLoading = false
+                    val newVacancies = searchResult.vacancies
+
+                    screenStateLiveData.postValue(
+                        ShortVacancyListUiState.NewItems(
+                            newItems = newVacancies,
+                            totalFound = totalFound
+                        )
+                    )
+
+                    vacanciesList.addAll(newVacancies)
+                }
+        }
+    }
+
+    fun onLastItemReached() {
+        if (!isNextPageLoading && currentPage < maxPages - 1) {
+            loadNextPage()
         }
     }
 

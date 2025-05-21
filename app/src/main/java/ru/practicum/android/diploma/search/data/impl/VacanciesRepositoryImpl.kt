@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.filters.data.dto.FilterParametersDto
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
 import ru.practicum.android.diploma.filters.domain.models.toDto
@@ -13,6 +12,7 @@ import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
+import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
@@ -27,10 +27,12 @@ class VacanciesRepositoryImpl(
 
     override fun searchVacancies(
         text: String,
-        filters: FilterParametersDomain?
-    ): Flow<List<VacancyShort>> = flow {
-        val request = createSearchRequest(text, filters)
+        filters: FilterParametersDomain?,
+        page: Int,
+    ): Flow<SearchResult> = flow {
+        val request = createSearchRequest(text, filters, page)
         val response = networkClient.doRequest(request)
+
         if (response is VacanciesResponse) {
             val vacancyList = response.items.mapNotNull { vacancyDto ->
                 try {
@@ -40,9 +42,17 @@ class VacanciesRepositoryImpl(
                     null
                 }
             }
-            emit(vacancyList)
+
+            val searchResult = SearchResult(
+                vacancies = vacancyList,
+                found = response.found,
+                pages = response.pages,
+                currentPage = response.page
+            )
+
+            emit(searchResult)
         } else {
-            emit(emptyList())
+            emit(SearchResult(emptyList(), 0, 0, 0))
         }
     }.flowOn(Dispatchers.IO)
 
@@ -50,7 +60,11 @@ class VacanciesRepositoryImpl(
         emit(null)
     }
 
-    private fun createSearchRequest(text: String, filters: FilterParametersDomain?): VacanciesRequest {
+    private fun createSearchRequest(
+        text: String,
+        filters: FilterParametersDomain?,
+        page: Int
+    ): VacanciesRequest {
         val filtersDto = filters?.toDto()
 
         return VacanciesRequest(
@@ -59,6 +73,8 @@ class VacanciesRepositoryImpl(
             industry = filtersDto?.industryId?.toString(),
             salary = filtersDto?.salary,
             onlyWithSalary = filtersDto?.onlyWithSalary ?: false,
+            page = page,
+            perPage = 20,
         )
     }
 
