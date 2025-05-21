@@ -10,4 +10,3 @@ data class EmployerDto(
     val logoUrls: LogoUrlsDto,
     val vacanciesUrl: String,
 )
-

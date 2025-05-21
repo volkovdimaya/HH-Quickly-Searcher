@@ -93,7 +93,4 @@ dependencies {
     // adapterdelegates4
     implementation(libs.adapterdelegates.core)
     implementation(libs.adapterdelegates.viewbinding)
-
-
-
 }

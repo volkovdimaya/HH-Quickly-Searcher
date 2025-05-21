@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.data.impl
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,27 +19,28 @@ class VacanciesRepositoryImpl(
     private val vacancyResponseMapper: ShortVacancyResponseMapper
 ) : VacanciesRepository {
 
+    companion object {
+        private const val TAG = "VacanciesRepositoryImpl"
+    }
+
     override fun searchVacancies(
         text: String,
         filters: FilterParameters?
     ): Flow<List<VacancyShort>> = flow {
         val request = createSearchRequest(text, filters)
-        try {
-            val response = networkClient.doRequest(request)
-            if (response is VacanciesResponse) {
-                val vacancyList = response.items.mapNotNull { vacancyDto ->
-                    try {
-                        vacancyResponseMapper.map(vacancyDto)
-                    } catch (e: Exception) {
-                        null
-                    }
+        val response = networkClient.doRequest(request)
+        if (response is VacanciesResponse) {
+            val vacancyList = response.items.mapNotNull { vacancyDto ->
+                try {
+                    vacancyResponseMapper.map(vacancyDto)
+                } catch (e: IllegalArgumentException) {
+                    Log.d(TAG, e.message.toString())
+                    null
                 }
-                emit(vacancyList)
-            } else {
-                emit(emptyList())
             }
-        } catch (e: Exception) {
-            throw e
+            emit(vacancyList)
+        } else {
+            emit(emptyList())
         }
     }.flowOn(Dispatchers.IO)
 

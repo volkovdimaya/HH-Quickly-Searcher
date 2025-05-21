@@ -17,4 +17,3 @@ class VacanciesInteractorImpl(private val repository: VacanciesRepository) : Vac
         return repository.getVacancyDetails(id)
     }
 }
-

@@ -6,9 +6,10 @@ import ru.practicum.android.diploma.favorites.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 
 val viewModelModule = module {
-        viewModel{
-            SearchViewModel(get())
-        }
+
+    viewModel {
+        SearchViewModel(get())
+    }
 
     viewModel {
         FavoritesViewModel(get())

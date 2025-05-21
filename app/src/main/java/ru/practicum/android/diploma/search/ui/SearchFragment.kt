@@ -186,9 +186,10 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 performSearch()
-                return@setOnEditorActionListener true
+                true
+            } else {
+                false
             }
-            false
         }
     }
 

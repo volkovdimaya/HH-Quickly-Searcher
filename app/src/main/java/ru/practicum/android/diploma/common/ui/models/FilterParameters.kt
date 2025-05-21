@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FilterParameters(
-    var countryId: Int? = null,
-    var regionId: Int? = null,
-    var industryId: Int? = null,
-    var salary: Int? = null,
-    var onlyWithSalary: Boolean = false,
+    val countryId: Int? = null,
+    val regionId: Int? = null,
+    val industryId: Int? = null,
+    val salary: Int? = null,
+    val onlyWithSalary: Boolean = false,
 ) : Parcelable
