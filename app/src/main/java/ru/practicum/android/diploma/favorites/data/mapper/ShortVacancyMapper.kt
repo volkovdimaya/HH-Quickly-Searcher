@@ -7,7 +7,6 @@ import ru.practicum.android.diploma.common.domain.models.Salary
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.domain.models.WorkTerritory
 import ru.practicum.android.diploma.favorites.data.entity.VacancyEntity
-import ru.practicum.android.diploma.industries.domain.models.Industry
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 object ShortVacancyMapper {
