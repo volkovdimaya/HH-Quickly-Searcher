@@ -16,6 +16,8 @@ import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
+import ru.practicum.android.diploma.vacancy.data.impl.ExternalNavigatorImpl
+import ru.practicum.android.diploma.vacancy.domain.api.ExternalNavigator
 import ru.practicum.android.diploma.vacancy.mapper.StringListConverter
 
 private const val API_BASE_URL = "https://api.hh.ru/"
@@ -44,6 +46,10 @@ val dataModule = module {
 
     single<SharedPreferences> {
         androidContext().getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    }
+
+    single<ExternalNavigator> {
+        ExternalNavigatorImpl(androidContext())
     }
 
     factory { Gson() }

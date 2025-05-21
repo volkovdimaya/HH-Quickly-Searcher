@@ -181,17 +181,7 @@ class VacancyDetailsFragment : Fragment() {
         val screenState = viewModel.getScreenStateLiveData().value
         if (screenState is VacancyDetailsScreenState.Data) {
             val link = screenState.vacancyDetails.vacancyUrl
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, link)
-            shareIntent.setType("text/plain")
-            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            requireContext().startActivity(
-                Intent.createChooser(
-                    shareIntent,
-                    getString(R.string.sharing_title)
-                )
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
+            viewModel.shareVacancy(link)
         }
     }
 

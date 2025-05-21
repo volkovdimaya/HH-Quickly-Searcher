@@ -57,6 +57,7 @@ class VacancyDetailsRepositoryImpl(
     }
 
     private suspend fun getDetailsFromNetwork(vacancyId: String): OverallDetailsResponse {
+        Log.d("666", vacancyId)
         val networkResponse = networkClient.doRequest(VacancyDetailsRequest(vacancyId))
         val response = OverallDetailsResponse(networkResponse.resultCode)
         if (networkResponse is VacancyDetailsResponse && networkResponse.vacancy != null) {
