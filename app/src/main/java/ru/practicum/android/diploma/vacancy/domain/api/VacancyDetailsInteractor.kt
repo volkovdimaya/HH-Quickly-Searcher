@@ -8,6 +8,6 @@ interface VacancyDetailsInteractor {
 
     fun getVacancyDetails(vacancyId: String, isFavourite: Boolean): Flow<OverallDetailsResponse>
     fun isVacancyFavourite(vacancyId: String): Flow<Boolean>
-    suspend fun addFavourite(vacancyDetail: VacancyDetail)
-    suspend fun deleteFavourite(vacancyDetail: VacancyDetail)
+    fun addFavourite(vacancyDetail: VacancyDetail): Flow<Int>
+    fun deleteFavourite(vacancyDetail: VacancyDetail): Flow<Int>
 }
