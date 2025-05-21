@@ -1,8 +1,8 @@
 package ru.practicum.android.diploma.vacancy.domain.impl
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.vacancy.domain.api.ExternalNavigator
 import ru.practicum.android.diploma.favorites.domain.api.FavoritesRepository
+import ru.practicum.android.diploma.vacancy.domain.api.ExternalNavigator
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.vacancy.domain.models.OverallDetailsResponse
