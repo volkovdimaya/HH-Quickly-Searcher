@@ -18,6 +18,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -34,7 +35,6 @@ import ru.practicum.android.diploma.vacancy.domain.models.EmploymentType
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 import ru.practicum.android.diploma.vacancy.presentation.api.VacancyDetailsScreenState
 import ru.practicum.android.diploma.vacancy.presentation.api.VacancyDetailsViewModel
-import androidx.core.view.get
 
 class VacancyDetailsFragment : Fragment() {
 
@@ -75,6 +75,7 @@ class VacancyDetailsFragment : Fragment() {
                                 menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_off_24px)
                             }
                         }
+
                         else -> {
                             menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_off_24px)
                             menu[R.id.action_favorite].isEnabled = false
@@ -90,10 +91,12 @@ class VacancyDetailsFragment : Fragment() {
                         viewModel.onFavouriteClick(vacancyId)
                         true
                     }
+
                     R.id.actionSharing -> {
                         shareApp()
                         true
                     }
+
                     else -> false
                 }
             }
@@ -106,10 +109,12 @@ class VacancyDetailsFragment : Fragment() {
                     getString(R.string.server_error),
                     R.drawable.img_vacancy_server_error
                 )
+
                 is VacancyDetailsScreenState.NothingFound -> renderErrorState(
                     getString(R.string.vacancy_was_not_found_or_deleted),
                     R.drawable.img_vacancy_is_not_avaliable
                 )
+
                 is VacancyDetailsScreenState.Data -> renderData(state.vacancyDetails)
             }
         }
@@ -249,10 +254,12 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun setDescription(vacancyDetails: VacancyDetail) {
         if (vacancyDetails.description.isNotEmpty()) {
-            binding.vacancyInfo.setText(Html.fromHtml(
-                vacancyDetails.description,
-                Html.FROM_HTML_MODE_COMPACT
-            ))
+            binding.vacancyInfo.setText(
+                Html.fromHtml(
+                    vacancyDetails.description,
+                    Html.FROM_HTML_MODE_COMPACT
+                )
+            )
             binding.vacancyInfo.isVisible = true
             binding.vacancyInfoTitle.isVisible = true
         } else {
