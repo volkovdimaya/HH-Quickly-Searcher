@@ -61,9 +61,9 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
         }
     }
 
-    open fun goToFragment(entityId: Int) {
+    open fun goToFragment(entityId: String) {
         val bundleEntityId = Bundle().apply {
-            putInt(SHORT_VACANCY_EXTRA, entityId)
+            putString(SHORT_VACANCY_EXTRA, entityId)
 
         }
         findNavController().navigate(navigateIdAction, bundleEntityId)

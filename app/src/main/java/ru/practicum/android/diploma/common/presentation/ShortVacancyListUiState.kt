@@ -14,7 +14,7 @@ interface ShortVacancyListUiState {
 
     data class Content(val contentList: List<VacancyShort>) : ShortVacancyListUiState
 
-    data class AnyItem(val itemId: Int) : ShortVacancyListUiState
+    data class AnyItem(val itemId: String) : ShortVacancyListUiState
 
     interface ShortVacancyListUiIncludeState : ShortVacancyListUiState
 }

@@ -68,7 +68,7 @@ object VacancyDetailsMapper {
                 dto.salaryRange?.to,
                 Currency.currencyFromAbbr(dto.salaryRange?.currency ?: "")
             ),
-            dto.employer?.logoUrls?.get(0) ?: "",
+            dto.employer?.logoUrls?.original ?: "",
             dto.employer?.name ?: "",
             dto.description,
             makeAddressStr(dto.address),

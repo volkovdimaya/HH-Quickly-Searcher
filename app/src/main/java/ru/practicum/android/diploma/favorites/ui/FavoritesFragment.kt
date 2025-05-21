@@ -65,8 +65,8 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
         // no states
     }
 
-    override fun goToFragment(entityId: Int) {
-        val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyDetailsFragment(entityId.toString())
+    override fun goToFragment(entityId: String) {
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyDetailsFragment(entityId)
         findNavController().navigate(action)
         viewModel.restoreState()
     }
