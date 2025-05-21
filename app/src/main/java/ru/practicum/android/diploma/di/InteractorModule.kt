@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 val interactorModule = module {
 
     single<VacancyDetailsInteractor> {
-        VacancyDetailsInteractorImpl(get(), get())
+        VacancyDetailsInteractorImpl(get(), get(), get())
     }
 
     single<VacanciesInteractor> {
