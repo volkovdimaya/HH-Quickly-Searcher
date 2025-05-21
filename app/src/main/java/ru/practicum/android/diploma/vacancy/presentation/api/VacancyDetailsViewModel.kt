@@ -40,14 +40,11 @@ class VacancyDetailsViewModel(
         }
     }
 
-    fun onFavouriteClick(vacancyId: String) {
+    fun onFavouriteClick() {
         val currentScreenState = screenStateLiveData.value
         if (currentScreenState is VacancyDetailsScreenState.Data) {
-            var currentFavouriteState = false
+            val currentFavouriteState = currentScreenState.isFavourite
             viewModelScope.launch {
-                interactor.isVacancyFavourite(vacancyId).collect {
-                    currentFavouriteState = it
-                }
                 if (currentFavouriteState) {
                     interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
                         when (code) {

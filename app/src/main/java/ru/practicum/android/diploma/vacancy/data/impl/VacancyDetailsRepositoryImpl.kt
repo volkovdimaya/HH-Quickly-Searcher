@@ -48,10 +48,10 @@ class VacancyDetailsRepositoryImpl(
         Log.d("666", vacancyId)
         val networkResponse = networkClient.doRequest(VacancyDetailsRequest(vacancyId))
         val response = OverallDetailsResponse(networkResponse.resultCode)
-        if (networkResponse is VacancyDetailsResponse && networkResponse.vacancy != null) {
+        if (networkResponse is VacancyDetailsResponse && networkResponse.name != null) {
             response.apply {
                 vacancyDetail = listOf(
-                    VacancyDetailsMapper.mapFromDto(networkResponse.vacancy)
+                    VacancyDetailsMapper.mapFromDto(networkResponse)
                 )
                 Log.d("666", vacancyDetail.toString())
             }

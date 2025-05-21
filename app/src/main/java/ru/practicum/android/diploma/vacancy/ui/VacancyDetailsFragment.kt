@@ -69,10 +69,12 @@ class VacancyDetailsFragment : Fragment() {
                 viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
                     when (state) {
                         is VacancyDetailsScreenState.Data -> {
+                            menu.findItem(R.id.action_favorite)?.isEnabled = true
+                            menu.findItem(R.id.actionSharing)?.isEnabled = true
                             if (state.isFavourite) {
-                                menu[1].setIcon(R.drawable.ic_favorites_on_24px)
+                                menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_on_24px)
                             } else {
-                                menu[1].setIcon(R.drawable.ic_favorites_off_24px)
+                                menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_off_24px)
                             }
                         }
 
@@ -88,7 +90,7 @@ class VacancyDetailsFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_favorite -> {
-                        viewModel.onFavouriteClick(vacancyId)
+                        viewModel.onFavouriteClick()
                         true
                     }
 
