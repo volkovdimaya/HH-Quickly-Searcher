@@ -16,5 +16,21 @@ interface ShortVacancyListUiState {
 
     data class AnyItem(val itemId: String) : ShortVacancyListUiState
 
+    data class LoadingMore(val currentList: List<VacancyShort>) : ShortVacancyListUiIncludeState
+
+    data class LoadingMoreError(val currentList: List<VacancyShort>) : ShortVacancyListUiIncludeState
+
+    data class ContentWithMetadata(
+        val contentList: List<VacancyShort>,
+        val totalFound: Int,
+        val pages: Int,
+        val currentPage: Int
+    ) : ShortVacancyListUiState
+
+    data class NewItems(
+        val newItems: List<VacancyShort>,
+        val totalFound: Int
+    ) : ShortVacancyListUiState
+
     interface ShortVacancyListUiIncludeState : ShortVacancyListUiState
 }
