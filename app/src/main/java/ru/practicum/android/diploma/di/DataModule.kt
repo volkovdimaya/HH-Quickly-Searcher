@@ -48,10 +48,6 @@ val dataModule = module {
 
     factory { Gson() }
 
-    single {
-        androidApplication()
-    }
-
     single<LocalClient> {
         DbClient()
     }

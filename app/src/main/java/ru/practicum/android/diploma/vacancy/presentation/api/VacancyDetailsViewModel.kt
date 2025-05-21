@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.vacancy.presentation.api
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,9 +21,11 @@ class VacancyDetailsViewModel(
             var isFavourite = false
             interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
                 isFavourite = isVacancyFavourite
+                Log.d("666", isFavourite.toString())
             }
             interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
                 val code = detailsResponse.resultCode
+                Log.d("666", detailsResponse.vacancyDetail.toString())
                 if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
                     screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
                         detailsResponse.vacancyDetail[0],

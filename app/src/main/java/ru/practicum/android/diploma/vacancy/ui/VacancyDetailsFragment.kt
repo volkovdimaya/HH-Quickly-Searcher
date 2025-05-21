@@ -70,16 +70,16 @@ class VacancyDetailsFragment : Fragment() {
                     when (state) {
                         is VacancyDetailsScreenState.Data -> {
                             if (state.isFavourite) {
-                                menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_on_24px)
+                                menu[1].setIcon(R.drawable.ic_favorites_on_24px)
                             } else {
-                                menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_off_24px)
+                                menu[1].setIcon(R.drawable.ic_favorites_off_24px)
                             }
                         }
 
                         else -> {
-                            menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_off_24px)
-                            menu[R.id.action_favorite].isEnabled = false
-                            menu[R.id.actionSharing].isEnabled = false
+                            menu[1].setIcon(R.drawable.ic_favorites_off_24px)
+                            menu[1].isEnabled = false
+                            menu[0].isEnabled = false
                         }
                     }
                 }
