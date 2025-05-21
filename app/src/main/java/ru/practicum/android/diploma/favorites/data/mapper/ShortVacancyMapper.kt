@@ -15,7 +15,7 @@ object ShortVacancyMapper {
 
     private fun VacancyWithWorkTerritory.toVacancyShort(): VacancyShort {
         return VacancyShort(
-            vacancyId = this.vacancy.id.toInt(),
+            vacancyId = this.vacancy.id,
             vacancyName = this.vacancy.vacancyName,
             salary = Salary(
                 salaryFrom = this.vacancy.salaryFrom,
@@ -24,7 +24,6 @@ object ShortVacancyMapper {
             ),
             workTerritory = WorkTerritory(region?.toRegion(), country.toCountry()),
             logoUrl = this.vacancy.logoUrl,
-            industry = Industry(industryName = this.vacancy.industry),
             employer = this.vacancy.employer,
         )
     }
