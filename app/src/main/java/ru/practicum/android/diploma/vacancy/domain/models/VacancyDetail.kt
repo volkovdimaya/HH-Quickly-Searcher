@@ -17,5 +17,6 @@ data class VacancyDetail(
     val address: String,
     val employment: EmploymentType,
     val keySkills: List<String>,
-    val experience: String
+    val experience: String,
+    val vacancyUrl: String
 ) : Vacancy
