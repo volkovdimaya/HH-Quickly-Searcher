@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.vacancy.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle

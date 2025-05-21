@@ -46,19 +46,9 @@ class VacancyDetailsViewModel(
             val currentFavouriteState = currentScreenState.isFavourite
             viewModelScope.launch {
                 if (currentFavouriteState) {
-                    interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
-                        when (code) {
-                            INTERNAL_ERROR_CODE -> {}
-                            else -> {}
-                        }
-                    }
+                    deleteFavorite(currentScreenState)
                 } else {
-                    interactor.addFavourite(currentScreenState.vacancyDetails).collect { code ->
-                        when (code) {
-                            INTERNAL_ERROR_CODE -> {}
-                            else -> {}
-                        }
-                    }
+                    addFavorite(currentScreenState)
                 }
             }
             screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
@@ -70,6 +60,24 @@ class VacancyDetailsViewModel(
 
     fun shareVacancy(link: String) {
         interactor.shareVacancy(link)
+    }
+
+    private suspend fun deleteFavorite(currentScreenState: VacancyDetailsScreenState.Data) {
+        interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
+            when (code) {
+                INTERNAL_ERROR_CODE -> {}
+                else -> {}
+            }
+        }
+    }
+
+    private suspend fun addFavorite(currentScreenState: VacancyDetailsScreenState.Data) {
+        interactor.addFavourite(currentScreenState.vacancyDetails).collect { code ->
+            when (code) {
+                INTERNAL_ERROR_CODE -> {}
+                else -> {}
+            }
+        }
     }
 
     companion object {

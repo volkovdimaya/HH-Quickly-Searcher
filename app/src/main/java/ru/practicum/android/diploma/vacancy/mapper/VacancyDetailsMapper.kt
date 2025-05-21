@@ -79,7 +79,7 @@ object VacancyDetailsMapper {
             ),
             dto.keySkills ?: emptyList(),
             dto.experience?.name ?: "",
-            dto.alternateUrl?: ""
+            dto.alternateUrl ?: ""
         )
     }
 
