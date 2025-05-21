@@ -35,18 +35,6 @@ class VacancyDetailsRepositoryImpl(
         emit(isFavourite)
     }
 
-    override suspend fun addFavourite(vacancyId: String) {
-        val vacancyDetails = getDetailsFromNetwork(vacancyId)
-        val vacancyEntity = VacancyDetailsMapper.mapToEntity(vacancyDetails.vacancyDetail[0])
-        dataBase.vacancyDao().insertVacancy(vacancyEntity)
-    }
-
-    override suspend fun deleteFavourite(vacancyId: String) {
-        val vacancyDetails = getDetailsFromDb(vacancyId)
-        val vacancyEntity = VacancyDetailsMapper.mapToEntity(vacancyDetails.vacancyDetail[0])
-        dataBase.vacancyDao().deleteVacancy(vacancyEntity)
-    }
-
     private suspend fun getDetailsFromDb(vacancyId: String): OverallDetailsResponse {
         val vacancyEntity = dataBase.vacancyDao().getVacancyById(vacancyId)
         val vacancy = VacancyDetailsMapper.mapFromEntity(vacancyEntity)
@@ -57,6 +45,7 @@ class VacancyDetailsRepositoryImpl(
     }
 
     private suspend fun getDetailsFromNetwork(vacancyId: String): OverallDetailsResponse {
+        Log.d("666", vacancyId)
         val networkResponse = networkClient.doRequest(VacancyDetailsRequest(vacancyId))
         val response = OverallDetailsResponse(networkResponse.resultCode)
         if (networkResponse is VacancyDetailsResponse && networkResponse.vacancy != null) {

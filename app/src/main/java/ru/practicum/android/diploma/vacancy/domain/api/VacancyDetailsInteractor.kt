@@ -10,4 +10,5 @@ interface VacancyDetailsInteractor {
     fun isVacancyFavourite(vacancyId: String): Flow<Boolean>
     fun addFavourite(vacancyDetail: VacancyDetail): Flow<Int>
     fun deleteFavourite(vacancyDetail: VacancyDetail): Flow<Int>
+    fun shareVacancy(link: String)
 }

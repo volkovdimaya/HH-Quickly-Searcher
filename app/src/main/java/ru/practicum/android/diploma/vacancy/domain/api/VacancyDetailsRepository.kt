@@ -7,6 +7,4 @@ interface VacancyDetailsRepository {
 
     fun getVacancyDetails(vacancyId: String, isFavourite: Boolean): Flow<OverallDetailsResponse>
     fun isVacancyFavourite(vacancyId: String): Flow<Boolean>
-    suspend fun addFavourite(vacancyId: String)
-    suspend fun deleteFavourite(vacancyId: String)
 }

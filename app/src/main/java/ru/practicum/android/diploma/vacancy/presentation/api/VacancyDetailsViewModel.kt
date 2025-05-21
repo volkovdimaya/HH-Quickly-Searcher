@@ -71,6 +71,10 @@ class VacancyDetailsViewModel(
         }
     }
 
+    fun shareVacancy(link: String) {
+        interactor.shareVacancy(link)
+    }
+
     companion object {
         private const val SUCCESS_CODE = 200
         private const val NOT_FOUND_CODE = 404
