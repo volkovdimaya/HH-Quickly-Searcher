@@ -24,7 +24,7 @@ abstract class ShortVacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(
         binding.nameVacancyWorkterritoryVacancy.text = buildString {
             append(vacancyShort.vacancyName)
             append(", ")
-            append(vacancyShort.workTerritory.regionWork?.regionName ?: vacancyShort.workTerritory.country.countryName)
+            append(vacancyShort.workTerritory)
 
         }
         binding.employerName.text = vacancyShort.employer

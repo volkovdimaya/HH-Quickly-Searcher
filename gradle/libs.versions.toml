@@ -19,6 +19,7 @@ targetSdk = "33"
 # Detekt
 detekt = "1.23.3"
 detektTwitterComposeRules ="0.0.26"
+uiTextAndroid = "1.7.0"
 
 [libraries]
 
@@ -68,6 +69,7 @@ koin-core = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 #navigation
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version.ref = "uiTextAndroid" }
 
 #adapterdelegates4
 adapterdelegates-core = { group = "com.hannesdorfmann", name = "adapterdelegates4-kotlin-dsl", version.ref = "adapterdelegates" }

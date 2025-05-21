@@ -9,11 +9,10 @@ import ru.practicum.android.diploma.search.data.dto.VacancyDto
 object ShortVacancyResponseMapper {
     fun map(vacancyDto: VacancyDto): VacancyShort {
         return VacancyShort(
-            vacancyId = vacancyDto.id,
+            vacancyId = vacancyDto.id.toString(),
             vacancyName = vacancyDto.name,
             employer = vacancyDto.employer?.name ?: "",
-            workTerritory = WorkTerritoryMapper.map(vacancyDto.area),
-            industry = Industry(null, ""),
+            workTerritory = vacancyDto.area.name,
             salary = SalaryResponseMapper.map(vacancyDto.salary) ?: Salary(
                 null,
                 null,

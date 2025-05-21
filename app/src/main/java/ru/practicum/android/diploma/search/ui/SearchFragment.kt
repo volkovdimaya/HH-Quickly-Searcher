@@ -133,8 +133,9 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         // no states
     }
 
-    override fun goToFragment(entityId: Int) {
-        super.goToFragment(entityId)
+    override fun goToFragment(entityId: String) {
+        val direction = SearchFragmentDirections.actionSearchFragmentToVacancyDetailsFragment(entityId)
+        findNavController().navigate(direction)
         viewModel.restoreState()
     }
 
