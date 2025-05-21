@@ -19,10 +19,10 @@ import ru.practicum.android.diploma.util.SizeFormatter
 abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
 
     private var nullableBinding: T? = null
-    private val binding get() = nullableBinding!!
+    val binding get() = nullableBinding!!
 
     private var _recyclerView: RecyclerView? = null
-    private val recyclerView get() = _recyclerView!!
+    val recyclerView get() = _recyclerView!!
 
     private var _includeView: ViewGroup? = null
     private val includeView get() = _includeView!!

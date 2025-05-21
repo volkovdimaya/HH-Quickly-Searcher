@@ -91,4 +91,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
 
+    // adapterdelegates4
+    implementation(libs.adapterdelegates.core)
+    implementation(libs.adapterdelegates.viewbinding)
 }

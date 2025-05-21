@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
 import ru.practicum.android.diploma.vacancy.mapper.StringListConverter
 
 private const val API_BASE_URL = "https://api.hh.ru/"
@@ -53,4 +54,6 @@ val dataModule = module {
     single<LocalClient> {
         DbClient()
     }
+
+    single { ShortVacancyResponseMapper }
 }

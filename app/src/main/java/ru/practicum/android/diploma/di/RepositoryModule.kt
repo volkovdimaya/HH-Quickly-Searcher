@@ -7,14 +7,13 @@ import ru.practicum.android.diploma.search.data.impl.VacancyRepositoryImpl
 import ru.practicum.android.diploma.search.domain.VacancyRepository
 import ru.practicum.android.diploma.vacancy.data.impl.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.search.data.impl.VacanciesRepositoryImpl
+import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
 
 val repositoryModule = module {
 
-    single<VacancyRepository> {
-        VacancyRepositoryImpl(
-            networkClient = get(),
-            gson = get(),
-        )
+    single<VacanciesRepository> {
+        VacanciesRepositoryImpl(get(), get())
     }
 
     single<FavoritesRepository> {
