@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.vacancy.data.impl
 
 import android.app.Application
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.data.db.AppDatabase
@@ -63,6 +64,7 @@ class VacancyDetailsRepositoryImpl(
                 vacancyDetail = listOf(
                     VacancyDetailsMapper.mapFromDto(networkResponse.vacancy)
                 )
+                Log.d("666", vacancyDetail.toString())
             }
         }
         return response
