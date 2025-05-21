@@ -46,9 +46,9 @@ class VacancyDetailsViewModel(
                     currentFavouriteState = it
                 }
                 if (currentFavouriteState) {
-                    interactor.deleteFavourite(vacancyId)
+                    interactor.deleteFavourite(currentScreenState.vacancyDetails)
                 } else {
-                    interactor.addFavourite(vacancyId)
+                    interactor.addFavourite(currentScreenState.vacancyDetails)
                 }
             }
             screenStateLiveData.postValue(VacancyDetailsScreenState.Data(

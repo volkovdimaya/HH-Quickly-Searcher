@@ -110,7 +110,7 @@ class VacancyDetailsFragment : Fragment() {
                     getString(R.string.vacancy_was_not_found_or_deleted),
                     R.drawable.img_vacancy_is_not_avaliable
                 )
-                is VacancyDetailsScreenState.Data -> renderData(state.vacancyDetails, state.isFavourite)
+                is VacancyDetailsScreenState.Data -> renderData(state.vacancyDetails)
             }
         }
         viewModel.getVacancyDetails(vacancyId)
@@ -143,8 +143,7 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun renderData(
-        vacancyDetails: VacancyDetail,
-        isFavourite: Boolean
+        vacancyDetails: VacancyDetail
     ) {
         binding.vacancyErrorImg.isVisible = false
         binding.vacancyErrorTxt.isVisible = false
@@ -156,8 +155,6 @@ class VacancyDetailsFragment : Fragment() {
         setEmploymentData(vacancyDetails)
         setDescription(vacancyDetails)
         setKeySkillsData(vacancyDetails)
-
-        TODO("обработать isFavourite")
     }
 
     private fun makeWorkingHoursStr(employment: EmploymentType): String {
