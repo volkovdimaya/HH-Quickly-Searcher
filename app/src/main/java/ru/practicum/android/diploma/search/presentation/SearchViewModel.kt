@@ -52,6 +52,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         ) { query ->
             if (query.isNotEmpty() && query == currentQuery && query != lastSearchedQuery) {
                 resetPaginationState()
+                screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
                 searchVacancies()
             }
         }
