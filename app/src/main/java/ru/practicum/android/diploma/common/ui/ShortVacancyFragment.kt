@@ -49,7 +49,7 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
         _includeView = null
     }
 
-    fun render(state: ShortVacancyListUiState) {
+    open fun render(state: ShortVacancyListUiState) {
         when (state) {
             is ShortVacancyListUiState.AnyItem -> goToFragment(state.itemId)
             is ShortVacancyListUiState.Content -> updateIncludeViewByList(state.contentList)

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -17,6 +18,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
@@ -48,6 +51,8 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     private val progressBarBinding get() = _progressBarBinding!!
 
     private val viewModel by viewModel<SearchViewModel>()
+
+    private var needToInitRecyclerView = true
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -84,6 +89,77 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
                 resources.getDimensionPixelSize(R.dimen.search_recycler_top_spacing)
             )
         )
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                    val totalItemCount = layoutManager.itemCount
+
+                    if (lastVisibleItemPosition >= totalItemCount - LOAD_MORE_THRESHOLD && !adapter.isLoadingMore) {
+                        viewModel.onLastItemReached()
+                    }
+                }
+            }
+        })
+
+        needToInitRecyclerView = false
+    }
+
+    override fun render(state: ShortVacancyListUiState) {
+        when (state) {
+            is ShortVacancyListUiState.AnyItem -> goToFragment(state.itemId)
+            is ShortVacancyListUiState.ContentWithMetadata -> updateIncludeViewByContentWithMetadata(state)
+            is ShortVacancyListUiState.NewItems -> addNewItems(state)
+            ShortVacancyListUiState.Default -> updateIncludeViewByClear()
+            ShortVacancyListUiState.Empty -> updateIncludeViewByEmpty()
+            ShortVacancyListUiState.Loading -> updateIncludeViewByProgressBar()
+            ShortVacancyListUiState.Error -> updateIncludeViewByError()
+            is ShortVacancyListUiState.LoadingMore -> showLoadingMore()
+            is ShortVacancyListUiState.LoadingMoreError -> handleLoadingMoreError()
+            is ShortVacancyListUiState.Content -> updateIncludeViewByList(state.contentList)
+            is ShortVacancyListUiState.ShortVacancyListUiIncludeState -> renderIncludeState(state)
+        }
+    }
+
+    private fun addNewItems(state: ShortVacancyListUiState.NewItems) {
+        val headerText = getString(R.string.search_result_count, state.totalFound.toString())
+        binding.responseHeader.text = headerText
+
+        adapter.addItems(state.newItems)
+        adapter.setLoadingMore(false)
+    }
+
+    private fun updateIncludeViewByContentWithMetadata(state: ShortVacancyListUiState.ContentWithMetadata) {
+        binding.imageSearchIdle.visibility = View.GONE
+        binding.includeView.visibility = View.VISIBLE
+        binding.responseHeader.visibility = View.VISIBLE
+
+        val headerText = getString(R.string.search_result_count, state.totalFound.toString())
+        binding.responseHeader.text = headerText
+
+        needToInitRecyclerView = true
+        updateIncludeViewByList(state.contentList)
+
+        adapter.setLoadingMore(false)
+        hideKeyboard()
+    }
+
+    private fun showLoadingMore() {
+        adapter.setLoadingMore(true)
+    }
+
+    private fun handleLoadingMoreError() {
+        adapter.setLoadingMore(false)
+
+        Toast.makeText(
+            requireContext(),
+            R.string.paging_network_error,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun updateIncludeViewByEmpty() {
@@ -93,6 +169,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.responseHeader.setText(R.string.response_search_empty)
         updateIncludeView(emptyBinding.root)
         hideKeyboard()
+        needToInitRecyclerView = true
     }
 
     override fun updateIncludeViewByError() {
@@ -101,6 +178,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.responseHeader.visibility = View.GONE
         updateIncludeView(noInternetErrorBinding.root)
         hideKeyboard()
+        needToInitRecyclerView = true
     }
 
     override fun updateIncludeViewByList(list: List<VacancyShort>) {
@@ -108,10 +186,13 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.includeView.visibility = View.VISIBLE
         binding.responseHeader.visibility = View.VISIBLE
 
-        val headerText = getString(R.string.search_result_count, list.size.toString()) // Поменять при пейджинге
-        binding.responseHeader.text = headerText
+        if (needToInitRecyclerView) {
+            initShortVacancyListView()
+            updateIncludeView(recyclerView)
+            needToInitRecyclerView = false
+        }
 
-        super.updateIncludeViewByList(list)
+        adapter.updateShortVacancyList(list)
         hideKeyboard()
     }
 
@@ -120,6 +201,8 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.includeView.visibility = View.VISIBLE
         binding.responseHeader.visibility = View.GONE
         updateIncludeView(progressBarBinding.root)
+
+        needToInitRecyclerView = true
     }
 
     override fun updateIncludeViewByClear() {
@@ -127,6 +210,8 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.includeView.visibility = View.GONE
         binding.responseHeader.visibility = View.GONE
         super.updateIncludeViewByClear()
+
+        needToInitRecyclerView = true
     }
 
     override fun renderIncludeState(state: ShortVacancyListUiState.ShortVacancyListUiIncludeState) {
@@ -134,8 +219,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     }
 
     override fun goToFragment(entityId: String) {
-        val direction = SearchFragmentDirections.actionSearchFragmentToVacancyDetailsFragment(entityId)
-        findNavController().navigate(direction)
+        super.goToFragment(entityId)
         viewModel.restoreState()
     }
 
@@ -205,5 +289,9 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     private fun hideKeyboard() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.editText.windowToken, 0)
+    }
+
+    companion object {
+        private const val LOAD_MORE_THRESHOLD = 3
     }
 }
