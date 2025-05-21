@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_search" >
         <argument
             android:name="filterParameters"
-            app:argType="ru.practicum.android.diploma.common.ui.models.FilterParameters"
+            app:argType="ru.practicum.android.diploma.filters.ui.models.FilterParametersUi"
             app:nullable="true"
             android:defaultValue="@null"/>
         <action
