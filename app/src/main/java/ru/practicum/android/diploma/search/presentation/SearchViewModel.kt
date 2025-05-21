@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
-import ru.practicum.android.diploma.common.ui.models.FilterParameters
+import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
+import ru.practicum.android.diploma.filters.ui.models.toDomain
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.debounce
 
@@ -23,7 +24,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
     private var previousScreenStateLiveData = MutableLiveData<ShortVacancyListUiState>()
 
     private var currentQuery: String = ""
-    private var currentFilters: FilterParameters? = null
+    private var currentFilters: FilterParametersUi? = null
     private var lastSearchedQuery: String = ""
 
     val observeState = MediatorLiveData<ShortVacancyListUiState>().apply {
@@ -75,7 +76,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         }
     }
 
-    fun updateRequest(query: String, filters: FilterParameters? = null) {
+    fun updateRequest(query: String, filters: FilterParametersUi? = null) {
         val queryChanged = currentQuery != query
         val filtersChanged = currentFilters != filters
 
@@ -109,7 +110,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
 
         searchJob = viewModelScope.launch {
-            vacanciesInteractor.searchVacancies(currentQuery, currentFilters)
+            val domainFilters = currentFilters.toDomain()
+
+            vacanciesInteractor.searchVacancies(currentQuery, domainFilters)
                 .catch {
                     screenStateLiveData.postValue(ShortVacancyListUiState.Error)
                 }

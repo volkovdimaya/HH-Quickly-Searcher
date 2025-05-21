@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.ui.models.FilterParameters
+import ru.practicum.android.diploma.filters.data.dto.FilterParametersDto
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
+import ru.practicum.android.diploma.filters.domain.models.toDto
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
@@ -25,7 +27,7 @@ class VacanciesRepositoryImpl(
 
     override fun searchVacancies(
         text: String,
-        filters: FilterParameters?
+        filters: FilterParametersDomain?
     ): Flow<List<VacancyShort>> = flow {
         val request = createSearchRequest(text, filters)
         val response = networkClient.doRequest(request)
@@ -48,17 +50,19 @@ class VacanciesRepositoryImpl(
         emit(null)
     }
 
-    private fun createSearchRequest(text: String, filters: FilterParameters?): VacanciesRequest {
+    private fun createSearchRequest(text: String, filters: FilterParametersDomain?): VacanciesRequest {
+        val filtersDto = filters?.toDto()
+
         return VacanciesRequest(
             text = text,
-            area = filters?.let { buildAreaParameter(it) },
-            industry = filters?.industryId?.toString(),
-            salary = filters?.salary,
-            onlyWithSalary = filters?.onlyWithSalary ?: false,
+            area = filtersDto?.let { buildAreaParameter(it) },
+            industry = filtersDto?.industryId?.toString(),
+            salary = filtersDto?.salary,
+            onlyWithSalary = filtersDto?.onlyWithSalary ?: false,
         )
     }
 
-    private fun buildAreaParameter(filters: FilterParameters): String? {
+    private fun buildAreaParameter(filters: FilterParametersDto): String? {
         return listOfNotNull(
             filters.countryId?.toString(),
             filters.regionId?.toString()

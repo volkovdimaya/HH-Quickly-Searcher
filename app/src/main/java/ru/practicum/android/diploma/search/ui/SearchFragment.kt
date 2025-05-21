@@ -22,11 +22,11 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
 import ru.practicum.android.diploma.common.ui.ShortVacancyFragment
-import ru.practicum.android.diploma.common.ui.models.FilterParameters
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyProgressbarBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
 import ru.practicum.android.diploma.databinding.LayoutNoInternetBinding
+import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.util.TopSpacingItemDecoration
 
@@ -36,7 +36,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     override val navigateIdAction: Int = R.id.vacancyDetailsFragment
 
     private val args: SearchFragmentArgs by navArgs()
-    private var filterParameters: FilterParameters? = null
+    private var filterParameters: FilterParametersUi? = null
 
     private var _emptyBinding: LayoutErrorVacancyPlaceholderBinding? = null
     private val emptyBinding get() = _emptyBinding!!

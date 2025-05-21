@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import ru.practicum.android.diploma.common.ui.models.FilterParameters
 import ru.practicum.android.diploma.databinding.FragmentFiltersBinding
+import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
 
 class FiltersFragment : Fragment() {
 
@@ -32,10 +32,10 @@ class FiltersFragment : Fragment() {
          B граф навигации заложен navArgs для  @Parcelize-класса
          FilterParameters с defaultValue="@null"
          для использования при необходимости  */
-        navigateToSearchFragment(FilterParameters())
+        navigateToSearchFragment(FilterParametersUi())
     }
 
-    private fun navigateToSearchFragment(filterParameters: FilterParameters) {
+    private fun navigateToSearchFragment(filterParameters: FilterParametersUi) {
 //        val action = FiltersFragmentDirections.actionFiltersFragmentToSearchFragment(filterParameters)
 //        findNavController().navigate(action)
     }

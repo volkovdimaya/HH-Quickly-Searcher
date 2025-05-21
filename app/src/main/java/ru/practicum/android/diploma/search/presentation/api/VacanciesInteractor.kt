@@ -2,12 +2,12 @@ package ru.practicum.android.diploma.search.presentation.api
 
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.ui.models.FilterParameters
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 interface VacanciesInteractor {
 
-    fun searchVacancies(query: String, filters: FilterParameters?): Flow<List<VacancyShort>>
+    fun searchVacancies(query: String, filters: FilterParametersDomain?): Flow<List<VacancyShort>>
 
     fun getVacancyDetails(id: Int): Flow<VacancyDetail?>
 }
