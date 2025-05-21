@@ -69,7 +69,7 @@ object ShortVacancyMapper {
             employment = this.employment.employment,
             experience = this.experience,
             workFormat = this.employment.workFormat,
-            vacancyUrl = vacancyDetail.vacancyUrl,
+            vacancyUrl = this.vacancyUrl,
         )
     }
 }
