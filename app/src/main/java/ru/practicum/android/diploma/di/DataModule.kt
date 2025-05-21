@@ -52,7 +52,7 @@ val dataModule = module {
     }
 
     single<LocalClient> {
-        DbClient(get())
+        DbClient()
     }
 
     single { ShortVacancyResponseMapper }

@@ -2,10 +2,9 @@ package ru.practicum.android.diploma.favorites.data.local
 
 import android.database.SQLException
 import android.util.Log
-import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.search.data.dto.Response
 
-class DbClient(private val appDatabase: AppDatabase) : LocalClient {
+class DbClient : LocalClient {
 
     companion object {
         private const val TAG = "LocalDbClient"
@@ -13,20 +12,20 @@ class DbClient(private val appDatabase: AppDatabase) : LocalClient {
         const val INTERNAL_ERROR_CODE = 500
     }
 
-    override suspend fun doRequest(): Response {
+    override suspend fun <T : Response> doRead(action: suspend () -> T): T {
         return try {
-            val response = FavoritesResponse(appDatabase.vacancyDao().getFavorites())
-            response.apply { resultCode = SUCCESS_CODE }
+            action().apply { resultCode = SUCCESS_CODE }
         } catch (e: SQLException) {
             Log.d(TAG, e.message.toString())
-            return Response().apply { resultCode = INTERNAL_ERROR_CODE }
+            @Suppress("UNCHECKED_CAST")
+            Response().apply { resultCode = INTERNAL_ERROR_CODE } as T
         }
     }
 
-    override suspend fun doAreaRequest(request: AreaRequest): Response {
+    override suspend fun doWrite(entity: Any, action: suspend (entity: Any) -> Unit): Response {
         return try {
-            val response = AreaResponse(appDatabase.areaDao().getArea(request.areaId))
-            response.apply { resultCode = SUCCESS_CODE }
+            action(entity)
+            Response().apply { resultCode = SUCCESS_CODE }
         } catch (e: SQLException) {
             Log.d(TAG, e.message.toString())
             Response().apply { resultCode = INTERNAL_ERROR_CODE }

@@ -13,6 +13,6 @@ val repositoryModule = module {
     }
 
     single<FavoritesRepository> {
-        FavoritesRepositoryImpl(get())
+        FavoritesRepositoryImpl(get(), get())
     }
 }
