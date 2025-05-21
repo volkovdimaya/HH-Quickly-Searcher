@@ -169,8 +169,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.responseHeader.setText(R.string.response_search_empty)
         updateIncludeView(emptyBinding.root)
         hideKeyboard()
-
-        // После отображения ошибки нужно будет заново инициализировать RecyclerView
         needToInitRecyclerView = true
     }
 
@@ -180,8 +178,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         binding.responseHeader.visibility = View.GONE
         updateIncludeView(noInternetErrorBinding.root)
         hideKeyboard()
-
-        // После отображения ошибки нужно будет заново инициализировать RecyclerView
         needToInitRecyclerView = true
     }
 
