@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.common.domain.models.Salary
 import ru.practicum.android.diploma.favorites.data.entity.VacancyEntity
 import ru.practicum.android.diploma.search.data.dto.AddressDto
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsDto
+import ru.practicum.android.diploma.search.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.vacancy.domain.models.EmploymentType
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
@@ -58,7 +59,7 @@ object VacancyDetailsMapper {
         )
     }
 
-    fun mapFromDto(dto: VacancyDetailsDto): VacancyDetail {
+    fun mapFromDto(dto: VacancyDetailsResponse): VacancyDetail {
         return VacancyDetail(
             dto.id,
             dto.name,
@@ -76,9 +77,9 @@ object VacancyDetailsMapper {
                 dto.employmentForm?.name ?: "",
                 dto.workFormat?.name ?: ""
             ),
-            dto.keySkills,
+            dto.keySkills ?: emptyList(),
             dto.experience?.name ?: "",
-            dto.alternateUrl
+            dto.alternateUrl ?: ""
         )
     }
 
