@@ -13,7 +13,6 @@ import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.favorites.data.local.FavoritesResponse
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.favorites.data.mapper.ShortVacancyMapper
-import ru.practicum.android.diploma.favorites.data.mapper.ShortVacancyMapper.toVacancyEntity
 import ru.practicum.android.diploma.favorites.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 import ru.practicum.android.diploma.vacancy.mapper.VacancyDetailsMapper
