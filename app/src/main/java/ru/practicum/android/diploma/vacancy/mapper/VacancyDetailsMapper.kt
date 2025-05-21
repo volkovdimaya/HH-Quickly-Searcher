@@ -3,12 +3,10 @@ package ru.practicum.android.diploma.vacancy.mapper
 import ru.practicum.android.diploma.common.domain.models.Currency
 import ru.practicum.android.diploma.common.domain.models.Salary
 import ru.practicum.android.diploma.favorites.data.entity.VacancyEntity
-import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.search.data.dto.AddressDto
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.vacancy.domain.models.EmploymentType
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
-import ru.practicum.android.diploma.workterritories.mapper.WorkTerritoriesMapper
 
 object VacancyDetailsMapper {
 

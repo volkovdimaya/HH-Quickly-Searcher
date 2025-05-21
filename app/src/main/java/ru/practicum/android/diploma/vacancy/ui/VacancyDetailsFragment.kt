@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -129,6 +130,49 @@ class VacancyDetailsFragment : Fragment() {
         binding.progressBar.isVisible = false
 
         binding.vacancyDetailsLayout.isVisible = true
+        setHeading(vacancyDetails)
+        setEmployerData(vacancyDetails)
+        setEmploymentData(vacancyDetails)
+        setDescription(vacancyDetails)
+        setKeySkillsData(vacancyDetails)
+
+        TODO("обработать isFavourite")
+    }
+
+    private fun makeWorkingHoursStr(employment: EmploymentType): String {
+        var str = ""
+        if (employment.employment.isNotEmpty()) {
+            str += employment.employment
+            if (employment.workFormat.isNotEmpty()) {
+                str += ", " + employment.workFormat
+            }
+        } else {
+            if (employment.workFormat.isNotEmpty()) {
+                str += employment.workFormat
+            }
+        }
+        return str
+    }
+
+    private fun shareApp() {
+        val screenState = viewModel.getScreenStateLiveData().value
+        if (screenState is VacancyDetailsScreenState.Data) {
+            val link = screenState.vacancyDetails.vacancyUrl
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, link)
+            shareIntent.setType("text/plain")
+            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            requireContext().startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    getString(R.string.sharing_title)
+                )
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        }
+    }
+
+    private fun setHeading(vacancyDetails: VacancyDetail) {
         binding.vacancyName.text = vacancyDetails.vacancyName
         val salary = salaryFormatter(vacancyDetails.salary, requireContext())
         if (salary.isNotEmpty()) {
@@ -139,6 +183,9 @@ class VacancyDetailsFragment : Fragment() {
         } else {
             binding.vacancySalary.isVisible = false
         }
+    }
+
+    private fun setEmployerData(vacancyDetails: VacancyDetail) {
         if (vacancyDetails.employer.isNotEmpty()) {
             binding.companyName.apply {
                 text = vacancyDetails.employer
@@ -149,12 +196,18 @@ class VacancyDetailsFragment : Fragment() {
         }
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
-            .transform(RoundedCorners(SizeFormatter.dpToPx(12F, requireContext())))
+            .transform(
+                RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())),
+                CenterCrop()
+            )
             .placeholder(R.drawable.ic_placeholder_32px)
             .into(binding.companyLogo)
         binding.vacancyRegion.text = vacancyDetails.address.ifEmpty {
             vacancyDetails.workTerritory
         }
+    }
+
+    private fun setEmploymentData(vacancyDetails: VacancyDetail) {
         if (vacancyDetails.experience.isNotEmpty()) {
             binding.requiredExperience.apply {
                 text = vacancyDetails.experience
@@ -174,6 +227,9 @@ class VacancyDetailsFragment : Fragment() {
         } else {
             binding.workingHours.isVisible = false
         }
+    }
+
+    private fun setDescription(vacancyDetails: VacancyDetail) {
         if (vacancyDetails.description.isNotEmpty()) {
             binding.vacancyInfo.setText(Html.fromHtml(
                 vacancyDetails.description,
@@ -185,6 +241,9 @@ class VacancyDetailsFragment : Fragment() {
             binding.vacancyInfo.isVisible = false
             binding.vacancyInfoTitle.isVisible = false
         }
+    }
+
+    private fun setKeySkillsData(vacancyDetails: VacancyDetail) {
         if (vacancyDetails.keySkills.isNotEmpty()) {
             binding.vacancyKeySkills.text = makeKeySkillsStr(vacancyDetails.keySkills)
             binding.vacancyKeySkills.isVisible = true
@@ -193,22 +252,6 @@ class VacancyDetailsFragment : Fragment() {
             binding.vacancyKeySkills.isVisible = false
             binding.vacancyKeySkillsTitle.isVisible = false
         }
-        TODO("обработать isFavourite")
-    }
-
-    private fun makeWorkingHoursStr(employment: EmploymentType): String {
-        var str = ""
-        if (employment.employment.isNotEmpty()) {
-            str += employment.employment
-            if (employment.workFormat.isNotEmpty()) {
-                str += ", " + employment.workFormat
-            }
-        } else {
-            if (employment.workFormat.isNotEmpty()) {
-                str += employment.workFormat
-            }
-        }
-        return str
     }
 
     private fun makeKeySkillsStr(list: List<String>): AnnotatedString {
@@ -227,19 +270,7 @@ class VacancyDetailsFragment : Fragment() {
         return str
     }
 
-    private fun shareApp() {
-        val screenState = viewModel.getScreenStateLiveData().value
-        if (screenState is VacancyDetailsScreenState.Data) {
-            val link = screenState.vacancyDetails.vacancyUrl
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, link)
-            shareIntent.setType("text/plain")
-            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            requireContext().startActivity(
-                Intent.createChooser(shareIntent,
-                    "Выберите способ отправки")
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
-        }
+    companion object {
+        private const val CORNER_RADIUS = 12F
     }
 }
