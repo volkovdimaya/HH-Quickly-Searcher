@@ -49,9 +49,19 @@ class VacancyDetailsViewModel(
                     currentFavouriteState = it
                 }
                 if (currentFavouriteState) {
-                    interactor.deleteFavourite(currentScreenState.vacancyDetails)
+                    interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
+                        when (code) {
+                            INTERNAL_ERROR_CODE -> {}
+                            else -> {}
+                        }
+                    }
                 } else {
-                    interactor.addFavourite(currentScreenState.vacancyDetails)
+                    interactor.addFavourite(currentScreenState.vacancyDetails).collect { code ->
+                        when (code) {
+                            INTERNAL_ERROR_CODE -> {}
+                            else -> {}
+                        }
+                    }
                 }
             }
             screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
@@ -68,5 +78,6 @@ class VacancyDetailsViewModel(
     companion object {
         private const val SUCCESS_CODE = 200
         private const val NOT_FOUND_CODE = 404
+        const val INTERNAL_ERROR_CODE = 500
     }
 }

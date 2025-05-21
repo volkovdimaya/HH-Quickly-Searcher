@@ -77,9 +77,9 @@ class VacancyDetailsFragment : Fragment() {
                         }
 
                         else -> {
-                            menu[1].setIcon(R.drawable.ic_favorites_off_24px)
-                            menu[1].isEnabled = false
-                            menu[0].isEnabled = false
+                            menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_off_24px)
+                            menu.findItem(R.id.action_favorite)?.isEnabled = false
+                            menu.findItem(R.id.actionSharing)?.isEnabled = false
                         }
                     }
                 }

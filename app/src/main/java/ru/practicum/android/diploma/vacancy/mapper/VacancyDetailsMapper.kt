@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 object VacancyDetailsMapper {
 
-    suspend fun mapFromEntity(vacancyEntity: VacancyEntity): VacancyDetail {
+    fun mapFromEntity(vacancyEntity: VacancyEntity): VacancyDetail {
         return VacancyDetail(
             vacancyEntity.id,
             vacancyEntity.vacancyName,
@@ -38,7 +38,7 @@ object VacancyDetailsMapper {
         )
     }
 
-    suspend fun mapToEntity(vacancyDetail: VacancyDetail): VacancyEntity {
+    fun mapToEntity(vacancyDetail: VacancyDetail): VacancyEntity {
         return VacancyEntity(
             vacancyDetail.vacancyId,
             vacancyDetail.vacancyName,
@@ -58,7 +58,7 @@ object VacancyDetailsMapper {
         )
     }
 
-    suspend fun mapFromDto(dto: VacancyDetailsDto): VacancyDetail {
+    fun mapFromDto(dto: VacancyDetailsDto): VacancyDetail {
         return VacancyDetail(
             dto.id,
             dto.name,
@@ -82,7 +82,7 @@ object VacancyDetailsMapper {
         )
     }
 
-    private suspend fun makeAddressStr(address: AddressDto?): String {
+    private fun makeAddressStr(address: AddressDto?): String {
         if (address == null) {
             return ""
         }
