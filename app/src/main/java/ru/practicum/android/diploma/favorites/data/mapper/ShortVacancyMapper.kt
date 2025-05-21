@@ -57,9 +57,7 @@ object ShortVacancyMapper {
         return VacancyEntity(
             id = this.vacancyId.toString(),
             vacancyName = this.vacancyName,
-            workTerritoryId = this.workTerritory.regionWork?.regionId.toString(),
-            workTerritoryCountryId = this.workTerritory.country.countryId.toString(),
-            industry = this.industry.industryName,
+            workTerritory = this.workTerritory.regionWork?.regionName.toString(),
             salaryFrom = this.salary.salaryFrom,
             salaryTo = this.salary.salaryTo,
             salaryCurrencyAbbr = this.salary.salaryCurrency.abbr,
@@ -68,9 +66,10 @@ object ShortVacancyMapper {
             description = this.description.toString(),
             address = this.address,
             keySkills = this.keySkills,
-            employment = this.employment.toString(),
+            employment = this.employment.employment,
             experience = this.experience,
+            workFormat = this.employment.workFormat,
+            vacancyUrl = vacancyDetail.vacancyUrl,
         )
-
     }
 }
