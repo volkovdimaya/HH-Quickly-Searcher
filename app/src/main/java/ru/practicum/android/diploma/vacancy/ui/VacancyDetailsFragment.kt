@@ -34,6 +34,7 @@ import ru.practicum.android.diploma.vacancy.domain.models.EmploymentType
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 import ru.practicum.android.diploma.vacancy.presentation.api.VacancyDetailsScreenState
 import ru.practicum.android.diploma.vacancy.presentation.api.VacancyDetailsViewModel
+import androidx.core.view.get
 
 class VacancyDetailsFragment : Fragment() {
 
@@ -61,6 +62,26 @@ class VacancyDetailsFragment : Fragment() {
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.vacancy_details_fragment_toolbar_menu, menu)
+            }
+
+            override fun onPrepareMenu(menu: Menu) {
+                super.onPrepareMenu(menu)
+                viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
+                    when (state) {
+                        is VacancyDetailsScreenState.Data -> {
+                            if (state.isFavourite) {
+                                menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_on_24px)
+                            } else {
+                                menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_off_24px)
+                            }
+                        }
+                        else -> {
+                            menu[R.id.action_favorite].setIcon(R.drawable.ic_favorites_off_24px)
+                            menu[R.id.action_favorite].isEnabled = false
+                            menu[R.id.actionSharing].isEnabled = false
+                        }
+                    }
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
