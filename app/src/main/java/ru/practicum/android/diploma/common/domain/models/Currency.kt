@@ -28,7 +28,7 @@ enum class Currency(
     KYRGYZSTANI_SOM("KGS", currencyName = "Киргизский сом", symbol = "сом");
 
     companion object {
-        fun currencyFromAbbr(abbr: String): Currency? {
+        fun currencyFromAbbr(abbr: String): Currency {
             return entries.find { it.abbr == abbr } ?: RUSSIAN_RUBLE
         }
     }

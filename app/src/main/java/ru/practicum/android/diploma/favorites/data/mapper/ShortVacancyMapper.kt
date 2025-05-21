@@ -48,7 +48,7 @@ object ShortVacancyMapper {
     }
 
     fun mapVacancyEntityToVacancyShort(
-        vacanciesEntity: List<VacancyWithWorkTerritory>
+        vacanciesEntity: List<VacancyEntity>
     ): List<VacancyShort> {
         return vacanciesEntity.map { it.toVacancyShort() }
     }
