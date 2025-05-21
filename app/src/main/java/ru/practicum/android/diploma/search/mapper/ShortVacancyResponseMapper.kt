@@ -14,7 +14,11 @@ object ShortVacancyResponseMapper {
             employer = vacancyDto.employer?.name ?: "",
             workTerritory = WorkTerritoryMapper.map(vacancyDto.area),
             industry = Industry(null, ""),
-            salary = SalaryResponseMapper.map(vacancyDto.salary) ?: Salary(0, 0, Currency.EURO), // тут заглушка
+            salary = SalaryResponseMapper.map(vacancyDto.salary) ?: Salary(
+                null,
+                null,
+                Currency.RUSSIAN_RUBLE
+            ), // тут заглушка
             logoUrl = vacancyDto.employer?.logoUrls?.original ?: ""
         )
     }
