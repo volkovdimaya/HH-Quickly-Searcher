@@ -13,9 +13,9 @@ import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.favorites.data.local.FavoritesResponse
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.favorites.data.mapper.ShortVacancyMapper
-import ru.practicum.android.diploma.favorites.data.mapper.ShortVacancyMapper.toVacancyEntity
 import ru.practicum.android.diploma.favorites.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
+import ru.practicum.android.diploma.vacancy.mapper.VacancyDetailsMapper
 
 class FavoritesRepositoryImpl(
     private val localClient: LocalClient,
@@ -48,7 +48,9 @@ class FavoritesRepositoryImpl(
 
     override fun insertFavoriteVacancy(vacancyDetail: VacancyDetail): Flow<Int> = flow {
         val response = localClient.doWrite(vacancyDetail) {
-            appDatabase.vacancyDao().insertVacancy((it as VacancyDetail).toVacancyEntity())
+            appDatabase.vacancyDao().insertVacancy(
+                VacancyDetailsMapper.mapToEntity(it as VacancyDetail)
+            )
         }
         emit(response.resultCode)
         if (response.resultCode != INTERNAL_ERROR_CODE) {
@@ -58,7 +60,9 @@ class FavoritesRepositoryImpl(
 
     override fun deleteFavoriteVacancy(vacancyDetail: VacancyDetail): Flow<Int> = flow {
         val response = localClient.doWrite(vacancyDetail) {
-            appDatabase.vacancyDao().deleteVacancy((it as VacancyDetail).toVacancyEntity())
+            appDatabase.vacancyDao().deleteVacancy(
+                VacancyDetailsMapper.mapToEntity(it as VacancyDetail)
+            )
         }
         emit(response.resultCode)
         if (response.resultCode != INTERNAL_ERROR_CODE) {

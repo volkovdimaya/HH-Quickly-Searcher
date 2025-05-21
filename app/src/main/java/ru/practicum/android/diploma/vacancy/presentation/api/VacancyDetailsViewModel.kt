@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.vacancy.presentation.api
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,9 +21,11 @@ class VacancyDetailsViewModel(
             var isFavourite = false
             interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
                 isFavourite = isVacancyFavourite
+                Log.d("666", isFavourite.toString())
             }
             interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
                 val code = detailsResponse.resultCode
+                Log.d("666", detailsResponse.vacancyDetail.toString())
                 if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
                     screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
                         detailsResponse.vacancyDetail[0],
@@ -46,9 +49,19 @@ class VacancyDetailsViewModel(
                     currentFavouriteState = it
                 }
                 if (currentFavouriteState) {
-                    interactor.deleteFavourite(currentScreenState.vacancyDetails)
+                    interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
+                        when (code) {
+                            INTERNAL_ERROR_CODE -> {}
+                            else -> {}
+                        }
+                    }
                 } else {
-                    interactor.addFavourite(currentScreenState.vacancyDetails)
+                    interactor.addFavourite(currentScreenState.vacancyDetails).collect { code ->
+                        when (code) {
+                            INTERNAL_ERROR_CODE -> {}
+                            else -> {}
+                        }
+                    }
                 }
             }
             screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
@@ -58,8 +71,13 @@ class VacancyDetailsViewModel(
         }
     }
 
+    fun shareVacancy(link: String) {
+        interactor.shareVacancy(link)
+    }
+
     companion object {
         private const val SUCCESS_CODE = 200
         private const val NOT_FOUND_CODE = 404
+        const val INTERNAL_ERROR_CODE = 500
     }
 }
