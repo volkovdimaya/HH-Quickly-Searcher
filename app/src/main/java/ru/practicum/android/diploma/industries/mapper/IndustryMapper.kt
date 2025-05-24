@@ -42,14 +42,14 @@ object IndustryMapper {
         )
     }
 
-    private fun Industry.toDto(): IndustryDto {
+    fun Industry.toDto(): IndustryDto {
         return IndustryDto(
             id = this.industryId,
             name = this.industryName,
         )
     }
 
-    private fun Industry.toEntity(): IndustryEntity {
+    fun Industry.toEntity(): IndustryEntity {
         return IndustryEntity(
             industryId = this.industryId,
             industryName = this.industryName
