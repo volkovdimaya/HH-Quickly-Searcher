@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.ui.ShortVacancyAdapter
-import ru.practicum.android.diploma.common.ui.ShortVacancyViewHolder
+import ru.practicum.android.diploma.common.ui.adapters.ShortVacancyAdapter
+import ru.practicum.android.diploma.common.ui.viewholder.ShortVacancyViewHolder
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyProgressbarBinding
 

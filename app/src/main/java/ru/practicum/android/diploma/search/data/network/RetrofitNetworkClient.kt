@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
+import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.regions.data.dto.AreasRequest
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
@@ -57,7 +58,7 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
 
     private suspend fun handleIndustriesRequest(): Response {
         return try {
-            val response = hhApiService.getIndustries()
+            val response = IndustriesResponse(categories = hhApiService.getIndustries())
             response.apply { resultCode = SUCCESS_CODE }
         } catch (e: HttpException) {
             Log.d(TAG, e.message.toString())

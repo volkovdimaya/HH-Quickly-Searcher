@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.common.ui
+package ru.practicum.android.diploma.common.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
+import ru.practicum.android.diploma.common.presentation.ListUiState
+import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
 import ru.practicum.android.diploma.util.CustomCircularProgressIndicator
-import ru.practicum.android.diploma.util.SizeFormatter
 
-abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
+abstract class BaseListFragment<T, V : ViewBinding> : Fragment() {
 
-    private var nullableBinding: T? = null
+    var nullableBinding: V? = null
     val binding get() = nullableBinding!!
 
     private var _recyclerView: RecyclerView? = null
@@ -28,10 +27,10 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
     private val includeView get() = _includeView!!
 
     private val progressBar: ProgressBar by lazy { CustomCircularProgressIndicator(requireContext()).progressIndicator }
-    abstract val adapter: ShortVacancyAdapter
+    abstract val adapter: BaseAdapter<T>
     abstract val navigateIdAction: Int
 
-    abstract fun createBinding(createBindingInflater: LayoutInflater, container: ViewGroup?): T
+    abstract fun createBinding(createBindingInflater: LayoutInflater, container: ViewGroup?): V
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +38,7 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         nullableBinding = createBinding(inflater, container)
-        _includeView = binding.root.findViewById(R.id.include_view)
+        initViews()
         return binding.root
     }
 
@@ -49,15 +48,19 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
         _includeView = null
     }
 
-    open fun render(state: ShortVacancyListUiState) {
+    open fun initViews() {
+        _includeView = binding.root.findViewById(R.id.include_view)
+    }
+
+    open fun render(state: ListUiState<T>) {
         when (state) {
-            is ShortVacancyListUiState.AnyItem -> goToFragment(state.itemId)
-            is ShortVacancyListUiState.Content -> updateIncludeViewByList(state.contentList)
-            ShortVacancyListUiState.Default -> updateIncludeViewByClear()
-            ShortVacancyListUiState.Empty -> updateIncludeViewByEmpty()
-            ShortVacancyListUiState.Loading -> updateIncludeViewByProgressBar()
-            ShortVacancyListUiState.Error -> updateIncludeViewByError()
-            is ShortVacancyListUiState.ShortVacancyListUiIncludeState -> renderIncludeState(state)
+            is ListUiState.AnyItem -> goToFragment(state.itemId)
+            is ListUiState.Content<T> -> updateIncludeViewByList(state.contentList)
+            ListUiState.Default -> updateIncludeViewByClear()
+            ListUiState.Empty -> updateIncludeViewByEmpty()
+            ListUiState.Loading -> updateIncludeViewByProgressBar()
+            ListUiState.Error -> updateIncludeViewByError()
+            is ListUiState.ListUiIncludeState -> renderIncludeState(state)
         }
     }
 
@@ -74,9 +77,7 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
             layoutParams = ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
-            ).apply {
-                topMargin = SizeFormatter.dpToPx(TOP_MARGIN_DP, context)
-            }
+            )
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
@@ -87,10 +88,10 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
         updateIncludeView(progressBar)
     }
 
-    open fun updateIncludeViewByList(list: List<VacancyShort>) {
+    open fun updateIncludeViewByList(list: List<T>) {
         initShortVacancyListView()
         updateIncludeView(recyclerView)
-        adapter.updateShortVacancyList(list)
+        adapter.updateList(list)
     }
 
     open fun updateIncludeViewByClear() {
@@ -110,10 +111,9 @@ abstract class ShortVacancyFragment<T : ViewBinding> : Fragment() {
         includeView.addView(includedView)
     }
 
-    abstract fun renderIncludeState(state: ShortVacancyListUiState.ShortVacancyListUiIncludeState)
+    abstract fun renderIncludeState(state: ListUiState.ListUiIncludeState<T>)
 
     companion object {
-        const val TOP_MARGIN_DP = 7f
         const val SHORT_VACANCY_EXTRA = "SHORT_VACANCY_EXTRA"
     }
 }

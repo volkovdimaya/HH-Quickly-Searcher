@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.ui.ShortVacancyAdapter
-import ru.practicum.android.diploma.common.ui.ShortVacancyViewHolder
+import ru.practicum.android.diploma.common.ui.adapters.ShortVacancyAdapter
+import ru.practicum.android.diploma.common.ui.viewholder.ShortVacancyViewHolder
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 
 class FavoritesAdapter : ShortVacancyAdapter() {

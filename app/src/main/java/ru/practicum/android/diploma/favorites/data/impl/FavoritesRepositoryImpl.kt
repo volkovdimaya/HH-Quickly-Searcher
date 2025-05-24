@@ -71,6 +71,6 @@ class FavoritesRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     companion object {
-        private const val INTERNAL_ERROR_CODE = 500
+        const val INTERNAL_ERROR_CODE = 500
     }
 }

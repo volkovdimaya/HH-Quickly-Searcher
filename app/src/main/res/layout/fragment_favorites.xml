@@ -6,9 +6,8 @@
     android:orientation="vertical"
     tools:context="ru.practicum.android.diploma.favorites.ui.FavoritesFragment">
 
-    <include
-        layout = "@layout/fragment_placeholder"
+    <FrameLayout
         android:id="@+id/include_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 </LinearLayout>

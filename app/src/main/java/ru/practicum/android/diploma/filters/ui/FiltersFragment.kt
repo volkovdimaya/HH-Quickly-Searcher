@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFiltersBinding
 import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
 
@@ -28,6 +30,9 @@ class FiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.textView.setOnClickListener {
+            findNavController().navigate(R.id.industriesFragment)
+        }
         /* Вариант передачи данных.
          B граф навигации заложен navArgs для  @Parcelize-класса
          FilterParameters с defaultValue="@null"

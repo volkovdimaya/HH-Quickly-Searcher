@@ -24,6 +24,7 @@
     <string name="vacancy_was_not_found_or_deleted">Вакансия не найдена или\nудалена</string>
     <!-- buttons-->
     <string name="apply">Применить</string>
+    <string name="select">Выбрать</string>
     <!-- team fragment-->
     <string name="have_been_working_app">Над приложением\nработали</string>
     <string name="team_name_liza">Евсюкова Елизавета Валерьевна</string>

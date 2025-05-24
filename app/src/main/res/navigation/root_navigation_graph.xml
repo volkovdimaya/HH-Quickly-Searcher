@@ -42,9 +42,10 @@
         android:label="@string/filter_settings"
         tools:layout="@layout/fragment_filters" >
         <argument
-            android:name="industryId"
-            app:argType="integer"
-            android:defaultValue="0"/>
+            android:name="industryParameter"
+            app:argType="ru.practicum.android.diploma.industries.ui.IndustryParameterUi"
+            app:nullable="true"
+            android:defaultValue="@null"/>
         <argument
             android:name="countryId"
             app:argType="integer"
