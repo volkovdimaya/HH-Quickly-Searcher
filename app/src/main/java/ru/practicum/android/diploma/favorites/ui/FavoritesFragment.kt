@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.databinding.LayoutEmptyPlaceholderBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
 import ru.practicum.android.diploma.favorites.presentation.FavoritesViewModel
+import ru.practicum.android.diploma.util.SizeFormatter
 
 class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
 
@@ -49,6 +50,18 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
         }
     }
 
+    override fun initShortVacancyListView() {
+        super.initShortVacancyListView()
+        recyclerView.apply {
+            layoutParams = ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = SizeFormatter.dpToPx(START_MARGIN_DP, context)
+            }
+        }
+    }
+
     override fun updateIncludeViewByProgressBar() {
         updateIncludeViewByClear()
     }
@@ -75,5 +88,9 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
         super.onDestroyView()
         _errorBinding = null
         _emptyBinding = null
+    }
+
+    companion object {
+        const val START_MARGIN_DP = 16f
     }
 }
