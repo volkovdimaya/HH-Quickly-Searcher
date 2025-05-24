@@ -7,4 +7,5 @@ interface IndustriesRepository {
     fun loadIndustries(): Flow<Pair<Int, List<Industry>>>
     fun getSearchList(text: String): Flow<Pair<Int, List<Industry>>>
     fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>>
+    suspend fun clearTableDb()
 }

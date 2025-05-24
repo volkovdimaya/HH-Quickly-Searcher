@@ -22,4 +22,7 @@ interface IndustryDao {
 
     @Query("SELECT * FROM industries WHERE industryName LIKE '%' || :query || '%'")
     suspend fun searchIndustries(query: String): List<IndustryEntity>
+
+    @Query("DELETE FROM industries")
+    suspend fun clearTable()
 }

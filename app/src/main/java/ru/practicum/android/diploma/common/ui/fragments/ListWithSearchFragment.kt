@@ -74,4 +74,9 @@ abstract class ListWithSearchFragment<T, V : ViewBinding> : ListWithInternetFrag
         }
         textInputLayout.endIconDrawable = ContextCompat.getDrawable(requireContext(), icon)
     }
+
+    override fun updateIncludeViewByError() {
+        super.updateIncludeViewByError()
+        hideKeyboard()
+    }
 }

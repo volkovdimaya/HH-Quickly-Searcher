@@ -9,5 +9,6 @@ class IndustryViewHolder(override val binding: ItemIndustryBinding) : BaseViewHo
     override fun bind(item: Industry) {
         binding.industryName.text = item.industryName.trim()
         binding.industryName.requestLayout()
+        binding.industrySelect.isChecked = item.select.isSelected
     }
 }

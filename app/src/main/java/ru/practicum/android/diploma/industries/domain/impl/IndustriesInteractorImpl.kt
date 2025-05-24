@@ -18,4 +18,8 @@ class IndustriesInteractorImpl(private val industriesRepository: IndustriesRepos
     override fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>> {
         return industriesRepository.getLocalIndustryList()
     }
+
+    override suspend fun clearTableDb() {
+        industriesRepository.clearTableDb()
+    }
 }

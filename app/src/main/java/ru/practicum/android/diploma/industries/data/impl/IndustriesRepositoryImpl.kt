@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
@@ -66,6 +67,12 @@ class IndustriesRepositoryImpl(
         emit(Pair(response.resultCode, mappedList))
 
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun clearTableDb() {
+        withContext(Dispatchers.IO){
+            appDatabase.industryDao().clearTable()
+        }
+    }
 
     private suspend fun saveIndustry(industries: List<IndustryDto>) {
         val industryEntities = industries.map { it.toEntity() }

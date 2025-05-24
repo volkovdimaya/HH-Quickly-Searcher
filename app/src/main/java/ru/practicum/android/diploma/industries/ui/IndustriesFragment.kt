@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.industries.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
     override val navigateIdAction: Int = R.id.filtersFragment
     private val viewModel: IndustriesViewModel by viewModel()
 
+
+
     override fun createBinding(
         createBindingInflater: LayoutInflater,
         container: ViewGroup?
@@ -33,12 +36,24 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeState.observe(viewLifecycleOwner) {
+            Log.d("industry", "state ${it}" )
             render(it)
         }
 
         adapter.setOnItemClickListener = { industry ->
-            viewModel.showAppropriateFragment(industry)
+            viewModel.showSelectButton(industry)
+            Log.d("industry", "state ${industry}" )
         }
+
+        binding.buttonSelect.setOnClickListener {
+            viewModel.showAppropriateFragment()
+        }
+
+        binding.editText.setOnFocusChangeListener { _, hasFocus ->
+          visibilitySelectButton(hasFocus)
+        }
+
+
     }
 
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Industry>) {
@@ -46,6 +61,21 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
             is FiltersUiState.FilterItem -> {
                 returnToPreviousFragment(state.item)
             }
+            is FiltersUiState.SelectPosition -> {
+                showSelectPosition(state.newList)
+            }
+
+        }
+    }
+
+    private fun showSelectPosition(newList : List<Industry>) {
+        binding.buttonSelect.visibility = View.VISIBLE
+        updateIncludeViewByList(newList)
+    }
+
+    private fun visibilitySelectButton(flag : Boolean) {
+        if (flag) {
+            binding.buttonSelect.visibility = View.GONE
         }
     }
 

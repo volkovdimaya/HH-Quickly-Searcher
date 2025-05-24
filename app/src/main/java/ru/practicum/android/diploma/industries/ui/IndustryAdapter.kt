@@ -1,11 +1,10 @@
 package ru.practicum.android.diploma.industries.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
 import ru.practicum.android.diploma.common.ui.viewholder.BaseViewHolder
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
@@ -22,7 +21,7 @@ class IndustryAdapter : BaseAdapter<Industry>() {
         val item = list[position]
         (holder as IndustryViewHolder).bind(item)
         holder.itemView.setOnClickListener {
-            it.setBackgroundColor(ContextCompat.getColor(it.context, R.color.red)) // для проверки
+            Log.d("industry", "state ${item.industryName}" )
             setOnItemClickListener?.invoke(item)
         }
     }
@@ -43,7 +42,12 @@ class IndustryAdapter : BaseAdapter<Industry>() {
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldIndustryList[oldItemPosition] == newList[newItemPosition]
+                val oldItem = oldIndustryList[oldItemPosition]
+                val newItem = newList[newItemPosition]
+
+                return oldItem.industryId == newItem.industryId &&
+                    oldItem.industryName == newItem.industryName &&
+                    oldItem.select.isSelected == newItem.select.isSelected
             }
         })
         this.list = newList.toMutableList()

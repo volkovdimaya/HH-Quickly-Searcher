@@ -19,6 +19,21 @@
     <FrameLayout
         android:id="@+id/include_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_select"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_24"
+        android:layout_gravity="center"
+        android:text="@string/select"
+        android:textColor="@color/white"
+        android:background="@color/blue"
+        android:visibility="gone"
+        />
 
 </LinearLayout>
