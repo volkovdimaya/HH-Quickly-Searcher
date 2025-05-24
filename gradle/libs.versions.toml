@@ -8,6 +8,7 @@ roomruntime = "2.5.2"
 navigation = "2.8.9"
 koin = "3.5.0"
 viewmodel = "2.8.7"
+adapterdelegates = "4.3.2"
 java = "VERSION_1_8"
 
 # Build constants
@@ -18,6 +19,7 @@ targetSdk = "33"
 # Detekt
 detekt = "1.23.3"
 detektTwitterComposeRules ="0.0.26"
+uiTextAndroid = "1.7.0"
 
 [libraries]
 
@@ -67,6 +69,11 @@ koin-core = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 #navigation
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version.ref = "uiTextAndroid" }
+
+#adapterdelegates4
+adapterdelegates-core = { group = "com.hannesdorfmann", name = "adapterdelegates4-kotlin-dsl", version.ref = "adapterdelegates" }
+adapterdelegates-viewbinding = { group = "com.hannesdorfmann", name = "adapterdelegates4-kotlin-dsl-viewbinding", version.ref = "adapterdelegates" }
 
 
 [bundles]

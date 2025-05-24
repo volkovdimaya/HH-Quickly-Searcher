@@ -57,6 +57,7 @@ dependencies {
     // UI layer libraries
     implementation(libs.ui.material)
     implementation(libs.ui.constraintLayout)
+    implementation(libs.ui.text.android)
 
     // region Unit tests
     testImplementation(libs.unitTests.junit)
@@ -90,4 +91,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
 
+    // adapterdelegates4
+    implementation(libs.adapterdelegates.core)
+    implementation(libs.adapterdelegates.viewbinding)
 }

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_search" >
         <argument
             android:name="filterParameters"
-            app:argType="ru.practicum.android.diploma.common.ui.models.FilterParameters"
+            app:argType="ru.practicum.android.diploma.filters.ui.models.FilterParametersUi"
             app:nullable="true"
             android:defaultValue="@null"/>
         <action
@@ -67,7 +67,11 @@
         android:id="@+id/vacancyDetailsFragment"
         android:name="ru.practicum.android.diploma.vacancy.ui.VacancyDetailsFragment"
         android:label="@string/vacancy"
-        tools:layout="@layout/fragment_vacancy_details" />
+        tools:layout="@layout/fragment_vacancy_details">
+        <argument
+            android:name="vacancyId"
+            app:argType="string"/>
+    </fragment>
     <fragment
         android:id="@+id/workTerritoriesFragment"
         android:name="ru.practicum.android.diploma.workterritories.ui.WorkTerritoriesFragment"

@@ -4,15 +4,20 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.common.data.db.AppDatabase
+import ru.practicum.android.diploma.favorites.data.local.DbClient
+import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.search.data.network.HhApiService
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
+import ru.practicum.android.diploma.vacancy.data.impl.ExternalNavigatorImpl
+import ru.practicum.android.diploma.vacancy.domain.api.ExternalNavigator
+import ru.practicum.android.diploma.vacancy.mapper.StringListConverter
 
 private const val API_BASE_URL = "https://api.hh.ru/"
 private const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -32,7 +37,9 @@ val dataModule = module {
     }
 
     single<AppDatabase> {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+        Room.databaseBuilder(get(), AppDatabase::class.java, "database.db")
+            .addTypeConverter(StringListConverter(get()))
+            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -40,9 +47,15 @@ val dataModule = module {
         androidContext().getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 
+    single<ExternalNavigator> {
+        ExternalNavigatorImpl(androidContext())
+    }
+
     factory { Gson() }
 
-    single {
-        androidApplication()
+    single<LocalClient> {
+        DbClient()
     }
+
+    single { ShortVacancyResponseMapper }
 }
