@@ -68,33 +68,9 @@ object IndustryMapper {
         return list
     }
 
-    fun mapIndustryDtoToIndustryEntity(
-        industriesDto: List<IndustryDto>
-    ): List<IndustryEntity> {
-        return industriesDto.map { it.toEntity() }
-    }
-
     fun mapIndustryDtoToIndustry(
         industriesDto: List<IndustryDto>
     ): List<Industry> {
         return industriesDto.map { it.toIndustry() }
-    }
-
-    fun mapIndustryEntityToIndustryDto(
-        industriesEntity: List<IndustryEntity>
-    ): List<IndustryDto> {
-        return industriesEntity.map { it.toDto() }
-    }
-
-    fun mapIndustryToIndustryDto(
-        industries: List<Industry>
-    ): List<IndustryDto> {
-        return industries.map { it.toDto() }
-    }
-
-    fun mapIndustryToIndustryEntity(
-        industries: List<Industry>
-    ): List<IndustryEntity> {
-        return industries.map { it.toEntity() }
     }
 }
