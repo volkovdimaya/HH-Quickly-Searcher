@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.countries.data.dto.CountryResponse
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.regions.data.dto.AreasRequest
@@ -68,7 +69,7 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
 
     private suspend fun handleAreasRequest(): Response {
         return try {
-            val response = hhApiService.getAreas()
+            val response = CountryResponse(countries = hhApiService.getAreas())
             response.apply { resultCode = SUCCESS_CODE }
         } catch (e: HttpException) {
             Log.d(TAG, e.message.toString())

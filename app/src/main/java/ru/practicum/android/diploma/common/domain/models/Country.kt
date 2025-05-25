@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.common.domain.models
 
-class Country(
+data class Country(
     var countryId: String,
     val countryName: String
 )
