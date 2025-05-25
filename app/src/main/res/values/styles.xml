@@ -92,6 +92,13 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+    <style name="Regular12Text">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
 
     <style name="Medium16Text">
         <item name="android:fontFamily">@font/ys_display_medium</item>
@@ -151,6 +158,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="marginHorizontal">@dimen/margin_16</item>
+    </style>
+
+    <style name="WorkTerritoriesItemText">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
 </resources>
