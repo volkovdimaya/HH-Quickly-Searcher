@@ -9,4 +9,3 @@ data class FilterParametersDetails(
     val salary: Int? = null,
     val onlyWithSalary: Boolean = false,
 ) : FilterParametersInterface
-

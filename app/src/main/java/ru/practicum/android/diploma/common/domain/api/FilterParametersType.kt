@@ -8,5 +8,3 @@ sealed class FilterParametersType {
     class OnlyWithSalary(val onlyWithSalary: Boolean) : FilterParametersType()
 
 }
-
-
