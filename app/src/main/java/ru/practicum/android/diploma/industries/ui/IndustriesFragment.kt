@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.industries.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,11 +38,18 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         }
 
         adapter.setOnItemClickListener = { industry ->
+            hideKeyboard()
             viewModel.showSelectButton(industry)
         }
 
         binding.buttonSelect.setOnClickListener {
             viewModel.showAppropriateFragment()
+        }
+
+        binding.editText.setOnClickListener{
+
+                binding.buttonSelect.visibility = View.GONE
+
         }
     }
 
@@ -58,8 +66,8 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
     }
 
     private fun showSelectPosition(newList: List<Industry>) {
-        binding.buttonSelect.visibility = View.VISIBLE
         updateIncludeViewByList(newList)
+        binding.buttonSelect.visibility = View.VISIBLE
     }
 
     fun visibilitySelectButton(flag: Boolean) {
@@ -76,10 +84,16 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
     }
 
     override fun onSearchTextChanged(toString: String) {
+
         viewModel.onSearchTextChanged(toString)
     }
 
     override fun performSearch() {
-        // todo
+        //visibilitySelectButton(true)
+    }
+
+    override fun hideKeyboard() {
+        super.hideKeyboard()
+     //   if (ime.)
     }
 }

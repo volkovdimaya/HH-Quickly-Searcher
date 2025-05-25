@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.industries.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
@@ -32,7 +33,10 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         industriesInteractor.getSearchList(currentQuery).collect { respons ->
             when {
                 respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
-                respons.second.isNotEmpty() -> screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                respons.second.isNotEmpty() -> {
+                    currentList = respons.second
+                    screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                }
                 else -> screenStateLiveData.postValue(ListUiState.Empty)
             }
         }
@@ -87,14 +91,20 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     fun showSelectButton(item: Industry) {
+        Log.d("industr", "Click 2")
         currentList.forEach {
-            if (it == item) {
+            if (it.industryId == item.industryId) {
+                Log.d("industr", "if (it.industryId == item.industryId)")
                 it.apply { select.isSelected = true }
             } else {
                 it.apply { select.isSelected = false }
             }
 
         }
+        Log.d("industr", "Click 3")
+        Log.d("industr", "currentList 1")
+     //Log.d("industr", "Click 2")  currentList.forEach { Log. d("industr", "currentList ${it.select.isSelected} ${it}") }
+        _currentIndustry = item
         screenStateLiveData.postValue(FiltersUiState.SelectPosition(currentList))
     }
 
