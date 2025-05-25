@@ -7,10 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.FragmentWorkTerritoriesBinding
 
 class WorkTerritoriesFragment : Fragment() {
 
     private val args: WorkTerritoriesFragmentArgs by navArgs()
+
+    private var _binding: FragmentWorkTerritoriesBinding? = null
+
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,5 +24,10 @@ class WorkTerritoriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_work_territories, container, false)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
