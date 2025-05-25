@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.filters.data.dto.FilterParametersDto
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersDetails
 import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDto
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
@@ -27,7 +27,7 @@ class VacanciesRepositoryImpl(
 
     override fun searchVacancies(
         text: String,
-        filters: FilterParametersDomain?,
+        filters: FilterParametersDetails?,
         page: Int,
     ): Flow<SearchResult> = flow {
         val request = createSearchRequest(text, filters, page)
@@ -62,7 +62,7 @@ class VacanciesRepositoryImpl(
 
     private fun createSearchRequest(
         text: String,
-        filters: FilterParametersDomain?,
+        filters: FilterParametersDetails?,
         page: Int
     ): VacanciesRequest {
         val filtersDto = filters?.toDto()

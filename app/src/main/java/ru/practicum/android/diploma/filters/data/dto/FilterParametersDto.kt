@@ -6,4 +6,9 @@ data class FilterParametersDto(
     val industryId: Int? = null,
     val salary: Int? = null,
     val onlyWithSalary: Boolean = false,
+    val countryName: String? = null,
+    val regionName: String? = null,
+    val industryName: String? = null,
+    val salaryType: String? = null
+
 )
