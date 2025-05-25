@@ -1,10 +1,9 @@
 package ru.practicum.android.diploma.common.domain.api
 
 sealed class FilterParametersType {
-    class Country(val idCountry: Int, val name: String) : FilterParametersType()
-    class Region(val idRegion: Int, val name: String) : FilterParametersType()
-    class Industry(val idIndustry: Int, val name: String) : FilterParametersType()
-    class Salary(val salary: Int, val type: String) : FilterParametersType()
+    class Country(val countryId: Int, val countryName: String) : FilterParametersType()
+    class Region(val regionId: Int, val regionName: String) : FilterParametersType()
+    class Industry(val industryId: Int, val industryName: String) : FilterParametersType()
+    class Salary(val salary: Int, val salaryCurrency: String) : FilterParametersType()
     class OnlyWithSalary(val onlyWithSalary: Boolean) : FilterParametersType()
-
 }

@@ -1,11 +1,11 @@
 package ru.practicum.android.diploma.filters.mapper
 
 import ru.practicum.android.diploma.filters.data.dto.FilterParametersDto
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersDetails
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersSearch
 
 object FilterParametersMapper {
 
-    fun FilterParametersDetails.toDto(): FilterParametersDto {
+    fun FilterParametersSearch.toDto(): FilterParametersDto {
         return FilterParametersDto(
             countryId = this.countryId,
             regionId = this.regionId,
