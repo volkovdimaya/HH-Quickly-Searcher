@@ -49,7 +49,7 @@ val dataModule = module {
     }
 
     single<ExternalNavigator> {
-        ExternalNavigatorImpl(androidContext())
+        ExternalNavigatorImpl(get())
     }
 
     factory { Gson() }
@@ -59,4 +59,6 @@ val dataModule = module {
     }
 
     single { ShortVacancyResponseMapper }
+
+    single<Context> { androidApplication() }
 }

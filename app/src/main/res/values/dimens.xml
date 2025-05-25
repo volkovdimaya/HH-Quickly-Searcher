@@ -21,5 +21,8 @@
     <dimen name="margin_171">171dp</dimen>
     <dimen name="margin_158">158dp</dimen>
     <dimen name="search_recycler_top_spacing">25dp</dimen>
+    <dimen name="height_60">60dp</dimen>
+    <dimen name="margin_56">56dp</dimen>
+    <dimen name="size_arrow_button">40dp</dimen>
 
 </resources>
