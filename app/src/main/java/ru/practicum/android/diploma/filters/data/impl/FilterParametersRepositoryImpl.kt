@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
 
-class FilterParametersRepositoryImpl: FilterParametersRepository {
+class FilterParametersRepositoryImpl : FilterParametersRepository {
 
     override fun getFilterParameters(): Flow<FilterParametersDomain> {
         TODO("Not yet implemented")
