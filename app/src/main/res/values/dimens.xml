@@ -24,5 +24,6 @@
     <dimen name="height_60">60dp</dimen>
     <dimen name="margin_56">56dp</dimen>
     <dimen name="size_arrow_button">40dp</dimen>
+    <dimen name="height_52">52dp</dimen>
 
 </resources>

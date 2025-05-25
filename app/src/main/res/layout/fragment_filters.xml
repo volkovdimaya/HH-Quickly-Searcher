@@ -1,16 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:id="@+id/filtersFragment"
     tools:context=".filters.ui.FiltersFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/text_view"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="@dimen/height_60"
+        android:layout_marginTop="@dimen/margin_16"/>
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_60"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expected_salary_layout"
+        style="@style/FullTextInputLayout"
+        android:layout_height="52dp"
+        android:paddingVertical="0dp"
+        android:layout_marginTop="@dimen/margin_24"
+        app:hintEnabled="true"
+        android:hint="@string/expected_salary"
+        app:endIconDrawable="@drawable/empty_icon"
+        app:endIconTint="?attr/colorSurfaceVariant">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expected_salary_edit_text"
+            android:layout_height="match_parent"
+            style="@style/FullTextInputEditText"
+            android:hint="@string/enter_amount"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <FrameLayout
+        android:id="@+id/without_salary_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_60"
+        android:layout_marginTop="@dimen/margin_24">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginEnd="@dimen/margin_56"
+            android:text="@string/do_not_show_without_salary"
+            style="@style/Regular16Text"/>
+
+        <ToggleButton
+            android:id="@+id/without_salary_selector"
+            android:layout_width="@dimen/margin_24"
+            android:layout_height="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_gravity="end|center_vertical"
+            android:background="@null"
+            android:drawableStart="@drawable/ic_rectangle_check_selector"
+            android:contentDescription="@null"
+            android:textOff=""
+            android:textOn=""/>
+
+    </FrameLayout>
+
+</LinearLayout>
