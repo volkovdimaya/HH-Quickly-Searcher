@@ -42,21 +42,16 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
 
         adapter.setOnItemClickListener = { industry ->
             viewModel.showSelectButton(industry)
-            Log.d("industry", "state ${industry}" )
+            Log.d("industry", "frag ClickListener ${industry}" )
         }
 
         binding.buttonSelect.setOnClickListener {
             viewModel.showAppropriateFragment()
         }
-
-        binding.editText.setOnFocusChangeListener { _, hasFocus ->
-          visibilitySelectButton(hasFocus)
-        }
-
-
     }
 
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Industry>) {
+
         when (state) {
             is FiltersUiState.FilterItem -> {
                 returnToPreviousFragment(state.item)

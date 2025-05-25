@@ -21,7 +21,7 @@ class IndustryAdapter : BaseAdapter<Industry>() {
         val item = list[position]
         (holder as IndustryViewHolder).bind(item)
         holder.itemView.setOnClickListener {
-            Log.d("industry", "state ${item.industryName}" )
+            Log.d("industry", "itemView.setOnClickListener ${item.industryName}" )
             setOnItemClickListener?.invoke(item)
         }
     }

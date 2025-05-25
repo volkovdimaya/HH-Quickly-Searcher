@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.industries.domain.models.Industry
 class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor) : BaseSearchViewModel<Industry>() {
 
     private var _currentIndustry: Industry? = null
-    val currentIndustry get() = _currentIndustry!!
+    private val currentIndustry get() = _currentIndustry!!
 
     private var currentList: List<Industry> = mutableListOf()
 
@@ -22,6 +22,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     init {
+        screenStateLiveData.value = ListUiState.Default
         loadIndustries()
     }
 
@@ -57,9 +58,13 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     private fun loadIndustries() {
+
         viewModelScope.launch {
+
             industriesInteractor.loadIndustries().collect { respons ->
+                Log.d("industry", "ndustriesInteractor.loadIndustries() ${respons}" )
                 when {
+
                     respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                     respons.second.isNotEmpty() -> {
                         currentList = respons.second
@@ -90,14 +95,17 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     fun showSelectButton(item: Industry) {
         currentList.forEach {
             if (it == item) {
+                Log.d("industry", "if (it == item) ${it}" )
                 it.apply { select.isSelected = true }
+                Log.d("industry", "if (it == item) ${it} " )
             } else {
                 it.apply { select.isSelected = false }
             }
 
         }
         Log.d("industry", "currient list ${currentList}" )
-        currentList.forEach { Log.d("industry", "SelectButton ${it.select.isSelected}" ) }
+        currentList.forEach {
+            Log.d("industry", "currentList.forEach ${it.select.isSelected} ${it} " )}
         screenStateLiveData.postValue(FiltersUiState.SelectPosition(currentList))
     }
 
