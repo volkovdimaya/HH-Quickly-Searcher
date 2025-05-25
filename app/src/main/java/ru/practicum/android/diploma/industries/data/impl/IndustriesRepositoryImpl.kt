@@ -103,7 +103,6 @@ class IndustriesRepositoryImpl(
         }
         if (response.resultCode == INTERNAL_ERROR_CODE) {
             error("error")
-            return
         }
     }
 }
