@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.countries.data.impl.CountryRepositoryImpl
+import ru.practicum.android.diploma.countries.domain.api.CountryRepository
 import ru.practicum.android.diploma.favorites.data.impl.FavoritesRepositoryImpl
 import ru.practicum.android.diploma.favorites.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.industries.data.impl.IndustriesRepositoryImpl
@@ -26,5 +28,8 @@ val repositoryModule = module {
 
     single<IndustriesRepository> {
         IndustriesRepositoryImpl(get(), get(), get(), get())
+    }
+    single<CountryRepository> {
+        CountryRepositoryImpl(get(), get())
     }
 }
