@@ -20,7 +20,7 @@ import ru.practicum.android.diploma.workterritories.data.entity.AreaEntity
     entities = [
         VacancyEntity::class,
         AreaEntity::class,
-        IndustryEntity::class
+        IndustryEntity::class,
         FilterParametersEntity::class
     ]
 )
