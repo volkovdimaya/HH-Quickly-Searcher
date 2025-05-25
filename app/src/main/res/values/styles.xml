@@ -166,5 +166,4 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/gray</item>
     </style>
-
 </resources>

@@ -1,15 +1,15 @@
-package ru.practicum.android.diploma.common.ui
+package ru.practicum.android.diploma.common.ui.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.common.domain.models.VacancyShort
+import ru.practicum.android.diploma.common.ui.viewholder.BaseViewHolder
 
-abstract class ShortVacancyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var list: List<VacancyShort> = emptyList()
-    var setOnItemClickListener: ((VacancyShort) -> Unit)? = null
+    var list: List<T> = emptyList()
+    var setOnItemClickListener: ((T) -> Unit)? = null
 
-    abstract fun createViewHolder(parent: ViewGroup): ShortVacancyViewHolder
+    abstract fun createViewHolder(parent: ViewGroup): BaseViewHolder<T>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return createViewHolder(parent)
@@ -17,7 +17,8 @@ abstract class ShortVacancyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = list[position]
-        (holder as ShortVacancyViewHolder).bind(item)
+        @Suppress("UNCHECKED_CAST")
+        (holder as BaseViewHolder<T>).bind(item)
         holder.itemView.setOnClickListener {
             setOnItemClickListener?.invoke(item)
         }
@@ -27,5 +28,5 @@ abstract class ShortVacancyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
         return list.size
     }
 
-    abstract fun updateShortVacancyList(newList: List<VacancyShort>)
+    abstract fun updateList(newList: List<T>)
 }
