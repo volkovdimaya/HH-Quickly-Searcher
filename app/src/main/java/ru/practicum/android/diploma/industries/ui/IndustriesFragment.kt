@@ -85,7 +85,7 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
 
     override fun onSearchTextChanged(toString: String) {
 
-        viewModel.onSearchTextChanged(toString)
+        viewModel.onSearchTextChanged(toString.trim())
     }
 
     override fun performSearch() {
@@ -94,6 +94,6 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
 
     override fun hideKeyboard() {
         super.hideKeyboard()
-     //   if (ime.)
+        binding.buttonSelect.visibility = View.GONE
     }
 }
