@@ -23,8 +23,10 @@ class WorkTerritoriesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_work_territories, container, false)
+        _binding = FragmentWorkTerritoriesBinding.inflate(inflater, container, false)
+        return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
