@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.industries.data.impl
 
 import android.app.Application
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
