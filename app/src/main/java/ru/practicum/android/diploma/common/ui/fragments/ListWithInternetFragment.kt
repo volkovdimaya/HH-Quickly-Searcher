@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.common.ui.fragments
 
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import ru.practicum.android.diploma.databinding.LayoutNoInternetBinding
 
 abstract class ListWithInternetFragment<T, V : ViewBinding> : BaseListFragment<T, V>() {

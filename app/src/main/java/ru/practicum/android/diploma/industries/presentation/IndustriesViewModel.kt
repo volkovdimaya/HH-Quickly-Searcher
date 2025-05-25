@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.industries.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
@@ -15,7 +14,6 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     private val currentIndustry get() = _currentIndustry!!
 
     private var currentList: List<Industry> = mutableListOf()
-
 
     private val fullIndustryListGetter: () -> Unit = {
         getFullIndustryList()
@@ -58,13 +56,9 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     private fun loadIndustries() {
-
         viewModelScope.launch {
-
             industriesInteractor.loadIndustries().collect { respons ->
-                Log.d("industry", "ndustriesInteractor.loadIndustries() ${respons}" )
                 when {
-
                     respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                     respons.second.isNotEmpty() -> {
                         currentList = respons.second
@@ -95,17 +89,12 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     fun showSelectButton(item: Industry) {
         currentList.forEach {
             if (it == item) {
-                Log.d("industry", "if (it == item) ${it}" )
                 it.apply { select.isSelected = true }
-                Log.d("industry", "if (it == item) ${it} " )
             } else {
                 it.apply { select.isSelected = false }
             }
 
         }
-        Log.d("industry", "currient list ${currentList}" )
-        currentList.forEach {
-            Log.d("industry", "currentList.forEach ${it.select.isSelected} ${it} " )}
         screenStateLiveData.postValue(FiltersUiState.SelectPosition(currentList))
     }
 
@@ -125,10 +114,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         _currentIndustry = null
     }
 
-
-
     companion object {
         private const val SUCCESS_CODE = 200
     }
-
 }

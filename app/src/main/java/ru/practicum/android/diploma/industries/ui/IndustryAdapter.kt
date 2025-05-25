@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.industries.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -21,7 +20,6 @@ class IndustryAdapter : BaseAdapter<Industry>() {
         val item = list[position]
         (holder as IndustryViewHolder).bind(item)
         holder.itemView.setOnClickListener {
-            Log.d("industry", "itemView.setOnClickListener ${item.industryName}" )
             setOnItemClickListener?.invoke(item)
         }
     }

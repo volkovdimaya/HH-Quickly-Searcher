@@ -90,8 +90,6 @@ abstract class BaseSearchViewModel<T> : ViewModel() {
 
     abstract fun onClickDebounce(item: T)
 
-
-
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2_000L
         private const val CLICK_DEBOUNCE_DELAY = 1_000L

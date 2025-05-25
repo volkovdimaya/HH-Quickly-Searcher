@@ -34,8 +34,8 @@ class IndustriesRepositoryImpl(
     }
 
     override fun loadIndustries(): Flow<Pair<Int, List<Industry>>> = flow {
-
-        val response = if (!(isConnectedInternet(application))) {
+        val negativeResponseNetwork = !isConnectedInternet(application)
+        val response = if (negativeResponseNetwork) {
             Response().apply { resultCode = INTERNAL_ERROR_CODE }
         } else {
             getIndustriesFromNetwork()
@@ -57,7 +57,7 @@ class IndustriesRepositoryImpl(
                 industries = appDatabase.industryDao().searchIndustries(text)
             )
         }
-        val mappedList = if (response.resultCode != 500) {
+        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
             response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
         } else {
             listOf()
@@ -71,7 +71,7 @@ class IndustriesRepositoryImpl(
                 industries = appDatabase.industryDao().getIndustries()
             )
         }
-        val mappedList = if (response.resultCode != 500) {
+        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
             response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
         } else {
             listOf()
