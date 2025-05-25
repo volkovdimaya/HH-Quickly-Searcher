@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/filtersFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/filtersFragment"
     android:orientation="vertical"
     tools:context=".filters.ui.FiltersFragment">
 
@@ -19,7 +19,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_56"
-            tools:text="@string/work_territory" />
+            android:text="@string/work_territory" />
 
         <ImageView
             android:layout_width="@dimen/size_arrow_button"
@@ -35,8 +35,7 @@
         android:id="@+id/work_territories_selected"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_60"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -51,7 +50,7 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
                 android:paddingTop="@dimen/padding_12"
-                tools:text="@string/work_territory" />
+                android:text="@string/work_territory" />
 
             <TextView
                 style="@style/Regular16Text"
@@ -60,7 +59,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
-                tools:text="@string/work_territory" />
+                android:text="@string/work_territory" />
         </LinearLayout>
 
         <ImageView
@@ -86,7 +85,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_56"
-            tools:text="@string/industry" />
+            android:text="@string/industry" />
 
         <ImageView
             android:layout_width="@dimen/size_arrow_button"
@@ -97,12 +96,12 @@
             android:src="@drawable/ic_arrow_forward" />
 
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/industry_selected"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_60"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -117,7 +116,7 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
                 android:paddingTop="@dimen/padding_12"
-                tools:text="@string/industry" />
+                android:text="@string/industry" />
 
             <TextView
                 style="@style/Regular16Text"
@@ -126,7 +125,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
-                tools:text="@string/industry" />
+                android:text="@string/industry" />
         </LinearLayout>
 
         <ImageView
