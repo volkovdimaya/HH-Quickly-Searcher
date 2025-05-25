@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.filters.data.dao
 
+import androidx.room.Dao
 import androidx.room.Query
 
+@Dao
 interface FilterUpdateParametersDao {
     @Query(
         "UPDATE filter_parameters SET country_id = :id, country_name = :countryName " +
