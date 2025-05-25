@@ -7,14 +7,14 @@ import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
 class FilterParametersRepositoryImpl : FilterParametersRepository {
 
     override fun getFilterParameters(): Flow<FilterParametersDomain> {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override suspend fun saveFilterParameters(parameters: FilterParametersDomain) {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override fun isFiltersEmpty(): Flow<Boolean> {
-        TODO("Not yet implemented")
+        TODO()
     }
 }
