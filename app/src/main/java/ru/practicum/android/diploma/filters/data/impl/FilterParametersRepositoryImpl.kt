@@ -15,7 +15,7 @@ class FilterParametersRepositoryImpl : FilterParametersRepository {
         TODO("Not yet implemented")
     }
 
-    override fun isFiltersEmpty(): Flow<Boolean> {
+    override fun isFiltersEmpty(isFilter: Any): Flow<Boolean> {
         TODO("Not yet implemented")
     }
 

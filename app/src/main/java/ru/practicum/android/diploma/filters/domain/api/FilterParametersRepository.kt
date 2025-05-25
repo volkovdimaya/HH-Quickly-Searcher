@@ -9,5 +9,5 @@ interface FilterParametersRepository {
 
     fun getFilterParameters(): Flow<FilterParametersInterface>
     suspend fun saveFilterParameters(parameters: FilterParametersType)
-    fun isFiltersEmpty(): Flow<Boolean>
+    fun isFiltersEmpty(isFilter : Any): Flow<Boolean>
 }
