@@ -7,7 +7,7 @@
     tools:context=".countries.ui.CountriesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/countriesRV"
+        android:id="@+id/countries_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"/>
