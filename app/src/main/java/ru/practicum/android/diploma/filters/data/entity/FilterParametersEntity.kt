@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.filters.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "filter_parameters")
 data class FilterParametersEntity(
