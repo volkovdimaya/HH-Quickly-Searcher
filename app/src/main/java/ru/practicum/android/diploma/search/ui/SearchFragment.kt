@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,13 +7,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,12 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
+import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
-import ru.practicum.android.diploma.common.ui.ShortVacancyFragment
+import ru.practicum.android.diploma.common.ui.fragments.ShortVacancyFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyProgressbarBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
-import ru.practicum.android.diploma.databinding.LayoutNoInternetBinding
 import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.util.TopSpacingItemDecoration
@@ -44,9 +39,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     private var _emptyBinding: LayoutErrorVacancyPlaceholderBinding? = null
     private val emptyBinding get() = _emptyBinding!!
 
-    private var _noInternetErrorBinding: LayoutNoInternetBinding? = null
-    private val noInternetErrorBinding get() = _noInternetErrorBinding!!
-
     private var _progressBarBinding: ItemVacancyProgressbarBinding? = null
     private val progressBarBinding get() = _progressBarBinding!!
 
@@ -55,20 +47,22 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     private var needToInitRecyclerView = true
 
     override fun createBinding(
-        inflater: LayoutInflater,
+        createBindingInflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(createBindingInflater, container, false)
+    }
+
+    override fun initViews() {
+        super.initViews()
         _emptyBinding = LayoutErrorVacancyPlaceholderBinding.inflate(layoutInflater)
-        _noInternetErrorBinding = LayoutNoInternetBinding.inflate(layoutInflater)
         _progressBarBinding = ItemVacancyProgressbarBinding.inflate(layoutInflater)
-        return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupMenu()
-        setupEditText()
 
         filterParameters = args.filterParameters
 
@@ -79,6 +73,16 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         adapter.setOnItemClickListener = { vacancyShort ->
             viewModel.showVacancyDetails(vacancyShort)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _emptyBinding = null
+        _progressBarBinding = null
+    }
+
+    override fun onSearchTextChanged(toString: String) {
+        viewModel.onSearchTextChanged(toString)
     }
 
     override fun initShortVacancyListView() {
@@ -109,7 +113,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         needToInitRecyclerView = false
     }
 
-    override fun render(state: ShortVacancyListUiState) {
+    override fun render(state: ListUiState<VacancyShort>) {
         when (state) {
             is ShortVacancyListUiState.AnyItem -> goToFragment(state.itemId)
             is ShortVacancyListUiState.ContentWithMetadata -> updateIncludeViewByContentWithMetadata(state)
@@ -214,7 +218,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         needToInitRecyclerView = true
     }
 
-    override fun renderIncludeState(state: ShortVacancyListUiState.ShortVacancyListUiIncludeState) {
+    override fun renderIncludeState(state: ListUiState.ListUiIncludeState<VacancyShort>) {
         // no states
     }
 
@@ -222,13 +226,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         val directions = SearchFragmentDirections.actionSearchFragmentToVacancyDetailsFragment(entityId)
         findNavController().navigate(directions)
         viewModel.restoreState()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _emptyBinding = null
-        _noInternetErrorBinding = null
-        _progressBarBinding = null
     }
 
     private fun setupMenu() {
@@ -251,45 +248,12 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun setupEditText() {
-        binding.editText.addTextChangedListener {
-            val icon = if (it.isNullOrEmpty()) {
-                R.drawable.ic_search
-            } else {
-                R.drawable.ic_cross
-            }
-            binding.textInputLayout.endIconDrawable = ContextCompat.getDrawable(requireContext(), icon)
-            viewModel.onSearchTextChanged(it.toString())
-        }
-
-        binding.textInputLayout.setEndIconOnClickListener {
-            val text = binding.editText.text
-            if (!text.isNullOrEmpty()) {
-                binding.editText.text?.clear()
-            }
-        }
-
-        binding.editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                performSearch()
-                true
-            } else {
-                false
-            }
-        }
-    }
-
-    private fun performSearch() {
+    override fun performSearch() {
         val query = binding.editText.text.toString().trim()
         if (query.isNotEmpty()) {
             hideKeyboard()
             viewModel.updateRequest(query, filterParameters)
         }
-    }
-
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.editText.windowToken, 0)
     }
 
     companion object {
