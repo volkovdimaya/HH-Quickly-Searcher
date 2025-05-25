@@ -4,7 +4,7 @@ import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "filter_parameters")
-data class FilterParametersEntity (
+data class FilterParametersEntity(
     @SerializedName("country_id")
     val countryId: Int? = null,
     @SerializedName("region_id")
