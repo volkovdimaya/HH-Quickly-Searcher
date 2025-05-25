@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.common.presentation
 
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 
-interface ShortVacancyListUiState {
+interface ShortVacancyListUiState : ListUiState<VacancyShort> {
 
     data object Loading : ShortVacancyListUiState
 
@@ -32,5 +32,6 @@ interface ShortVacancyListUiState {
         val totalFound: Int
     ) : ShortVacancyListUiState
 
-    interface ShortVacancyListUiIncludeState : ShortVacancyListUiState
+    interface ShortVacancyListUiIncludeState : ListUiState.ListUiIncludeState<VacancyShort>,
+        ShortVacancyListUiState
 }
