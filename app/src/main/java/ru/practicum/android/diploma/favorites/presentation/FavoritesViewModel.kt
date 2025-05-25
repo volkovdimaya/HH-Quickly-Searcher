@@ -7,22 +7,22 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
+import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.favorites.data.local.DbClient.Companion.INTERNAL_ERROR_CODE
 import ru.practicum.android.diploma.favorites.domain.interactors.FavoritesInteractor
 import ru.practicum.android.diploma.util.debounce
 
 class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
-    private var screenStateLiveData = MutableLiveData<ShortVacancyListUiState>()
-    private var previousScreenStateLiveData = MutableLiveData<ShortVacancyListUiState>()
+    private var screenStateLiveData = MutableLiveData<ListUiState<VacancyShort>>()
+    private var previousScreenStateLiveData = MutableLiveData<ListUiState<VacancyShort>>()
 
     init {
-        screenStateLiveData.value = ShortVacancyListUiState.Loading
+        screenStateLiveData.value = ListUiState.Loading
         loadFavoritesList()
     }
 
-    val observeState = MediatorLiveData<ShortVacancyListUiState>().apply {
+    val observeState = MediatorLiveData<ListUiState<VacancyShort>>().apply {
         addSource(screenStateLiveData) { newValue ->
             previousScreenStateLiveData.value = this.value
             this.value = newValue
@@ -38,9 +38,9 @@ class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor) :
             favoritesInteractor.loadFavorites()
                 .collectLatest { pair ->
                     val screenState = when {
-                        pair.first == INTERNAL_ERROR_CODE -> ShortVacancyListUiState.Error
-                        pair.second.isNotEmpty() -> ShortVacancyListUiState.Content(pair.second)
-                        else -> ShortVacancyListUiState.Empty
+                        pair.first == INTERNAL_ERROR_CODE -> ListUiState.Error
+                        pair.second.isNotEmpty() -> ListUiState.Content(pair.second)
+                        else -> ListUiState.Empty
                     }
                     screenStateLiveData.postValue(screenState)
                 }
@@ -60,6 +60,6 @@ class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor) :
     }
 
     private fun onClickDebounce(item: VacancyShort) {
-        screenStateLiveData.postValue(ShortVacancyListUiState.AnyItem(item.vacancyId))
+        screenStateLiveData.postValue(ListUiState.AnyItem(item.vacancyId))
     }
 }

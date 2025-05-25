@@ -1,20 +1,28 @@
 package ru.practicum.android.diploma.countries.ui
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.models.Country
+import ru.practicum.android.diploma.common.presentation.ListUiState
+import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
+import ru.practicum.android.diploma.common.ui.fragments.ListWithInternetFragment
+import ru.practicum.android.diploma.databinding.FragmentCountriesBinding
 
-class CountriesFragment : Fragment() {
+class CountriesFragment : ListWithInternetFragment<Country, FragmentCountriesBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_countries, container, false)
+    override val adapter: BaseAdapter<Country>
+        get() = TODO("Not yet implemented")
+    override val navigateIdAction: Int = R.id.workTerritoriesFragment
+
+    override fun createBinding(
+        createBindingInflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentCountriesBinding {
+        return FragmentCountriesBinding.inflate(createBindingInflater, container, false)
+    }
+
+    override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Country>) {
+        TODO("Not yet implemented")
     }
 }
