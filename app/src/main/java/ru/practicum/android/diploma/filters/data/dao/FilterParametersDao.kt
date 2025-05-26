@@ -20,6 +20,6 @@ interface FilterParametersDao {
     @Update(entity = FilterParametersEntity::class)
     suspend fun updateFilters(filterParametersEntity: FilterParametersEntity)
 
-    @Query("SELECT * FROM filter_parameters WHERE filtersId = :filterId" )
+    @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
     suspend fun getFilters(filterId: String): List<FilterParametersEntity>
 }
