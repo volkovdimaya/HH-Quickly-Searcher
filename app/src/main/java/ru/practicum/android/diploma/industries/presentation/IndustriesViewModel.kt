@@ -31,6 +31,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     override suspend fun runSearch(currentQuery: String) {
         industriesInteractor.getSearchList(currentQuery).collect { respons ->
             when {
+                respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
                 respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                 respons.second.isNotEmpty() -> {
                     currentList = respons.second
@@ -135,5 +136,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
 
     companion object {
         private const val SUCCESS_CODE = 200
+        private const val BAD_REQUEST_CODE = 400
+        private const val INTERNAL_ERROR_CODE = 500
     }
 }
