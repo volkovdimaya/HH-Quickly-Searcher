@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/regionItem"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_60"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="@dimen/height_60">
 
     <TextView
         android:id="@+id/regionName"
@@ -12,7 +11,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_56"
-        tools:text="@string/team"
+        android:text="@string/team"
         style="@style/Regular16Text"/>
 
     <ImageView

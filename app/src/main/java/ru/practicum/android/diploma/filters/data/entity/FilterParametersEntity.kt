@@ -10,7 +10,7 @@ data class FilterParametersEntity(
     @ColumnInfo("filters_id")
     val filtersId: String,
     @ColumnInfo("country_id")
-    val countryId: Int = 0,
+    val countryId: Int? = 0,
     @ColumnInfo("region_id")
     val regionId: Int? = null,
     @ColumnInfo("industry_id")
