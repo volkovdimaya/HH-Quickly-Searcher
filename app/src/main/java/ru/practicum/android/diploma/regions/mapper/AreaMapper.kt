@@ -13,13 +13,6 @@ object AreaMapper {
         )
     }
 
-    private fun AreaEntity.toDto(): AreaDto {
-        return AreaDto(
-            id = this.areaId,
-            name = this.areaName
-        )
-    }
-
     private fun AreaDto.toRegion(): Region {
         return Region(
             regionId = this.id,
@@ -31,20 +24,6 @@ object AreaMapper {
         return AreaEntity(
             areaId = this.id,
             areaName = this.name
-        )
-    }
-
-    fun Region.toDto(): AreaDto {
-        return AreaDto(
-            id = this.regionId,
-            name = this.regionName
-        )
-    }
-
-    fun Region.toEntity(): AreaEntity {
-        return AreaEntity(
-            areaId = this.regionId,
-            areaName = this.regionName
         )
     }
 

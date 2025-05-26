@@ -7,4 +7,3 @@ data class FilterParametersDomain(
     val salary: Int? = null,
     val onlyWithSalary: Boolean = false,
 )
-
