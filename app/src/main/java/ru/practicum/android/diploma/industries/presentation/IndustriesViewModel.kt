@@ -92,12 +92,12 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     fun showSelectItem(item: Industry) {
         val newList = currentList.map { industry ->
             val shouldBeSelected = industry.industryId == item.industryId
-            if (industry.select.isSelected != shouldBeSelected) {
-                val copy = industry.copy(select = industry.select.copy(isSelected = shouldBeSelected))
+            if (industry.select != shouldBeSelected) {
+                val copy = industry.copy(select = shouldBeSelected)
                 _currentIndustry = copy
                 copy
-            } else if (industry.select.isSelected) {
-                industry.copy(select = industry.select.copy(isSelected = shouldBeSelected))
+            } else if (industry.select) {
+                industry.copy(select = false)
             } else {
                 industry
             }
