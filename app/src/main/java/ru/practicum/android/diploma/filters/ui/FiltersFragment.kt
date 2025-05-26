@@ -27,8 +27,11 @@ class FiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.setOnClickListener {
+        binding.industryButton.setOnClickListener {
             findNavController().navigate(R.id.industriesFragment)
+        }
+        binding.workTerritoryButton.setOnClickListener {
+            findNavController().navigate(R.id.workTerritoriesFragment)
         }
         /* Вариант передачи данных.
          B граф навигации заложен navArgs для  @Parcelize-класса

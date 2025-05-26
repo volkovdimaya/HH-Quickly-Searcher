@@ -7,7 +7,8 @@ import retrofit2.HttpException
 import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
-import ru.practicum.android.diploma.regions.data.dto.AreasRequest
+import ru.practicum.android.diploma.regions.data.dto.RegionRequest
+import ru.practicum.android.diploma.regions.data.dto.RegionsResponse
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.search.data.dto.toMap
@@ -30,7 +31,7 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
                 is VacanciesRequest -> handleVacanciesRequest(dto)
                 is VacancyDetailsRequest -> handleVacancyDetailsRequest(dto)
                 is IndustriesRequest -> handleIndustriesRequest()
-                is AreasRequest -> handleAreasRequest()
+                is RegionRequest -> handleAreasRequest(dto)
                 else -> handleUnknownRequest()
             }
         }
@@ -66,9 +67,14 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
         }
     }
 
-    private suspend fun handleAreasRequest(): Response {
+    private suspend fun handleAreasRequest(dto: RegionRequest): Response {
         return try {
-            val response = hhApiService.getAreas()
+            val areas = if (dto.countryId != null) {
+                hhApiService.getAreasByCountry(dto.countryId)
+            } else {
+                hhApiService.getAreas()
+            }
+            val response = RegionsResponse(regions = areas)
             response.apply { resultCode = SUCCESS_CODE }
         } catch (e: HttpException) {
             Log.d(TAG, e.message.toString())
