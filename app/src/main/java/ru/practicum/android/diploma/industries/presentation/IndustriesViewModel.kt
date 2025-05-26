@@ -20,7 +20,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     init {
-        screenStateLiveData.value = ListUiState.Default
+        screenStateLiveData.value = ListUiState.Loading
         loadIndustries()
     }
 
