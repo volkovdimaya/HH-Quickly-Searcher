@@ -18,7 +18,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_56"
-            tools:text="@string/country" />
+            android:text="@string/country" />
 
         <ImageView
             android:layout_width="@dimen/size_arrow_button"
@@ -50,7 +50,7 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
                 android:paddingTop="@dimen/padding_12"
-                tools:text="@string/country" />
+                android:text="@string/country" />
 
             <TextView
                 style="@style/Regular16Text"
@@ -59,7 +59,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
-                tools:text="@string/choosing_country" />
+                android:text="@string/choosing_country" />
         </LinearLayout>
 
         <ImageView
@@ -86,7 +86,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_56"
-            tools:text="@string/region" />
+            android:text="@string/region" />
 
         <ImageView
             android:layout_width="@dimen/size_arrow_button"
@@ -117,7 +117,7 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
                 android:paddingTop="@dimen/padding_12"
-                tools:text="@string/region" />
+                android:text="@string/region" />
 
             <TextView
                 style="@style/Regular16Text"
@@ -126,7 +126,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
-                tools:text="@string/choosing_country" />
+                android:text="@string/choosing_country" />
         </LinearLayout>
 
         <ImageView

@@ -30,7 +30,7 @@ class FiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.setOnClickListener {
+        binding.workTerritories.setOnClickListener {
             findNavController().navigate(R.id.industriesFragment)
         }
         /* Вариант передачи данных.
