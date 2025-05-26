@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.favorites.data.local
 
 import android.database.SQLException
 import android.util.Log
-import ru.practicum.android.diploma.search.data.dto.Response
+import ru.practicum.android.diploma.common.data.dto.Response
 
 class DbClient : LocalClient {
 
@@ -23,6 +23,16 @@ class DbClient : LocalClient {
     }
 
     override suspend fun doWrite(entity: Any, action: suspend (entity: Any) -> Unit): Response {
+        return try {
+            action(entity)
+            Response().apply { resultCode = SUCCESS_CODE }
+        } catch (e: SQLException) {
+            Log.d(TAG, e.message.toString())
+            Response().apply { resultCode = INTERNAL_ERROR_CODE }
+        }
+    }
+
+    override suspend fun doUpdate(entity: Any, action: suspend (entity: Any) -> Unit): Response {
         return try {
             action(entity)
             Response().apply { resultCode = SUCCESS_CODE }

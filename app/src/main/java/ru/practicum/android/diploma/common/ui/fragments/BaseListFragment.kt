@@ -72,7 +72,7 @@ abstract class BaseListFragment<T, V : ViewBinding> : Fragment() {
 
     }
 
-    open fun initShortVacancyListView() {
+    open fun initListView() {
         _recyclerView = RecyclerView(requireContext()).apply {
             layoutParams = ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -89,7 +89,7 @@ abstract class BaseListFragment<T, V : ViewBinding> : Fragment() {
     }
 
     open fun updateIncludeViewByList(list: List<T>) {
-        initShortVacancyListView()
+        initListView()
         updateIncludeView(recyclerView)
         adapter.updateList(list)
     }

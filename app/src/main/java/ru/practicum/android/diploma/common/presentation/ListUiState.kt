@@ -10,6 +10,8 @@ interface ListUiState<out T> {
 
     data object Error : ListUiState<Nothing>
 
+    data object ServerError : ListUiState<Nothing>
+
     data class Content<T>(val contentList: List<T>) : ListUiState<T>
 
     data class AnyItem<T>(val itemId: String) : ListUiState<T>
