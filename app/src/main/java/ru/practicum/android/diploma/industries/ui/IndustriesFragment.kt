@@ -33,7 +33,7 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeState.observe(viewLifecycleOwner) {
-           render(it)
+            render(it)
         }
 
         adapter.setOnItemClickListener = { industry ->
