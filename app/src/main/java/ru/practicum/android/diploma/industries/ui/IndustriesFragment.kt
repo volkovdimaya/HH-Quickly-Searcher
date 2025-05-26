@@ -70,7 +70,7 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
 
     private fun returnToPreviousFragment(item: Industry) {
         val industryParameterUi = item.toParcelable()
-        val directions = IndustriesFragmentDirections.actionIndustriesFragmentToFiltersFragment(industryParameterUi)
+        val directions = IndustriesFragmentDirections.actionIndustriesFragmentToFiltersFragment()
         findNavController().navigate(directions)
         viewModel.restoreState()
     }
