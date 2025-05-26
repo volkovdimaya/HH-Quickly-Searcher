@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.industries.domain.models
 
-class SelectFlag(var isSelected: Boolean = false)
+data class SelectFlag(val isSelected: Boolean = false)

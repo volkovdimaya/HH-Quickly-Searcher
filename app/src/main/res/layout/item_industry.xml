@@ -2,26 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="@dimen/height_60"
+    android:layout_marginTop="@dimen/margin_1"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/industryName"
-        style = "@style/Regular16Text"
+        style="@style/Regular16Text"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginVertical="@dimen/margin_5"
         android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginVertical="@dimen/margin_16"
-        tools:text="@string/could_not_get_list"/>
+        android:layout_weight="1"
+        tools:text="@string/could_not_get_list" />
 
-    <ToggleButton
+    <ImageView
         android:id="@+id/industrySelect"
         style="@style/SelectButton"
         android:layout_gravity="center_vertical|end"
         android:contentDescription="@null"
-        android:drawableStart="@drawable/ic_radio_button_on_off_selector_24px"
-        android:textOff=""
-        android:textOn=""/>
+        android:src="@drawable/ic_radio_button_on_off_selector_24px" />
 
 </LinearLayout>

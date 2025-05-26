@@ -22,4 +22,7 @@ abstract class ShortVacancyFragment<T : ViewBinding> : ListWithSearchFragment<Va
         }
     }
 
+    open fun initShortVacancyListView() {
+        initListView()
+    }
 }

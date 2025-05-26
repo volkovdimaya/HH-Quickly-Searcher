@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.industries.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
@@ -90,22 +89,20 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         }
     }
 
-    fun showSelectButton(item: Industry) {
-        Log.d("industr", "Click 2")
-        currentList.forEach {
-            if (it.industryId == item.industryId) {
-                Log.d("industr", "if (it.industryId == item.industryId)")
-                it.apply { select.isSelected = true }
+    fun showSelectItem(item: Industry) {
+        val newList = currentList.map { industry ->
+            val shouldBeSelected = industry.industryId == item.industryId
+            if (industry.select.isSelected != shouldBeSelected) {
+                val copy = industry.copy(select = industry.select.copy(isSelected = shouldBeSelected))
+                _currentIndustry = copy
+                copy
+            } else if (industry.select.isSelected) {
+                industry.copy(select = industry.select.copy(isSelected = shouldBeSelected))
             } else {
-                it.apply { select.isSelected = false }
+                industry
             }
-
         }
-        Log.d("industr", "Click 3")
-        Log.d("industr", "currentList 1")
-     //Log.d("industr", "Click 2")  currentList.forEach { Log. d("industr", "currentList ${it.select.isSelected} ${it}") }
-        _currentIndustry = item
-        screenStateLiveData.postValue(FiltersUiState.SelectPosition(currentList))
+        screenStateLiveData.postValue(FiltersUiState.SelectPosition(newList))
     }
 
     fun showAppropriateFragment() {
@@ -122,6 +119,18 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         super.onCleared()
         clearTableDb()
         _currentIndustry = null
+    }
+
+    fun saveFilterParameter(item: Industry) {
+        viewModelScope.launch {
+            industriesInteractor.saveFilterParameter(item).collect { code ->
+                if (code == SUCCESS_CODE) {
+                    screenStateLiveData.postValue(ListUiState.AnyItem(code.toString()))
+                } else {
+                    screenStateLiveData.postValue(FiltersUiState.NoChange)
+                }
+            }
+        }
     }
 
     companion object {
