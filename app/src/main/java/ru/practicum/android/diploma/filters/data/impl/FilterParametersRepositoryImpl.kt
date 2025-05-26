@@ -1,20 +1,23 @@
 package ru.practicum.android.diploma.filters.data.impl
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.common.domain.api.FilterParametersInterface
+import ru.practicum.android.diploma.common.domain.api.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
 
 class FilterParametersRepositoryImpl : FilterParametersRepository {
-
-    override fun getFilterParameters(): Flow<FilterParametersDomain> {
+    override fun getFilterParameters(): Flow<FilterParametersInterface> {
         TODO()
     }
 
-    override suspend fun saveFilterParameters(parameters: FilterParametersDomain) {
+    override suspend fun saveFilterParameters(parameters: FilterParametersType) {
         TODO()
     }
 
-    override fun isFiltersEmpty(): Flow<Boolean> {
-        TODO()
+    override fun isFiltersEmpty(isFilter: Any): Flow<Boolean> = flow {
+        // todo
+        emit(false)
     }
+
 }

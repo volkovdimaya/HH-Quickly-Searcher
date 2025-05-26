@@ -1,11 +1,12 @@
 package ru.practicum.android.diploma.filters.domain.api
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
+import ru.practicum.android.diploma.common.domain.api.FilterParametersInterface
+import ru.practicum.android.diploma.common.domain.api.FilterParametersType
 
 interface FilterParametersRepository {
 
-    fun getFilterParameters(): Flow<FilterParametersDomain>
-    suspend fun saveFilterParameters(parameters: FilterParametersDomain)
-    fun isFiltersEmpty(): Flow<Boolean>
+    fun getFilterParameters(): Flow<FilterParametersInterface>
+    suspend fun saveFilterParameters(parameters: FilterParametersType)
+    fun isFiltersEmpty(isFilter: Any): Flow<Boolean>
 }
