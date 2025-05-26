@@ -2,22 +2,84 @@ package ru.practicum.android.diploma.filters.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.common.domain.api.FilterParametersInterface
-import ru.practicum.android.diploma.common.domain.api.FilterParametersType
+import ru.practicum.android.diploma.common.data.db.AppDatabase
+import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
+import ru.practicum.android.diploma.filters.domain.models.FilterParameters
+import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDomain
 
-class FilterParametersRepositoryImpl : FilterParametersRepository {
-    override fun getFilterParameters(): Flow<FilterParametersInterface> {
-        TODO()
+class FilterParametersRepositoryImpl(
+    private val database: AppDatabase
+) : FilterParametersRepository {
+    override fun getFilterParameters(): Flow<FilterParameters> = flow {
+        val filters = database.filterParametersDao().getFilters(FILTER_DB_ID)
+        if (filters.isEmpty()) {
+            emit(FilterParameters())
+        } else {
+            emit(filters[0].toDomain())
+        }
+    }
+
+    override suspend fun deleteFilters() {
+        val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
+        if (currentFilters.isNotEmpty()) {
+            database.filterParametersDao().deleteFilters(currentFilters[0])
+        }
     }
 
     override suspend fun saveFilterParameters(parameters: FilterParametersType) {
-        TODO()
+        val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
+        var newFilters = if (currentFilters.isEmpty()) {
+            FilterParametersEntity(FILTER_DB_ID)
+        } else {
+            currentFilters[0]
+        }
+        newFilters = updateFiltersWithType(newFilters, parameters)
+        if (currentFilters.isEmpty()) {
+            database.filterParametersDao().createFilters(newFilters)
+        } else {
+            database.filterParametersDao().updateFilters(newFilters)
+        }
     }
 
-    override fun isFiltersEmpty(isFilter: Any): Flow<Boolean> = flow {
-        // todo
-        emit(false)
+    private fun updateFiltersWithType(
+        newFilters: FilterParametersEntity,
+        parameters: FilterParametersType
+    ): FilterParametersEntity {
+        return when (parameters) {
+            is FilterParametersType.Country -> {
+                newFilters.copy(
+                    countryId = parameters.countryId,
+                    countryName = parameters.countryName
+                )
+            }
+
+            is FilterParametersType.Industry -> {
+                newFilters.copy(
+                    industryName = parameters.industryName,
+                    industryId = parameters.industryId
+                )
+            }
+
+            is FilterParametersType.OnlyWithSalary -> {
+                newFilters.copy(onlyWithSalary = parameters.onlyWithSalary)
+            }
+
+            is FilterParametersType.Region -> {
+                newFilters.copy(
+                    regionName = parameters.regionName,
+                    regionId = parameters.regionId
+                )
+            }
+
+            is FilterParametersType.Salary -> {
+                newFilters.copy(salary = parameters.salary)
+            }
+        }
     }
 
+    companion object {
+        private const val FILTER_DB_ID = "filter_parameters_id"
+    }
 }

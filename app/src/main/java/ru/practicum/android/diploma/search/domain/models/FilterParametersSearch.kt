@@ -1,6 +1,4 @@
-package ru.practicum.android.diploma.filters.domain.models
-
-import ru.practicum.android.diploma.common.domain.api.FilterParametersInterface
+package ru.practicum.android.diploma.search.domain.models
 
 data class FilterParametersSearch(
     val countryId: Int? = null,
@@ -8,4 +6,4 @@ data class FilterParametersSearch(
     val industryId: Int? = null,
     val salary: Int? = null,
     val onlyWithSalary: Boolean = false,
-) : FilterParametersInterface
+)

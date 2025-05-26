@@ -31,6 +31,6 @@ val repositoryModule = module {
     }
 
     single<FilterParametersRepository> {
-        FilterParametersRepositoryImpl()
+        FilterParametersRepositoryImpl(get())
     }
 }
