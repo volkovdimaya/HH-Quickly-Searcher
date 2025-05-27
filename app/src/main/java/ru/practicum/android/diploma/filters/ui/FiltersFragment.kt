@@ -77,7 +77,6 @@ class FiltersFragment : Fragment() {
         binding.industryDelete.setOnClickListener {
             viewModel.deleteFilterParameter(FilterParametersType.Industry())
         }
-
         binding.workTerritories.setOnClickListener {
             findNavController().navigate(R.id.workTerritoriesFragment)
         }
@@ -88,12 +87,10 @@ class FiltersFragment : Fragment() {
             viewModel.deleteFilterParameter(FilterParametersType.Country())
             viewModel.deleteFilterParameter(FilterParametersType.Region())
         }
-
         binding.expectedSalaryLayout.setEndIconOnClickListener {
             binding.expectedSalaryEditText.setText("")
             binding.expectedSalaryLayout.isEndIconVisible = false
         }
-
         binding.withoutSalarySelector.setOnClickListener {
             viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(binding.withoutSalarySelector.isChecked))
         }
@@ -138,12 +135,14 @@ class FiltersFragment : Fragment() {
     private fun hasFilterChanged(filters: FilterParameters): Boolean {
         var result = false
         if (filters.onlyWithSalary != startParameters.onlyWithSalary
-            || filters.salary != startParameters.salary) {
+            || filters.salary != startParameters.salary
+        ) {
             result = true
         }
         if (filters.regionId != startParameters.regionId
             || filters.countryId != startParameters.countryId
-            || filters.industryId != startParameters.industryId) {
+            || filters.industryId != startParameters.industryId
+        ) {
             result = true
         }
         return result
