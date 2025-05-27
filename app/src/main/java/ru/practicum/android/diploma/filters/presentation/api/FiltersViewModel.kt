@@ -17,16 +17,19 @@ class FiltersViewModel(
     private val filterParametersState = MutableLiveData(FilterParameters())
     fun getFilterParametersState(): LiveData<FilterParameters> = filterParametersState
 
+    private var previousParameters: FilterParameters? = null
+
     val saveDebouncer = debounce<FilterParametersType>(
-    delayMillis = SAVE_DEBOUNCE_DELAY,
-    coroutineScope = viewModelScope,
-    useLastParam = true
+        delayMillis = SAVE_DEBOUNCE_DELAY,
+        coroutineScope = viewModelScope,
+        useLastParam = true
     ) {
         addFilterParameter(it)
     }
 
     init {
         updateFilters()
+        previousParameters = filterParametersState.value
     }
 
     fun addWithDebounce(parameter: FilterParametersType) {

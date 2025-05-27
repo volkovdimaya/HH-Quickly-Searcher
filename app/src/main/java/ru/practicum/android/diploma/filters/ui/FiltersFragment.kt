@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.filters.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,18 +39,11 @@ class FiltersFragment : Fragment() {
         binding.expectedSalaryEditText.setOnFocusChangeListener { _, focused ->
             binding.expectedSalaryLayout.hintTextColor = if (focused) {
                 requireContext().getColorStateList(R.color.blue)
+            } else if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
+                requireContext().getColorStateList(R.color.black)
             } else {
-                if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
-                    requireContext().getColorStateList(R.color.black).also {
-                        Log.d("666", "in Black")
-                    }
-                } else {
-                    requireContext().getColorStateList(R.color.colorOnSurfaceVariant).also {
-                        Log.d("666", "in wrong")
-                    }
-                }
+                requireContext().getColorStateList(R.color.colorOnSurfaceVariant)
             }
-            Log.d("666", "${binding.expectedSalaryLayout.hintTextColor}")
             binding.expectedSalaryLayout.isEndIconVisible = focused
                 && !binding.expectedSalaryEditText.text.isNullOrEmpty()
         }
@@ -106,8 +98,6 @@ class FiltersFragment : Fragment() {
             binding.withoutSalarySelector.isChecked = newState
             viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(newState))
         }
-
-
     }
 
     private fun render(filters: FilterParameters) {
@@ -125,7 +115,7 @@ class FiltersFragment : Fragment() {
     }
 
     private fun makeWorkTerritoryName(filters: FilterParameters): String {
-        var result =  ""
+        var result = ""
         if (filters.countryName != null && filters.regionName != null) {
             result = "${filters.countryName}, ${filters.regionName}"
         } else if (filters.countryName != null) {
