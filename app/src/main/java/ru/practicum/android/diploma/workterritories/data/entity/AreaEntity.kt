@@ -8,5 +8,5 @@ class AreaEntity(
     @PrimaryKey
     val areaId: Int,
     val areaName: String,
-    val countryId: String? = null
+    val parentId: String? = null
 )

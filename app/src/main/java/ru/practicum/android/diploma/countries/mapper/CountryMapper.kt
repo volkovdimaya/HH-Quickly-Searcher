@@ -16,7 +16,7 @@ object CountryMapper {
         return AreaEntity(
             areaId = this.countryId,
             areaName = this.countryName,
-            countryId = null
+            parentId = null
         )
     }
 }

@@ -9,10 +9,14 @@ import ru.practicum.android.diploma.filters.data.impl.FilterParametersRepository
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.industries.data.impl.IndustriesRepositoryImpl
 import ru.practicum.android.diploma.industries.domain.api.IndustriesRepository
+import ru.practicum.android.diploma.regions.data.impl.RegionsRepositoryImpl
+import ru.practicum.android.diploma.regions.domain.api.RegionsRepository
 import ru.practicum.android.diploma.search.data.impl.VacanciesRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.vacancy.data.impl.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.workterritories.data.impl.WorkTerritoryRepositoryImpl
+import ru.practicum.android.diploma.workterritories.domain.api.WorkTerritoriesRepository
 
 val repositoryModule = module {
 
@@ -38,5 +42,13 @@ val repositoryModule = module {
 
     single<FilterParametersRepository> {
         FilterParametersRepositoryImpl(get())
+    }
+
+    single<RegionsRepository> {
+        RegionsRepositoryImpl(get(), get(), get(), get())
+    }
+
+    single<WorkTerritoriesRepository> {
+        WorkTerritoryRepositoryImpl(get())
     }
 }

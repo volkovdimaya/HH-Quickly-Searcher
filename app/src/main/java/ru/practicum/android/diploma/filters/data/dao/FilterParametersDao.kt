@@ -22,4 +22,16 @@ interface FilterParametersDao {
 
     @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
     fun getFiltersObserver(filterId: String): Flow<FilterParametersEntity?>
+
+    @Query(
+        "UPDATE filter_parameters SET country_id = :id, industry_name = :industryName " +
+            "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
+    )
+    suspend fun updateCountry(id: Int?, industryName: String?)
+
+    @Query(
+        "UPDATE filter_parameters SET region_id = :id, region_name = :regionName " +
+            "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
+    )
+    suspend fun updateRegion(id: Int?, regionName: String)
 }
