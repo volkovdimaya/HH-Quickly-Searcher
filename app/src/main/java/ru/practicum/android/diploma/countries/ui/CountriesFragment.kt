@@ -4,55 +4,66 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.models.Country
+import ru.practicum.android.diploma.common.presentation.FiltersUiState
+import ru.practicum.android.diploma.common.presentation.ListUiState
+import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
+import ru.practicum.android.diploma.common.ui.fragments.ListWithInternetFragment
 import ru.practicum.android.diploma.countries.presentation.CountryViewModel
 import ru.practicum.android.diploma.countries.presentation.models.CountryState
 import ru.practicum.android.diploma.databinding.FragmentCountriesBinding
+import ru.practicum.android.diploma.industries.domain.models.Industry
 
-class CountriesFragment : Fragment() {
+class CountriesFragment() : ListWithInternetFragment<Country, FragmentCountriesBinding>() {
 
-    private var _binding: FragmentCountriesBinding? = null
-    private val binding get() = _binding!!
+    override val navigateIdAction: Int = R.id.workTerritoriesFragment
+    override val adapter: BaseAdapter<Country> = CountriesAdapter()
+
+
 
     private val viewModel by viewModel<CountryViewModel>()
 
-    private val adapter = AdapterCountries()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentCountriesBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun createBinding(createBindingInflater: LayoutInflater, container: ViewGroup?): FragmentCountriesBinding {
+        return FragmentCountriesBinding.inflate(createBindingInflater, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val rv = binding.countriesRv
-        rv.layoutManager = LinearLayoutManager(requireContext())
-        rv.adapter = adapter
+        viewModel.observeState.observe(viewLifecycleOwner) { state ->
+            render(state)
+        }
 
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is CountryState.Content -> updateListCountries(state.countries)
-                CountryState.Loading -> {}
-                CountryState.Error -> TODO()
-            }
+        adapter.setOnItemClickListener = { it ->
+            viewModel.showSelectItem(it)
         }
 
     }
 
-    private fun updateListCountries(countries: List<Country>) {
-        adapter.updateCountries(countries)
+    override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Country>) {
+        when (state) {
+            is FiltersUiState.FilterItem -> {
+                saveFilterParameter(state.item)
+            }
+            is FiltersUiState.SelectPosition -> {
+                showSelectPosition(state.newList)
+            }
+            FiltersUiState.NoChange -> {}
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun showSelectPosition(newList: List<Country>) {
+        adapter.updateList(newList)
     }
+    private fun saveFilterParameter(item: Country) {
+        viewModel.saveFilterParameter(item)
+    }
+
+
+
+
 }

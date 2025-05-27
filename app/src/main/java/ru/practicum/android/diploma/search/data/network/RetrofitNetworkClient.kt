@@ -4,10 +4,11 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.common.data.dto.Response
+import ru.practicum.android.diploma.countries.data.dto.CountryResponse
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.regions.data.dto.AreasRequest
-import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.search.data.dto.toMap

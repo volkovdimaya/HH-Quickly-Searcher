@@ -7,17 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.Country
+import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
+import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.countries.presentation.api.CountryInteractor
 import ru.practicum.android.diploma.countries.presentation.models.CountryState
+import ru.practicum.android.diploma.industries.domain.models.Industry
 
-class CountryViewModel(val interactor: CountryInteractor) : ViewModel() {
-
-    private var _state = MutableLiveData<CountryState>(CountryState.Loading)
-    val state: LiveData<CountryState>
-        get() = _state
+class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<Country>() {
 
 
     init {
+        screenStateLiveData.value = ListUiState.Loading
         getCountries()
     }
 
@@ -31,7 +31,7 @@ class CountryViewModel(val interactor: CountryInteractor) : ViewModel() {
                 } else {
                     val countries = countryResponse.second as List<Country>
                     Log.d("CountryViewModel", "Countries: $countries")
-                        _state.value = CountryState.Content(countries)
+                    screenStateLiveData.postValue(ListUiState.Content(countries))
                 }
             }
         }
@@ -40,5 +40,21 @@ class CountryViewModel(val interactor: CountryInteractor) : ViewModel() {
 
     companion object {
         private const val BAD_REQUEST_CODE = 400
+    }
+
+    override suspend fun runSearch(currentQuery: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickDebounce(item: Country) {
+        TODO("Not yet implemented")
+    }
+
+    fun showSelectItem(it: Country) {
+
+    }
+
+    fun saveFilterParameter(item: Country) {
+
     }
 }
