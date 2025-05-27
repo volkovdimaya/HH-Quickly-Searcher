@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.data.db.AppDatabase
+import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
+import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.industries.data.dto.IndustryDto
@@ -17,7 +19,6 @@ import ru.practicum.android.diploma.industries.domain.models.Industry
 import ru.practicum.android.diploma.industries.mapper.IndustryMapper
 import ru.practicum.android.diploma.industries.mapper.IndustryMapper.toEntity
 import ru.practicum.android.diploma.industries.mapper.IndustryMapper.toIndustry
-import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.util.isConnectedInternet
 
@@ -85,6 +86,18 @@ class IndustriesRepositoryImpl(
             appDatabase.industryDao().clearTable()
         }
     }
+
+    override fun insertFilterParameter(item: Industry): Flow<Int> = flow {
+        val filterParametersEntity =
+            FilterParametersEntity(industryId = item.industryId, industryName = item.industryName)
+        val response = localClient.doUpdate(filterParametersEntity) {
+            appDatabase.industryDao().updateIndustryParameter(filterParametersEntity)
+        }
+        if (response.resultCode == INTERNAL_ERROR_CODE) {
+            error("error")
+        }
+        emit(response.resultCode)
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun getIndustriesFromNetwork(): Response {
         val response = networkClient.doRequest(IndustriesRequest())

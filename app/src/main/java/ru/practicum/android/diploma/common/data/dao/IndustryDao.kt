@@ -5,10 +5,14 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import ru.practicum.android.diploma.filters.data.dao.FilterParametersCreateDao
+import ru.practicum.android.diploma.filters.data.dao.FilterUpdateParametersDao
+import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.industries.data.entity.IndustryEntity
 
 @Dao
-interface IndustryDao {
+interface IndustryDao : FilterUpdateParametersDao, FilterParametersCreateDao {
 
     // industries_table
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -25,4 +29,13 @@ interface IndustryDao {
 
     @Query("DELETE FROM industries")
     suspend fun clearTable()
+
+    @Transaction
+    suspend fun updateIndustryParameter(parameters: FilterParametersEntity) {
+        if (isFiltersEmpty() == 1) {
+            updateIndustry(parameters.industryId ?: "", parameters.industryName ?: "")
+        } else {
+            insert(parameters)
+        }
+    }
 }
