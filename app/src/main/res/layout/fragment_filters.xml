@@ -54,6 +54,7 @@
                 android:text="@string/work_territory" />
 
             <TextView
+                android:id="@+id/work_territory_name"
                 style="@style/Regular16Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +65,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/country_selected_delete"
+            android:id="@+id/work_territory_delete"
             android:layout_width="@dimen/size_arrow_button"
             android:layout_height="@dimen/size_arrow_button"
             android:layout_gravity="center_vertical|end"
@@ -120,6 +121,7 @@
                 android:text="@string/industry" />
 
             <TextView
+                android:id="@+id/industry_name"
                 style="@style/Regular16Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,7 +132,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/region_selected_delete"
+            android:id="@+id/industry_delete"
             android:layout_width="@dimen/size_arrow_button"
             android:layout_height="@dimen/size_arrow_button"
             android:layout_gravity="center_vertical|end"
@@ -150,16 +152,16 @@
         app:hintAnimationEnabled="false"
         app:expandedHintEnabled="false"
         android:hint="@string/expected_salary"
-        app:endIconDrawable="@drawable/empty_icon"
-        app:endIconTint="?attr/colorSurfaceVariant">
+        app:hintTextColor="@color/black"
+        app:endIconDrawable="@drawable/ic_cross">
 
         <com.google.android.material.textfield.TextInputEditText
             android:paddingTop="10dp"
             android:id="@+id/expected_salary_edit_text"
             android:layout_height="match_parent"
             style="@style/FullTextInputEditText"
+            android:inputType="number"
             android:hint="@string/enter_amount"/>
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout

@@ -29,7 +29,7 @@ val repositoryModule = module {
     }
 
     single<IndustriesRepository> {
-        IndustriesRepositoryImpl(get(), get(), get(), get())
+        IndustriesRepositoryImpl(get(), get(), get(), get(), get())
     }
 
     single<CountryRepositoryNetwork> {

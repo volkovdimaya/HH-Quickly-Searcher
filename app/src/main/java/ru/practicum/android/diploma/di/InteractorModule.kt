@@ -5,6 +5,8 @@ import ru.practicum.android.diploma.countries.domain.impl.CountryInteractorImpl
 import ru.practicum.android.diploma.countries.presentation.api.CountryInteractor
 import ru.practicum.android.diploma.favorites.domain.impl.FavoritesInteractorImpl
 import ru.practicum.android.diploma.favorites.domain.interactors.FavoritesInteractor
+import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
+import ru.practicum.android.diploma.filters.domain.impl.FilterParametersInteractorImpl
 import ru.practicum.android.diploma.industries.domain.IndustriesInteractor
 import ru.practicum.android.diploma.industries.domain.impl.IndustriesInteractorImpl
 import ru.practicum.android.diploma.search.domain.impl.VacanciesInteractorImpl
@@ -21,7 +23,7 @@ val interactorModule = module {
     }
 
     single<VacanciesInteractor> {
-        VacanciesInteractorImpl(get(), get())
+        VacanciesInteractorImpl(get())
     }
 
     single<FavoritesInteractor> {
@@ -31,9 +33,15 @@ val interactorModule = module {
     single<IndustriesInteractor> {
         IndustriesInteractorImpl(get())
     }
+
+    single<FilterParametersInteractor> {
+        FilterParametersInteractorImpl(get())
+    }
+
     single<CountryInteractor> {
         CountryInteractorImpl(get(), get())
     }
+
     single<InteractorWorkTerritories> {
         InteractorWorkTerritoriesImpl(get())
     }

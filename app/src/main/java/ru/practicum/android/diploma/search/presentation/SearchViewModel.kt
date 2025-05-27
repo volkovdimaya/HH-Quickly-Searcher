@@ -11,11 +11,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
+import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val filterParametersInteractor: FilterParametersInteractor
+) : ViewModel() {
 
     private var searchJob: Job? = null
     private var loadMoreJob: Job? = null
@@ -70,7 +74,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         }
 
         viewModelScope.launch {
-            vacanciesInteractor.getSearchFilters().collect {
+            filterParametersInteractor.getSearchFilterParameters().collect {
                 isFiltersEmptyState.postValue(isFilterEmpty(it))
                 currentFilters = it
             }

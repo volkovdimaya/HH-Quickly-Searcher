@@ -9,7 +9,8 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
-import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
+import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.industries.data.dto.IndustryDto
@@ -26,7 +27,8 @@ class IndustriesRepositoryImpl(
     private val localClient: LocalClient,
     private val appDatabase: AppDatabase,
     private val networkClient: NetworkClient,
-    private val application: Application
+    private val application: Application,
+    private val filterRepo: FilterParametersRepository
 ) : IndustriesRepository {
 
     companion object {
@@ -88,10 +90,10 @@ class IndustriesRepositoryImpl(
     }
 
     override fun insertFilterParameter(item: Industry): Flow<Int> = flow {
-        val filterParametersEntity =
-            FilterParametersEntity(industryId = item.industryId, industryName = item.industryName)
-        val response = localClient.doUpdate(filterParametersEntity) {
-            appDatabase.industryDao().updateIndustryParameter(filterParametersEntity)
+        val filterParameters =
+            FilterParametersType.Industry(industryId = item.industryId, industryName = item.industryName)
+        val response = localClient.doUpdate(filterParameters) {
+            filterRepo.saveFilterParameters(filterParameters)
         }
         if (response.resultCode == INTERNAL_ERROR_CODE) {
             error("error")

@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.domain.models.Country
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
-import ru.practicum.android.diploma.filters.domain.api.FilterParametersType
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.regions.domain.models.Region
 import ru.practicum.android.diploma.workterritories.presentation.api.InteractorWorkTerritories
 

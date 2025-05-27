@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
-import ru.practicum.android.diploma.filters.domain.api.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDomain
 
@@ -38,12 +38,12 @@ class FilterParametersRepositoryImpl(
     override suspend fun saveFilterParameters(parameters: FilterParametersType) {
         val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
         var newFilters = if (currentFilters.isEmpty()) {
-            FilterParametersEntity()
+            FilterParametersEntity(FILTER_DB_ID)
         } else {
             currentFilters[0]
         }
         newFilters = updateFiltersWithType(newFilters, parameters)
-        database.filterParametersDao().createFilters(newFilters)
+        database.filterParametersDao().saveFilters(newFilters)
     }
 
     private fun updateFiltersWithType(

@@ -5,13 +5,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDto
 import ru.practicum.android.diploma.search.data.dto.FilterParametersDto
+import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
+import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDto
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
-import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
