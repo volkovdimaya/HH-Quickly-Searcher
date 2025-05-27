@@ -29,7 +29,7 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
                 Log.d("CountryViewModel", "Received country response: $countryResponse")
                 val code = countryResponse.first
                 if (code == BAD_REQUEST_CODE) {
-                    //TODO: Handle bad request error
+                    screenStateLiveData.postValue(ListUiState.Error)
                 } else {
                     val countries = countryResponse.second as List<Country>
                     Log.d("CountryViewModel", "Countries: $countries")

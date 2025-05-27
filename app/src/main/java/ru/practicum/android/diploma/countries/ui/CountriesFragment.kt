@@ -61,14 +61,4 @@ class CountriesFragment() : ListWithInternetFragment<Country, FragmentCountriesB
         }
     }
 
-
-
-
-    private fun saveFilterParameter(item: Country) {
-        viewModel.saveFilterParameter(item)
-    }
-
-
-
-
 }

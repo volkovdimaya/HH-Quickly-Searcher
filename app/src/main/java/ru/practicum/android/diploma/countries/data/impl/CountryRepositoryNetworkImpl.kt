@@ -23,7 +23,6 @@ class CountryRepositoryNetworkImpl(
         }
     }
 
-
     private suspend fun getCountriesFromNetwork(): Pair<Int, List<Country>> {
         val networkResponse = networkClient.doRequest(AreasRequest())
 
@@ -32,8 +31,6 @@ class CountryRepositoryNetworkImpl(
         } else {
             Pair(networkResponse.resultCode, listOf())
         }
-
-
     }
 
     private fun mapper(countryResponse: CountryResponse): List<Country> {
