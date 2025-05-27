@@ -14,10 +14,8 @@ class FiltersViewModel(
     private val filterInteractor: FilterParametersInteractor
 ) : ViewModel() {
 
-    private val filterParametersState = MutableLiveData(FilterParameters())
+    private val filterParametersState = MutableLiveData<FilterParameters>()
     fun getFilterParametersState(): LiveData<FilterParameters> = filterParametersState
-
-    private var previousParameters: FilterParameters? = null
 
     val saveDebouncer = debounce<FilterParametersType>(
         delayMillis = SAVE_DEBOUNCE_DELAY,
@@ -29,7 +27,6 @@ class FiltersViewModel(
 
     init {
         updateFilters()
-        previousParameters = filterParametersState.value
     }
 
     fun addWithDebounce(parameter: FilterParametersType) {
@@ -44,17 +41,15 @@ class FiltersViewModel(
         viewModelScope.launch {
             filterInteractor.deleteAllFilters()
         }
-        updateFilters()
     }
 
     fun addFilterParameter(parameter: FilterParametersType) {
         viewModelScope.launch {
             filterInteractor.updateFilterParameter(parameter)
         }
-        updateFilters()
     }
 
-    fun updateFilters() {
+    private fun updateFilters() {
         viewModelScope.launch {
             filterInteractor.getFilterParameters().collect {
                 filterParametersState.postValue(it)

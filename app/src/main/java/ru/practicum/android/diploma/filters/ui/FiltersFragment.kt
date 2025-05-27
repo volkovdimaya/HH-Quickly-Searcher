@@ -25,6 +25,7 @@ class FiltersFragment : Fragment() {
 
     private var startParameters: FilterParameters = FilterParameters()
     private var startIsNotSet = true
+    private var needToChangeSalary = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,55 +39,28 @@ class FiltersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setAllClickListeners()
-        binding.expectedSalaryEditText.setOnFocusChangeListener { _, focused ->
-            binding.expectedSalaryLayout.hintTextColor = if (focused) {
-                requireContext().getColorStateList(R.color.blue)
-            } else if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
-                requireContext().getColorStateList(R.color.black)
-            } else {
-                requireContext().getColorStateList(R.color.colorOnSurfaceVariant)
-            }
-            binding.expectedSalaryLayout.isEndIconVisible = focused
-                && !binding.expectedSalaryEditText.text.isNullOrEmpty()
-        }
-        binding.expectedSalaryEditText.doOnTextChanged { text, _, _, _ ->
-            binding.expectedSalaryLayout.isEndIconVisible = !text.isNullOrEmpty()
-            if (text.isNullOrEmpty()) {
-                viewModel.addWithDebounce(FilterParametersType.Salary())
-            } else if (text.isDigitsOnly()) {
-                viewModel.addWithDebounce(FilterParametersType.Salary(text.toString().toInt()))
-            }
-        }
+        setAllListeners()
 
         viewModel.getFilterParametersState().observe(viewLifecycleOwner) {
             if (startIsNotSet) {
                 startParameters = it
+                startIsNotSet = false
             }
             render(it)
         }
     }
 
-    private fun setAllClickListeners() {
+    private fun setAllListeners() {
         setIndustryListeners()
         setWorkTerritoryListeners()
 
-        binding.expectedSalaryLayout.setEndIconOnClickListener {
-            binding.expectedSalaryEditText.setText("")
-            binding.expectedSalaryLayout.isEndIconVisible = false
-        }
-        binding.withoutSalarySelector.setOnClickListener {
-            viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(binding.withoutSalarySelector.isChecked))
-        }
-        binding.withoutSalaryLayout.setOnClickListener {
-            val newState = !binding.withoutSalarySelector.isChecked
-            binding.withoutSalarySelector.isChecked = newState
-            viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(newState))
-        }
+        setSalaryListeners()
 
         binding.buttonDeleteAll.setOnClickListener {
+            needToChangeSalary = true
             viewModel.deleteAllFilters()
         }
+
         binding.buttonApply.setOnClickListener {
             viewModel.addFilterParameter(FilterParametersType.NeedToSearch(true))
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -118,6 +92,42 @@ class FiltersFragment : Fragment() {
         }
     }
 
+    private fun setSalaryListeners() {
+        binding.expectedSalaryEditText.setOnFocusChangeListener { _, focused ->
+        binding.expectedSalaryLayout.hintTextColor = if (focused) {
+            requireContext().getColorStateList(R.color.blue)
+        } else if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
+            requireContext().getColorStateList(R.color.black)
+        } else {
+            requireContext().getColorStateList(R.color.colorOnSurfaceVariant)
+        }
+        binding.expectedSalaryLayout.isEndIconVisible = focused
+            && !binding.expectedSalaryEditText.text.isNullOrEmpty()
+        }
+
+        binding.expectedSalaryEditText.doOnTextChanged { text, _, _, _ ->
+            binding.expectedSalaryLayout.isEndIconVisible = !text.isNullOrEmpty()
+            if (text.isNullOrEmpty()) {
+                viewModel.addWithDebounce(FilterParametersType.Salary())
+            } else if (text.isDigitsOnly()) {
+                viewModel.addWithDebounce(FilterParametersType.Salary(text.toString().toInt()))
+            }
+        }
+
+        binding.expectedSalaryLayout.setEndIconOnClickListener {
+            binding.expectedSalaryEditText.setText("")
+            binding.expectedSalaryLayout.isEndIconVisible = false
+        }
+        binding.withoutSalarySelector.setOnClickListener {
+            viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(binding.withoutSalarySelector.isChecked))
+        }
+        binding.withoutSalaryLayout.setOnClickListener {
+            val newState = !binding.withoutSalarySelector.isChecked
+            binding.withoutSalarySelector.isChecked = newState
+            viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(newState))
+        }
+    }
+
     private fun render(filters: FilterParameters) {
         binding.workTerritories.isVisible = filters.countryId == null
         binding.workTerritoriesSelected.isVisible = filters.countryId != null
@@ -127,9 +137,10 @@ class FiltersFragment : Fragment() {
         binding.industrySelected.isVisible = filters.industryId != null
         binding.industryName.text = filters.industryName ?: ""
 
-        if (startIsNotSet) {
+        if (needToChangeSalary) {
             binding.expectedSalaryEditText.setText(filters.salary?.toString() ?: "")
             binding.withoutSalarySelector.isChecked = filters.onlyWithSalary
+            needToChangeSalary = false
         }
 
         startIsNotSet = false
