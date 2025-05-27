@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -26,7 +27,6 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         container: ViewGroup?
     ): FragmentIndustriesBinding {
         return FragmentIndustriesBinding.inflate(createBindingInflater, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,49 +37,56 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         }
 
         adapter.setOnItemClickListener = { industry ->
-            viewModel.showSelectButton(industry)
+            hideKeyboard()
+            viewModel.showSelectItem(industry)
         }
 
         binding.buttonSelect.setOnClickListener {
             viewModel.showAppropriateFragment()
+        }
+
+        binding.editText.setOnClickListener {
+            binding.buttonSelect.visibility = View.GONE
         }
     }
 
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Industry>) {
         when (state) {
             is FiltersUiState.FilterItem -> {
-                returnToPreviousFragment(state.item)
+                saveFilterParameter(state.item)
             }
             is FiltersUiState.SelectPosition -> {
                 showSelectPosition(state.newList)
             }
-
+            FiltersUiState.NoChange -> {}
         }
     }
 
     private fun showSelectPosition(newList: List<Industry>) {
+        adapter.updateList(newList)
         binding.buttonSelect.visibility = View.VISIBLE
-        updateIncludeViewByList(newList)
     }
 
-    fun visibilitySelectButton(flag: Boolean) {
-        if (flag) {
-            binding.buttonSelect.visibility = View.GONE
-        }
+    private fun saveFilterParameter(item: Industry) {
+        viewModel.saveFilterParameter(item)
     }
 
-    private fun returnToPreviousFragment(item: Industry) {
-        val industryParameterUi = item.toParcelable()
-        val directions = IndustriesFragmentDirections.actionIndustriesFragmentToFiltersFragment(industryParameterUi)
-        findNavController().navigate(directions)
-        viewModel.restoreState()
+    override fun goToFragment(entityId: String) {
+        findNavController().navigate(
+            navigateIdAction,
+            null,
+            NavOptions.Builder()
+                .setPopUpTo(findNavController().currentDestination!!.id, true)
+                .setLaunchSingleTop(true)
+                .build()
+        )
     }
 
     override fun onSearchTextChanged(toString: String) {
-        viewModel.onSearchTextChanged(toString)
+        viewModel.onSearchTextChanged(toString.trim())
     }
 
     override fun performSearch() {
-        // todo
+        //
     }
 }
