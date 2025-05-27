@@ -1,8 +1,12 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.countries.domain.impl.CountryInteractorImpl
+import ru.practicum.android.diploma.countries.presentation.api.CountryInteractor
 import ru.practicum.android.diploma.favorites.domain.impl.FavoritesInteractorImpl
 import ru.practicum.android.diploma.favorites.domain.interactors.FavoritesInteractor
+import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
+import ru.practicum.android.diploma.filters.domain.impl.FilterParametersInteractorImpl
 import ru.practicum.android.diploma.industries.domain.IndustriesInteractor
 import ru.practicum.android.diploma.industries.domain.impl.IndustriesInteractorImpl
 import ru.practicum.android.diploma.regions.domain.RegionsInteractor
@@ -38,5 +42,13 @@ val interactorModule = module {
 
     single<WorkTerritoryInteractor> {
         WorkTerritoryInteractorImpl(get())
+    }
+
+    single<FilterParametersInteractor> {
+        FilterParametersInteractorImpl(get())
+    }
+
+    single<CountryInteractor> {
+        CountryInteractorImpl(get(), get())
     }
 }
