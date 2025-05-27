@@ -30,12 +30,33 @@ interface IndustryDao : FilterUpdateParametersDao, FilterParametersCreateDao {
     @Query("DELETE FROM industries")
     suspend fun clearTable()
 
+
     @Transaction
     suspend fun updateIndustryParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {
-            updateIndustry(parameters.industryId ?: "", parameters.industryName ?: "")
+            updateIndustry(parameters.countryId.toString() ?: "", parameters.countryName ?: "")
         } else {
             insert(parameters)
         }
     }
+
+    @Transaction
+    suspend fun updateCountryParameter(parameters: FilterParametersEntity) {
+        if (isFiltersEmpty() == 1) {
+            updateCountry(parameters.countryId, parameters.countryName ?: "")
+        } else {
+            insert(parameters)
+        }
+    }
+
+    @Transaction
+    suspend fun updateRegionParameter(parameters: FilterParametersEntity) {
+        if (isFiltersEmpty() == 1) {
+            updateRegion(parameters.regionId, parameters.regionName ?: "")
+        } else {
+            insert(parameters)
+        }
+    }
+
+
 }

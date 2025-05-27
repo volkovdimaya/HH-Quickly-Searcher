@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.filters.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 
 @Dao
 interface FilterUpdateParametersDao {
@@ -39,4 +41,6 @@ interface FilterUpdateParametersDao {
     @Query("SELECT COUNT(*) FROM filter_parameters")
     suspend fun isFiltersEmpty(): Int
 
+    @Query("SELECT * FROM filter_parameters LIMIT 1")
+    fun observeFilterParameters(): Flow<FilterParametersEntity?>
 }

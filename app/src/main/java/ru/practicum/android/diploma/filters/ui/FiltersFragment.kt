@@ -28,7 +28,7 @@ class FiltersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.textView.setOnClickListener {
-            findNavController().navigate(R.id.industriesFragment)
+            findNavController().navigate(R.id.workTerritoriesFragment)
         }
         /* Вариант передачи данных.
          B граф навигации заложен navArgs для  @Parcelize-класса

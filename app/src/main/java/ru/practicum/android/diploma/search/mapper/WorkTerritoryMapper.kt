@@ -13,9 +13,8 @@ object WorkTerritoryMapper {
         )
 
         val regionWork = RegionWork(
-            regionId = areaDto.id.toIntOrNull(),
+            regionId = areaDto.id.toString(),
             regionName = areaDto.name,
-            country = country
         )
 
         return WorkTerritory(regionWork, country)
