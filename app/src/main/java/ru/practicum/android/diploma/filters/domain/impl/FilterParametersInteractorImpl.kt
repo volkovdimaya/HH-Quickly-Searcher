@@ -20,7 +20,7 @@ class FilterParametersInteractorImpl(
     }
 
     override fun getFilterParameters(): Flow<FilterParameters> {
-        return filterParametersRepository.getFilterParameters()
+        return filterParametersRepository.getFilterParametersObserver()
     }
 
     override suspend fun deleteAllFilters() {

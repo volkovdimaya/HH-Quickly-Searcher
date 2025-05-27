@@ -5,14 +5,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDomain
 
 class FilterParametersRepositoryImpl(
     private val database: AppDatabase
 ) : FilterParametersRepository {
+
     override fun getFilterParameters(): Flow<FilterParameters> = flow {
         val filters = database.filterParametersDao().getFilters(FILTER_DB_ID)
         if (filters.isEmpty()) {
@@ -29,10 +30,7 @@ class FilterParametersRepositoryImpl(
     }
 
     override suspend fun deleteFilters() {
-        val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
-        if (currentFilters.isNotEmpty()) {
-            database.filterParametersDao().deleteFilters(currentFilters[0])
-        }
+        database.filterParametersDao().saveFilters(FilterParametersEntity())
     }
 
     override suspend fun saveFilterParameters(parameters: FilterParametersType) {
