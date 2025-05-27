@@ -1,6 +1,6 @@
-package ru.practicum.android.diploma.filters.data.dto
+package ru.practicum.android.diploma.search.domain.models
 
-data class FilterParametersDto(
+data class FilterParametersSearch(
     val countryId: Int? = null,
     val regionId: Int? = null,
     val industryId: Int? = null,

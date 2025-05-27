@@ -5,6 +5,8 @@ import ru.practicum.android.diploma.countries.data.impl.CountryRepositoryNetwork
 import ru.practicum.android.diploma.countries.domain.api.CountryRepositoryNetwork
 import ru.practicum.android.diploma.favorites.data.impl.FavoritesRepositoryImpl
 import ru.practicum.android.diploma.favorites.domain.api.FavoritesRepository
+import ru.practicum.android.diploma.filters.data.impl.FilterParametersRepositoryImpl
+import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.industries.data.impl.IndustriesRepositoryImpl
 import ru.practicum.android.diploma.industries.domain.api.IndustriesRepository
 import ru.practicum.android.diploma.search.data.impl.VacanciesRepositoryImpl
@@ -34,7 +36,7 @@ val repositoryModule = module {
         CountryRepositoryNetworkImpl(get(), get())
     }
 
-//    single<FilterParametersRepository> {
-//        FilterParametersRepositoryImpl()
-//    }
+    single<FilterParametersRepository> {
+        FilterParametersRepositoryImpl(get())
+    }
 }
