@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "filter_parameters")
 data class FilterParametersEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val filters_id: Int = 0,
     @ColumnInfo("country_id")
     val countryId: Int? = 0,
