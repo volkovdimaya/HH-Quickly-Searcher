@@ -1,29 +1,28 @@
 package ru.practicum.android.diploma.filters.data.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "filter_parameters")
 data class FilterParametersEntity(
     @PrimaryKey
-    val filters_id: Int = 0,
-    @ColumnInfo("country_id")
-    val countryId: Int? = 0,
-    @ColumnInfo("region_id")
+    @SerializedName("filters_id")
+    val filtersId: String,
+    @SerializedName("country_id")
+    val countryId: Int? = null,
+    @SerializedName("region_id")
     val regionId: Int? = null,
-    @ColumnInfo("industry_id")
-    val industryId: String? = null,
-    @ColumnInfo("salary")
+    @SerializedName("industry_id")
+    val industryId: Int? = null,
+    @SerializedName("salary")
     val salary: Int? = null,
-    @ColumnInfo("only_with_salary")
+    @SerializedName("only_with_salary")
     val onlyWithSalary: Boolean = false,
-    @ColumnInfo("country_name")
+    @SerializedName("country_name")
     val countryName: String? = null,
-    @ColumnInfo("region_name")
+    @SerializedName("region_name")
     val regionName: String? = null,
-    @ColumnInfo("industry_name")
-    val industryName: String? = null,
-    @ColumnInfo("salary_type")
-    val salaryType: String? = null
+    @SerializedName("industry_name")
+    val industryName: String? = null
 )
