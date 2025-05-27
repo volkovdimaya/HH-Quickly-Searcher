@@ -1,10 +1,13 @@
 package ru.practicum.android.diploma.filters.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,13 +40,28 @@ class FiltersFragment : Fragment() {
         binding.expectedSalaryEditText.setOnFocusChangeListener { _, focused ->
             binding.expectedSalaryLayout.hintTextColor = if (focused) {
                 requireContext().getColorStateList(R.color.blue)
-            } else if (binding.expectedSalaryEditText.text.isNullOrEmpty()) {
-                requireContext().getColorStateList(R.color.colorOnSurfaceVariant)
             } else {
-                requireContext().getColorStateList(R.color.black)
+                if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
+                    requireContext().getColorStateList(R.color.black).also {
+                        Log.d("666", "in Black")
+                    }
+                } else {
+                    requireContext().getColorStateList(R.color.colorOnSurfaceVariant).also {
+                        Log.d("666", "in wrong")
+                    }
+                }
             }
+            Log.d("666", "${binding.expectedSalaryLayout.hintTextColor}")
             binding.expectedSalaryLayout.isEndIconVisible = focused
                 && !binding.expectedSalaryEditText.text.isNullOrEmpty()
+        }
+        binding.expectedSalaryEditText.doOnTextChanged { text, _, _, _ ->
+            binding.expectedSalaryLayout.isEndIconVisible = !text.isNullOrEmpty()
+            if (text.isNullOrEmpty()) {
+                viewModel.addWithDebounce(FilterParametersType.Salary())
+            } else if (text.isDigitsOnly()) {
+                viewModel.addWithDebounce(FilterParametersType.Salary(text.toString().toInt()))
+            }
         }
 
         viewModel.getFilterParametersState().observe(viewLifecycleOwner) {
@@ -55,7 +73,7 @@ class FiltersFragment : Fragment() {
         binding.industry.setOnClickListener {
             findNavController().navigate(R.id.industriesFragment)
         }
-        binding.industrySelected.setOnClickListener{
+        binding.industrySelected.setOnClickListener {
             findNavController().navigate(R.id.industriesFragment)
         }
         binding.industryDelete.setOnClickListener {
@@ -75,6 +93,20 @@ class FiltersFragment : Fragment() {
             viewModel.updateFilters()
         }
 
+        binding.expectedSalaryLayout.setEndIconOnClickListener {
+            binding.expectedSalaryEditText.setText("")
+            binding.expectedSalaryLayout.isEndIconVisible = false
+        }
+
+        binding.withoutSalarySelector.setOnClickListener {
+            viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(binding.withoutSalarySelector.isChecked))
+        }
+        binding.withoutSalaryLayout.setOnClickListener {
+            val newState = !binding.withoutSalarySelector.isChecked
+            binding.withoutSalarySelector.isChecked = newState
+            viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(newState))
+        }
+
 
     }
 
@@ -87,15 +119,18 @@ class FiltersFragment : Fragment() {
         binding.industrySelected.isVisible = filters.industryId != null
         binding.industryName.text = filters.industryName ?: ""
 
+        binding.expectedSalaryEditText.setText(filters.salary?.toString() ?: "")
 
+        binding.withoutSalarySelector.isChecked = filters.onlyWithSalary
     }
 
     private fun makeWorkTerritoryName(filters: FilterParameters): String {
+        var result =  ""
         if (filters.countryName != null && filters.regionName != null) {
-            return "${filters.countryName}, ${filters.regionName}"
+            result = "${filters.countryName}, ${filters.regionName}"
         } else if (filters.countryName != null) {
-            return filters.countryName
+            result = filters.countryName
         }
-        return ""
+        return result
     }
 }

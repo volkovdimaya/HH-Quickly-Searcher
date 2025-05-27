@@ -36,11 +36,7 @@ class FilterParametersRepositoryImpl(
             currentFilters[0]
         }
         newFilters = updateFiltersWithType(newFilters, parameters)
-        if (currentFilters.isEmpty()) {
-            database.filterParametersDao().createFilters(newFilters)
-        } else {
-            database.filterParametersDao().updateFilters(newFilters)
-        }
+        database.filterParametersDao().saveFilters(newFilters)
     }
 
     private fun updateFiltersWithType(

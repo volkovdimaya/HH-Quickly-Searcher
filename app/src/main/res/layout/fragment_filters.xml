@@ -152,6 +152,7 @@
         app:hintAnimationEnabled="false"
         app:expandedHintEnabled="false"
         android:hint="@string/expected_salary"
+        app:hintTextColor="@color/black"
         app:endIconDrawable="@drawable/ic_cross">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -159,8 +160,8 @@
             android:id="@+id/expected_salary_edit_text"
             android:layout_height="match_parent"
             style="@style/FullTextInputEditText"
+            android:inputType="number"
             android:hint="@string/enter_amount"/>
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
