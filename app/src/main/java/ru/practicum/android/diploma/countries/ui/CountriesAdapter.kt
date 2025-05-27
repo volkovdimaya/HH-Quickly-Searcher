@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.domain.models.Country
 import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
 import ru.practicum.android.diploma.common.ui.viewholder.BaseViewHolder
-import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.databinding.ItemRegionBinding
-import ru.practicum.android.diploma.industries.ui.IndustryViewHolder
 
 class CountriesAdapter : BaseAdapter<Country>() {
     override fun createViewHolder(parent: ViewGroup): BaseViewHolder<Country> {
@@ -30,6 +28,5 @@ class CountriesAdapter : BaseAdapter<Country>() {
         list = newCountries.sortedBy { it.countryName }
         notifyDataSetChanged()
     }
-
 
 }

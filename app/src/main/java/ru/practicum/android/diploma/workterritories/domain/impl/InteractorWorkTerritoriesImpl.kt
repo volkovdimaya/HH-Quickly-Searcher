@@ -13,7 +13,7 @@ class InteractorWorkTerritoriesImpl(val repDb: FilterParametersRepository) : Int
         repDb.getFilterParametersObserver()
             .map {
                 if (it.countryId == null || it.countryName == null) {
-                    return@map null
+                    null
                 } else {
                     Country(
                         countryId = it.countryId,
@@ -22,12 +22,11 @@ class InteractorWorkTerritoriesImpl(val repDb: FilterParametersRepository) : Int
                 }
             }
 
-
     override fun getRegion(): Flow<Region?> =
         repDb.getFilterParametersObserver()
             .map {
                 if (it.regionId == null || it.regionName == null) {
-                    return@map null
+                    null
                 } else {
                     Region(
                         regionId = it.regionId.toString(),

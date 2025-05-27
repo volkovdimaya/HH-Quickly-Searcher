@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkTerritoriesBinding
@@ -15,14 +14,11 @@ import ru.practicum.android.diploma.workterritories.presentation.models.WorkTerr
 
 class WorkTerritoriesFragment : Fragment() {
 
-    private val args: WorkTerritoriesFragmentArgs by navArgs()
-
     private var _binding: FragmentWorkTerritoriesBinding? = null
 
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<WorkTerritoriesViewModel>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

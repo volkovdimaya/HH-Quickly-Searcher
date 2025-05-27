@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.regions.domain.models.Region
 import ru.practicum.android.diploma.workterritories.presentation.api.InteractorWorkTerritories
 import ru.practicum.android.diploma.workterritories.presentation.models.WorkTerritoriesState
 

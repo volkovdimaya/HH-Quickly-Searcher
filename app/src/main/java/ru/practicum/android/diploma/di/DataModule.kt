@@ -62,5 +62,4 @@ val dataModule = module {
 
     single<Context> { androidApplication() }
 
-
 }

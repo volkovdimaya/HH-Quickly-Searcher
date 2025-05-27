@@ -217,12 +217,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
         var result = true
-        if (filterParameters.onlyWithSalary
-            || filterParameters.salary != null
-            || filterParameters.regionId != null
-            || filterParameters.countryId != null
-            || filterParameters.industryId != null) {
-            result = false
+        listOf(
+            filterParameters.onlyWithSalary,
+            filterParameters.salary,
+            filterParameters.regionId,
+            filterParameters.countryId,
+            filterParameters.industryId
+        ).forEach { parameter ->
+            if (parameter != null) {
+                result = false
+            }
         }
         return result
     }

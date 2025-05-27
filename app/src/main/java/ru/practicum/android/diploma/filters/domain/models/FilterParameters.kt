@@ -10,4 +10,3 @@ data class FilterParameters(
     val regionName: String? = null,
     val industryName: String? = null
 )
-

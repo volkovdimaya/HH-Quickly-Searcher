@@ -7,17 +7,16 @@ import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersType
-import ru.practicum.android.diploma.filters.domain.models.FilterDelete
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDomain
 
 class FilterParametersRepositoryImpl(
     private val database: AppDatabase
 ) : FilterParametersRepository {
-    override fun getFilterParameters(): Flow<FilterParameters>   = flow{
+    override fun getFilterParameters(): Flow<FilterParameters> = flow {
         val filters = database.filterParametersDao().getFilters(FILTER_DB_ID)
         if (filters.isEmpty()) {
-           emit(FilterParameters())
+            emit(FilterParameters())
         } else {
             emit(filters[0].toDomain())
         }
@@ -29,15 +28,12 @@ class FilterParametersRepositoryImpl(
         }
     }
 
-
     override suspend fun deleteFilters() {
         val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
         if (currentFilters.isNotEmpty()) {
             database.filterParametersDao().deleteFilters(currentFilters[0])
         }
     }
-
-
 
     override suspend fun saveFilterParameters(parameters: FilterParametersType) {
         val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
@@ -78,7 +74,7 @@ class FilterParametersRepositoryImpl(
                     regionName = parameters.regionName,
                     regionId = parameters.regionId
                 )
-    }
+            }
 
             is FilterParametersType.Salary -> {
                 newFilters.copy(salary = parameters.salary)

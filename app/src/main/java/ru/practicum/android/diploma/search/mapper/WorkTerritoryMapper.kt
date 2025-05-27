@@ -1,11 +1,6 @@
 package ru.practicum.android.diploma.search.mapper
 
-import ru.practicum.android.diploma.common.domain.models.Country
-import ru.practicum.android.diploma.common.domain.models.RegionWork
-import ru.practicum.android.diploma.common.domain.models.WorkTerritory
-import ru.practicum.android.diploma.regions.data.dto.AreaDto
-
-//object WorkTerritoryMapper {
+// object WorkTerritoryMapper {
 //    fun map(areaDto: AreaDto): WorkTerritory {
 //        val country = Country(
 //            countryId = areaDto.parentId?.toIntOrNull() ?: 0,
@@ -20,4 +15,4 @@ import ru.practicum.android.diploma.regions.data.dto.AreaDto
 //
 //        return WorkTerritory(regionWork, country)
 //    }
-//}
+// }
