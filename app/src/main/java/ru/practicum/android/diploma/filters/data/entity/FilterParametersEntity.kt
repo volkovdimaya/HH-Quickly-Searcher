@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class FilterParametersEntity(
     @PrimaryKey
     @ColumnInfo("filters_id")
-    val filtersId: String,
+    val filtersId: String = "filter_parameters_id",
     @ColumnInfo("country_id")
     val countryId: Int? = null,
     @ColumnInfo("region_id")

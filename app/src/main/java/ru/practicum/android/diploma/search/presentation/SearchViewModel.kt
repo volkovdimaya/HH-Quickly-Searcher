@@ -74,7 +74,7 @@ class SearchViewModel(
         }
 
         viewModelScope.launch {
-            filterParametersInteractor.getSearchFilterParameters().collect {
+            vacanciesInteractor.getSearchFilters().collect {
                 isFiltersEmptyState.postValue(isFilterEmpty(it))
                 currentFilters = it
             }
@@ -221,15 +221,16 @@ class SearchViewModel(
 
     private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
         var result = true
-        if (filterParameters.salary != null
-            || filterParameters.onlyWithSalary) {
-            result = false
-        }
-        if (filterParameters.regionId != null
-            || filterParameters.countryId != null
-            || filterParameters.industryId != null
-        ) {
-            result = false
+        listOf(
+            filterParameters.onlyWithSalary,
+            filterParameters.salary,
+            filterParameters.regionId,
+            filterParameters.countryId,
+            filterParameters.industryId
+        ).forEach { parameter ->
+            if (parameter != null) {
+                result = false
+            }
         }
         return result
     }

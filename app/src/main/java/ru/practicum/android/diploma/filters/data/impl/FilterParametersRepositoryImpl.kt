@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.filters.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
@@ -18,6 +19,12 @@ class FilterParametersRepositoryImpl(
             emit(FilterParameters())
         } else {
             emit(filters[0].toDomain())
+        }
+    }
+
+    override fun getFilterParametersObserver(): Flow<FilterParameters> {
+        return database.filterParametersDao().getFiltersObserver(FILTER_DB_ID).map {
+            it?.toDomain() ?: FilterParameters()
         }
     }
 

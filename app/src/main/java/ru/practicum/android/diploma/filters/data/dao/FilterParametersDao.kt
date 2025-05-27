@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 
 @Dao
@@ -18,4 +19,7 @@ interface FilterParametersDao {
 
     @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
     suspend fun getFilters(filterId: String): List<FilterParametersEntity>
+
+    @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
+    fun getFiltersObserver(filterId: String): Flow<FilterParametersEntity?>
 }
