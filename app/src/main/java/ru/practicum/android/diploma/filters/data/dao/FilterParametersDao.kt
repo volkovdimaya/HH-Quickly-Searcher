@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 
 @Dao
@@ -21,5 +22,5 @@ interface FilterParametersDao {
     suspend fun updateFilters(filterParametersEntity: FilterParametersEntity)
 
     @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
-    suspend fun getFilters(filterId: String): List<FilterParametersEntity>
+    fun getFilters(filterId: String): Flow<FilterParametersEntity>
 }
