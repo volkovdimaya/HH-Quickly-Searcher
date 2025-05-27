@@ -74,7 +74,7 @@ class SearchViewModel(
         }
 
         viewModelScope.launch {
-            vacanciesInteractor.getSearchFilters().collect {
+            filterParametersInteractor.getSearchFilterParameters().collect {
                 isFiltersEmptyState.postValue(isFilterEmpty(it))
                 currentFilters = it
             }

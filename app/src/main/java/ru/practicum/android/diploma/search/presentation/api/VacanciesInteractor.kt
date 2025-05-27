@@ -14,6 +14,4 @@ interface VacanciesInteractor {
     ): Flow<SearchResult>
 
     fun getVacancyDetails(id: Int): Flow<VacancyDetail?>
-
-    fun getSearchFilters(): Flow<FilterParametersSearch>
 }
