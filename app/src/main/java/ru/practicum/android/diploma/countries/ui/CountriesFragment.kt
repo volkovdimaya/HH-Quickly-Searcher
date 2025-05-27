@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -47,14 +49,21 @@ class CountriesFragment() : ListWithInternetFragment<Country, FragmentCountriesB
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Country>) {
         when (state) {
             is FiltersUiState.SuccessAddDb -> {
-                // TODO:
+                findNavController().navigate(
+                    navigateIdAction,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(findNavController().currentDestination!!.id, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
             }
         }
     }
 
-    private fun showSelectPosition(newList: List<Country>) {
-        adapter.updateList(newList)
-    }
+
+
+
     private fun saveFilterParameter(item: Country) {
         viewModel.saveFilterParameter(item)
     }

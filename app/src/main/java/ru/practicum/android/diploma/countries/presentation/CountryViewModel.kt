@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.Country
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
@@ -52,7 +53,7 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
     }
 
     fun showSelectItem(it: Country) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             // TODO: добавить в базу данных
             interactor.saveCountry(it)
             screenStateLiveData.postValue(FiltersUiState.SuccessAddDb)
