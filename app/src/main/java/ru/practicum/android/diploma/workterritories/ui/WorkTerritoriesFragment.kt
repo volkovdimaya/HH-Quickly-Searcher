@@ -52,22 +52,33 @@ class WorkTerritoriesFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is WorkTerritoriesState.SelectedArea -> {
-                    state.country?.let {
-                        binding.country.visibility = View.GONE
-                        binding.countrySelected.visibility = View.VISIBLE
-                        binding.countrySelectedText.text = it.countryName
-
-                    } ?: {
-                        binding.country.visibility = View.VISIBLE
-                        binding.countrySelected.visibility = View.GONE
-                    }
+                    showRegion(state)
                 }
-
-
             }
         }
     }
 
+    private fun showRegion(state: WorkTerritoriesState.SelectedArea) {
+        state.country?.let {
+            binding.country.visibility = View.GONE
+            binding.countrySelected.visibility = View.VISIBLE
+            binding.countrySelectedText.text = it.countryName
+
+        } ?: run {
+            binding.country.visibility = View.VISIBLE
+            binding.countrySelected.visibility = View.GONE
+        }
+
+        state.region?.let {
+            binding.region.visibility = View.GONE
+            binding.regionSelected.visibility = View.VISIBLE
+            binding.regionSelectedText.text = it.regionName
+
+        } ?: run {
+            binding.region.visibility = View.VISIBLE
+            binding.regionSelected.visibility = View.GONE
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.workterritories.presentation.api.InteractorW
 
 class InteractorWorkTerritoriesImpl(val repDb: FilterParametersRepository) : InteractorWorkTerritories {
     override fun getCountry(): Flow<Country?> =
-        repDb.getFilterParameters()
+        repDb.getFilterParametersObserver()
             .map {
                 if (it.countryId == null || it.countryName == null) {
                     return@map null
@@ -23,8 +23,8 @@ class InteractorWorkTerritoriesImpl(val repDb: FilterParametersRepository) : Int
             }
 
 
-    override suspend fun getRegion(): Flow<Region?> =
-        repDb.getFilterParameters()
+    override fun getRegion(): Flow<Region?> =
+        repDb.getFilterParametersObserver()
             .map {
                 if (it.regionId == null || it.regionName == null) {
                     return@map null

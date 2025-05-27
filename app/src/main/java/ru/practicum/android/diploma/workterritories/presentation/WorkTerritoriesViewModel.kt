@@ -18,9 +18,6 @@ class WorkTerritoriesViewModel(
     val state: LiveData<WorkTerritoriesState>
         get() = _state!!
 
-    private var currentStateArea = WorkTerritoriesState.SelectedArea()
-
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
             combine(
@@ -29,27 +26,9 @@ class WorkTerritoriesViewModel(
             ) { country, region ->
                 WorkTerritoriesState.SelectedArea(country, region)
             }.collect { selectedArea ->
-                //пришел null и что то еще мы слушаем постоянно
-                currentStateArea = selectedArea
-                _state.postValue(currentStateArea)
+                _state.postValue(selectedArea)
             }
         }
-    }
-
-//    private fun updateStateCountry(newState: WorkTerritoriesState.SelectedArea): WorkTerritoriesState.SelectedArea {
-//        //нам нужно обязательно удаление
-//        if (newState.country == null) {
-//            return currentStateArea.copy(country = null)
-//        }
-//        if(newState.region == null){
-//            return currentStateArea.copy(region = null)
-//        }
-//        //а может быть просто пришел null и не нужно обновлять
-//        return currentStateArea.copy(country = newState)
-//    }
-
-    private fun updateStateRegion(newState: Region): WorkTerritoriesState.SelectedArea {
-        return currentStateArea.copy(region = newState)
     }
 
     fun deleteCountry() {

@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.regions.domain.models.Region
 
 interface InteractorWorkTerritories {
     fun getCountry(): Flow<Country?>
-    suspend fun getRegion(): Flow<Region?>
+    fun getRegion(): Flow<Region?>
     suspend fun deleteCountry()
     suspend fun deleteRegion()
 }

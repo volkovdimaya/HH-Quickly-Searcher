@@ -22,5 +22,8 @@ interface FilterParametersDao {
     suspend fun updateFilters(filterParametersEntity: FilterParametersEntity)
 
     @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
-    fun getFilters(filterId: String): Flow<FilterParametersEntity>
+    suspend fun getFilters(filterId: String): List<FilterParametersEntity>
+
+    @Query("SELECT * FROM filter_parameters WHERE filters_id = :filterId")
+    fun getFiltersObserver(filterId: String): Flow<FilterParametersEntity?>
 }
