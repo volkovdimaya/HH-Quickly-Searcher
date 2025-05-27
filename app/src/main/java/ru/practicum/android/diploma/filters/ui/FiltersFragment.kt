@@ -68,25 +68,9 @@ class FiltersFragment : Fragment() {
     }
 
     private fun setAllClickListeners() {
-        binding.industry.setOnClickListener {
-            findNavController().navigate(R.id.industriesFragment)
-        }
-        binding.industrySelected.setOnClickListener {
-            findNavController().navigate(R.id.industriesFragment)
-        }
-        binding.industryDelete.setOnClickListener {
-            viewModel.deleteFilterParameter(FilterParametersType.Industry())
-        }
-        binding.workTerritories.setOnClickListener {
-            findNavController().navigate(R.id.workTerritoriesFragment)
-        }
-        binding.workTerritoriesSelected.setOnClickListener {
-            findNavController().navigate(R.id.workTerritoriesFragment)
-        }
-        binding.workTerritoryDelete.setOnClickListener {
-            viewModel.deleteFilterParameter(FilterParametersType.Country())
-            viewModel.deleteFilterParameter(FilterParametersType.Region())
-        }
+        setIndustryListeners()
+        setWorkTerritoryListeners()
+
         binding.expectedSalaryLayout.setEndIconOnClickListener {
             binding.expectedSalaryEditText.setText("")
             binding.expectedSalaryLayout.isEndIconVisible = false
@@ -106,6 +90,31 @@ class FiltersFragment : Fragment() {
         binding.buttonApply.setOnClickListener {
             viewModel.addFilterParameter(FilterParametersType.NeedToSearch(true))
             requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    private fun setIndustryListeners() {
+        binding.industry.setOnClickListener {
+            findNavController().navigate(R.id.industriesFragment)
+        }
+        binding.industrySelected.setOnClickListener {
+            findNavController().navigate(R.id.industriesFragment)
+        }
+        binding.industryDelete.setOnClickListener {
+            viewModel.deleteFilterParameter(FilterParametersType.Industry())
+        }
+    }
+
+    private fun setWorkTerritoryListeners() {
+        binding.workTerritories.setOnClickListener {
+            findNavController().navigate(R.id.workTerritoriesFragment)
+        }
+        binding.workTerritoriesSelected.setOnClickListener {
+            findNavController().navigate(R.id.workTerritoriesFragment)
+        }
+        binding.workTerritoryDelete.setOnClickListener {
+            viewModel.deleteFilterParameter(FilterParametersType.Country())
+            viewModel.deleteFilterParameter(FilterParametersType.Region())
         }
     }
 
