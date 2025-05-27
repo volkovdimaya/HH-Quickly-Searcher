@@ -5,6 +5,8 @@ import ru.practicum.android.diploma.favorites.domain.impl.FavoritesInteractorImp
 import ru.practicum.android.diploma.favorites.domain.interactors.FavoritesInteractor
 import ru.practicum.android.diploma.industries.domain.IndustriesInteractor
 import ru.practicum.android.diploma.industries.domain.impl.IndustriesInteractorImpl
+import ru.practicum.android.diploma.regions.domain.RegionsInteractor
+import ru.practicum.android.diploma.regions.domain.impl.RegionsInteractorImpl
 import ru.practicum.android.diploma.search.domain.impl.VacanciesInteractorImpl
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
@@ -26,5 +28,9 @@ val interactorModule = module {
 
     single<IndustriesInteractor> {
         IndustriesInteractorImpl(get())
+    }
+
+    single<RegionsInteractor> {
+        RegionsInteractorImpl(get())
     }
 }

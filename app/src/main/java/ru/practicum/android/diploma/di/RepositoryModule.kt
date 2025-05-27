@@ -11,8 +11,6 @@ import ru.practicum.android.diploma.search.data.impl.VacanciesRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.vacancy.data.impl.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
-import ru.practicum.android.diploma.workterritories.data.impl.WorkTerritoriesRepositoryImpl
-import ru.practicum.android.diploma.workterritories.domain.api.WorkTerritoriesRepository
 
 val repositoryModule = module {
 

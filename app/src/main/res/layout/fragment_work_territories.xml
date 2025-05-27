@@ -34,8 +34,7 @@
         android:id="@+id/country_selected"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_60"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"

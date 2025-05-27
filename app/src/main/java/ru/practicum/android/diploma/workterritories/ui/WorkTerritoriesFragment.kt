@@ -1,22 +1,15 @@
 package ru.practicum.android.diploma.workterritories.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.domain.models.WorkTerritory
-import ru.practicum.android.diploma.databinding.FragmentWorkTerritoriesBinding
-import ru.practicum.android.diploma.workterritories.presentation.WorkTerritoriesViewModel
 
 class WorkTerritoriesFragment : Fragment() {
 
-    private val args: WorkTerritoriesFragmentArgs by navArgs()
     private val viewModel: WorkTerritoriesViewModel by viewModel()
 
     private var _binding: FragmentWorkTerritoriesBinding? = null
