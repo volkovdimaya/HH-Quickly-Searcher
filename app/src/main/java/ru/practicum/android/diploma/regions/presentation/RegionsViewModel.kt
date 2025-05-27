@@ -12,7 +12,7 @@ class RegionsViewModel(
     private val regionsInteractor: RegionsInteractor,
 ) : BaseSearchViewModel<Region>() {
 
-    private var currentCountryId: String? = null
+    private var currentCountryId: Int? = null
 
     private val fullRegionListGetter: () -> Unit = {
         getFullRegionList()
@@ -60,7 +60,7 @@ class RegionsViewModel(
         viewModelScope.launch {
             currentCountryId = regionsInteractor.getCurrentCountryId()
 
-            regionsInteractor.loadRegions(currentCountryId).collect { response ->
+            regionsInteractor.loadRegions(currentCountryId.toString()).collect { response ->
                 when {
                     response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                     response.second.isNotEmpty() -> {

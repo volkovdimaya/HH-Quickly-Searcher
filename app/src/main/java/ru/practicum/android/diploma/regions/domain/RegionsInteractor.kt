@@ -10,5 +10,5 @@ interface RegionsInteractor {
     fun getLocalRegionsList(): Flow<Pair<Int, List<Region>>>
     suspend fun clearTableDb()
     fun saveFilterParameter(item: Region): Flow<Int>
-    suspend fun getCurrentCountryId(): String?
+    suspend fun getCurrentCountryId(): Int?
 }
