@@ -22,4 +22,8 @@ class IndustriesInteractorImpl(private val industriesRepository: IndustriesRepos
     override suspend fun clearTableDb() {
         industriesRepository.clearTableDb()
     }
+
+    override fun saveFilterParameter(item: Industry): Flow<Int> {
+        return industriesRepository.insertFilterParameter(item)
+    }
 }

@@ -1,11 +1,11 @@
 package ru.practicum.android.diploma.workterritories.mapper
 
+import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.common.domain.models.WorkTerritory
 import ru.practicum.android.diploma.countries.mapper.CountryMapper.toCountry
 import ru.practicum.android.diploma.favorites.data.local.AreaResponse
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.regions.mapper.RegionMapper.toRegion
-import ru.practicum.android.diploma.search.data.dto.Response
 
 object WorkTerritoriesMapper {
 

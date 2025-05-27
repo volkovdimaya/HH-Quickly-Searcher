@@ -26,6 +26,7 @@ class IndustryAdapter : BaseAdapter<Industry>() {
 
     override fun updateList(newList: List<Industry>) {
         val oldIndustryList = list
+
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int {
                 return oldIndustryList.size
@@ -40,12 +41,7 @@ class IndustryAdapter : BaseAdapter<Industry>() {
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldItem = oldIndustryList[oldItemPosition]
-                val newItem = newList[newItemPosition]
-
-                return oldItem.industryId == newItem.industryId &&
-                    oldItem.industryName == newItem.industryName &&
-                    oldItem.select.isSelected == newItem.select.isSelected
+                return oldIndustryList[oldItemPosition] == newList[newItemPosition]
             }
         })
         this.list = newList.toMutableList()
