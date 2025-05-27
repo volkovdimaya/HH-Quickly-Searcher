@@ -11,7 +11,7 @@ object WorkTerritoriesMapper {
             country = if (countryId == null) {
                 null
             } else {
-                 Country(countryId, this.countryName ?: "")
+                Country(countryId, this.countryName ?: "")
             },
             regionWork = if (regionId == null) {
                 null
