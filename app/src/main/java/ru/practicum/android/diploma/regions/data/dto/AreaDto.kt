@@ -1,8 +1,11 @@
 package ru.practicum.android.diploma.regions.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class AreaDto(
     val id: String,
-    val parentId: String?,
     val name: String,
-    val areas: List<AreaDto>
+    @SerializedName("parent_id")
+    val parentId: String? = null,
+    val areas: List<AreaDto>? = null,
 )

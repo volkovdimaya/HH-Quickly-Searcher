@@ -9,12 +9,14 @@ import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteracto
 import ru.practicum.android.diploma.filters.domain.impl.FilterParametersInteractorImpl
 import ru.practicum.android.diploma.industries.domain.IndustriesInteractor
 import ru.practicum.android.diploma.industries.domain.impl.IndustriesInteractorImpl
+import ru.practicum.android.diploma.regions.domain.RegionsInteractor
+import ru.practicum.android.diploma.regions.domain.impl.RegionsInteractorImpl
 import ru.practicum.android.diploma.search.domain.impl.VacanciesInteractorImpl
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.impl.VacancyDetailsInteractorImpl
-import ru.practicum.android.diploma.workterritories.domain.impl.InteractorWorkTerritoriesImpl
-import ru.practicum.android.diploma.workterritories.presentation.api.InteractorWorkTerritories
+import ru.practicum.android.diploma.workterritories.domain.impl.WorkTerritoryInteractorImpl
+import ru.practicum.android.diploma.workterritories.domain.interactor.WorkTerritoryInteractor
 
 val interactorModule = module {
 
@@ -34,15 +36,19 @@ val interactorModule = module {
         IndustriesInteractorImpl(get())
     }
 
+    single<RegionsInteractor> {
+        RegionsInteractorImpl(get())
+    }
+
+    single<WorkTerritoryInteractor> {
+        WorkTerritoryInteractorImpl(get())
+    }
+
     single<FilterParametersInteractor> {
         FilterParametersInteractorImpl(get())
     }
 
     single<CountryInteractor> {
         CountryInteractorImpl(get(), get())
-    }
-
-    single<InteractorWorkTerritories> {
-        InteractorWorkTerritoriesImpl(get())
     }
 }

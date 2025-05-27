@@ -34,8 +34,7 @@
         android:id="@+id/country_selected"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_60"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -53,14 +52,14 @@
                 android:text="@string/country" />
 
             <TextView
-                android:id="@+id/country_selected_text"
+                android:id="@+id/countryName"
                 style="@style/Regular16Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
-                android:text="@string/choosing_country" />
+                tools:text="@string/choosing_country" />
         </LinearLayout>
 
         <ImageView
@@ -80,7 +79,7 @@
         android:layout_height="@dimen/height_60">
 
         <TextView
-            android:id="@+id/choose_region"
+
             style="@style/WorkTerritoriesItemText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,8 +101,7 @@
         android:id="@+id/region_selected"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_60"
-        android:visibility="gone"
-        >
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -111,7 +109,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/region_selected_text"
+
                 style="@style/Regular12Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,13 +120,14 @@
                 android:text="@string/region" />
 
             <TextView
+                android:id="@+id/regionName"
                 style="@style/Regular16Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
-                android:text="@string/choosing_country" />
+                tools:text="@string/choosing_country" />
         </LinearLayout>
 
         <ImageView

@@ -8,23 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.models.WorkTerritory
 import ru.practicum.android.diploma.databinding.FragmentWorkTerritoriesBinding
 import ru.practicum.android.diploma.workterritories.presentation.WorkTerritoriesViewModel
-import ru.practicum.android.diploma.workterritories.presentation.models.WorkTerritoriesState
 
 class WorkTerritoriesFragment : Fragment() {
 
+    private val viewModel: WorkTerritoriesViewModel by viewModel()
+
     private var _binding: FragmentWorkTerritoriesBinding? = null
-
-    private val binding get() = _binding!!
-
-    private val viewModel by viewModel<WorkTerritoriesViewModel>()
+    val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentWorkTerritoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,52 +31,48 @@ class WorkTerritoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getWorkTerritoryLiveData().observe(viewLifecycleOwner) { workTerritory ->
+            updateScreen(workTerritory)
+        }
+
         binding.country.setOnClickListener {
             findNavController().navigate(R.id.countriesFragment)
         }
+
         binding.region.setOnClickListener {
             findNavController().navigate(R.id.regionsFragment)
         }
+
         binding.countrySelectedDelete.setOnClickListener {
-            viewModel.deleteCountry()
-        }
-        binding.regionSelectedDelete.setOnClickListener {
-            viewModel.deleteRegion()
+            viewModel.deleteCountryFilter()
         }
 
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is WorkTerritoriesState.SelectedArea -> {
-                    showRegion(state)
-                }
-            }
+        binding.regionSelectedDelete.setOnClickListener {
+            viewModel.deleteRegionFilter()
         }
+
     }
 
-    private fun showRegion(state: WorkTerritoriesState.SelectedArea) {
-        state.country?.let {
-            binding.country.visibility = View.GONE
-            binding.countrySelected.visibility = View.VISIBLE
-            binding.countrySelectedText.text = it.countryName
-
-        } ?: run {
+    private fun updateScreen(workTerritory: WorkTerritory) {
+        if (workTerritory.country == null) {
             binding.country.visibility = View.VISIBLE
             binding.countrySelected.visibility = View.GONE
+
+        } else {
+            binding.countryName.text = workTerritory.country.countryName
+            binding.country.visibility = View.GONE
+            binding.countrySelected.visibility = View.VISIBLE
+
         }
 
-        state.region?.let {
-            binding.region.visibility = View.GONE
-            binding.regionSelected.visibility = View.VISIBLE
-            binding.regionSelectedText.text = it.regionName
-
-        } ?: run {
+        if (workTerritory.regionWork == null) {
             binding.region.visibility = View.VISIBLE
             binding.regionSelected.visibility = View.GONE
+        } else {
+            binding.region.visibility = View.GONE
+            binding.regionSelected.visibility = View.VISIBLE
+            binding.regionName.text = workTerritory.regionWork.regionName
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
