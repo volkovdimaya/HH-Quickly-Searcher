@@ -23,6 +23,9 @@ class FiltersFragment : Fragment() {
 
     private val viewModel by viewModel<FiltersViewModel>()
 
+    private var startParameters: FilterParameters = FilterParameters()
+    private var startIsNotSet = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +60,9 @@ class FiltersFragment : Fragment() {
         }
 
         viewModel.getFilterParametersState().observe(viewLifecycleOwner) {
+            if (startIsNotSet) {
+                startParameters = it
+            }
             render(it)
         }
     }
@@ -70,7 +76,6 @@ class FiltersFragment : Fragment() {
         }
         binding.industryDelete.setOnClickListener {
             viewModel.deleteFilterParameter(FilterParametersType.Industry())
-            viewModel.updateFilters()
         }
 
         binding.workTerritories.setOnClickListener {
@@ -82,7 +87,6 @@ class FiltersFragment : Fragment() {
         binding.workTerritoryDelete.setOnClickListener {
             viewModel.deleteFilterParameter(FilterParametersType.Country())
             viewModel.deleteFilterParameter(FilterParametersType.Region())
-            viewModel.updateFilters()
         }
 
         binding.expectedSalaryLayout.setEndIconOnClickListener {
@@ -98,6 +102,14 @@ class FiltersFragment : Fragment() {
             binding.withoutSalarySelector.isChecked = newState
             viewModel.addWithDebounce(FilterParametersType.OnlyWithSalary(newState))
         }
+
+        binding.buttonDeleteAll.setOnClickListener {
+            viewModel.deleteAllFilters()
+        }
+        binding.buttonApply.setOnClickListener {
+            viewModel.addFilterParameter(FilterParametersType.NeedToSearch(true))
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun render(filters: FilterParameters) {
@@ -109,9 +121,50 @@ class FiltersFragment : Fragment() {
         binding.industrySelected.isVisible = filters.industryId != null
         binding.industryName.text = filters.industryName ?: ""
 
-        binding.expectedSalaryEditText.setText(filters.salary?.toString() ?: "")
+        if (startIsNotSet) {
+            binding.expectedSalaryEditText.setText(filters.salary?.toString() ?: "")
+            binding.withoutSalarySelector.isChecked = filters.onlyWithSalary
+        }
 
-        binding.withoutSalarySelector.isChecked = filters.onlyWithSalary
+        startIsNotSet = false
+
+        val filtersChanged = hasFilterChanged(filters)
+        binding.buttonApply.isVisible = filtersChanged
+
+        val filtersEmpty = isFilterEmpty(filters)
+        binding.buttonDeleteAll.isVisible = !filtersEmpty
+    }
+
+    private fun hasFilterChanged(filters: FilterParameters): Boolean {
+        var result = false
+        if (filters.onlyWithSalary != startParameters.onlyWithSalary
+            || filters.salary != startParameters.salary) {
+            result = true
+        }
+        if (filters.regionId != startParameters.regionId
+            || filters.countryId != startParameters.countryId
+            || filters.industryId != startParameters.industryId) {
+            result = true
+        }
+        return result
+    }
+
+    private fun isFilterEmpty(filters: FilterParameters): Boolean {
+        var result = true
+        listOf(
+            filters.salary,
+            filters.regionId,
+            filters.countryId,
+            filters.industryId
+        ).forEach { parameter ->
+            if (parameter != null) {
+                result = false
+            }
+        }
+        if (filters.onlyWithSalary) {
+            result = false
+        }
+        return result
     }
 
     private fun makeWorkTerritoryName(filters: FilterParameters): String {

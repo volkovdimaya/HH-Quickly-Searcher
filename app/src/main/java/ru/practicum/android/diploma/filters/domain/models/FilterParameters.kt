@@ -8,5 +8,6 @@ data class FilterParameters(
     val onlyWithSalary: Boolean = false,
     val countryName: String? = null,
     val regionName: String? = null,
-    val industryName: String? = null
+    val industryName: String? = null,
+    val needToSearch: Boolean = false
 )
