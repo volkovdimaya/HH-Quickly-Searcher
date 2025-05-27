@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.WorkTerritory
-import ru.practicum.android.diploma.workterritories.domain.interactor.WorkTerritoriesInteractor
+import ru.practicum.android.diploma.workterritories.domain.interactor.WorkTerritoryInteractor
 
-class WorkTerritoriesViewModel(private val workTerritoriesInteractor: WorkTerritoriesInteractor) : ViewModel() {
+class WorkTerritoriesViewModel(private val workTerritoryInteractor: WorkTerritoryInteractor) : ViewModel() {
 
-    init{
+    init {
         getCurrentWorkTerritories()
     }
 
@@ -18,7 +18,7 @@ class WorkTerritoriesViewModel(private val workTerritoriesInteractor: WorkTerrit
 
     private fun getCurrentWorkTerritories() {
         viewModelScope.launch {
-            workTerritoriesInteractor.getWorkTerritories()
+            workTerritoryInteractor.getWorkTerritories()
                 .collect { region ->
                     workTerritoryLiveData.postValue(region)
                 }
@@ -27,13 +27,13 @@ class WorkTerritoriesViewModel(private val workTerritoriesInteractor: WorkTerrit
 
     fun deleteCountryFilter() {
         viewModelScope.launch {
-            workTerritoriesInteractor.deleteCountryFilter()
+            workTerritoryInteractor.deleteCountryFilter()
         }
     }
 
     fun deleteRegionFilter() {
         viewModelScope.launch {
-            workTerritoriesInteractor.deleteRegionFilter()
+            workTerritoryInteractor.deleteRegionFilter()
         }
     }
 }

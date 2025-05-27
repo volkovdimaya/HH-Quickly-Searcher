@@ -30,14 +30,12 @@ interface IndustryDao : FilterUpdateParametersDao, FilterParametersCreateDao {
     @Query("DELETE FROM industries")
     suspend fun clearTable()
 
-
     @Transaction
     suspend fun updateIndustryParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {
-            updateIndustry(parameters.industryId ?: "" , parameters.industryName ?: "")
+            updateIndustry(parameters.industryId ?: "", parameters.industryName ?: "")
         } else {
             insert(parameters)
         }
     }
-
 }

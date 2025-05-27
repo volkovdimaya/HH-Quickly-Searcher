@@ -8,14 +8,13 @@ import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.workterritories.domain.api.WorkTerritoriesRepository
 import ru.practicum.android.diploma.workterritories.mapper.WorkTerritoriesMapper.toWorkTerritory
 
-class WorkTerritoriesRepositoryImpl(
+class WorkTerritoryRepositoryImpl(
     private val appDatabase: AppDatabase
 ) : WorkTerritoriesRepository {
 
     override fun getWorkTerritories(): Flow<WorkTerritory> {
-
         return appDatabase.filterUpdateParametersDao().observeFilterParameters()
-            .map { it?.toWorkTerritory( ) ?: WorkTerritory()}
+            .map { it?.toWorkTerritory() ?: WorkTerritory() }
 
     }
 
