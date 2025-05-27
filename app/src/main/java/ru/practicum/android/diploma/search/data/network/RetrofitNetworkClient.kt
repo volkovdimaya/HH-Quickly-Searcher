@@ -70,7 +70,8 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
     private suspend fun handleAreasRequest(dto: RegionRequest): Response {
         return try {
             val areas = if (dto.countryId != null) {
-                hhApiService.getAreasByCountry(dto.countryId)
+                val countryArea = hhApiService.getAreaById(dto.countryId)
+                countryArea.areas ?: emptyList()
             } else {
                 hhApiService.getAreas()
             }

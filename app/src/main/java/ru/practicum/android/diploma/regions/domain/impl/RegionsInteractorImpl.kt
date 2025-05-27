@@ -26,4 +26,8 @@ class RegionsInteractorImpl(private val regionsRepository: RegionsRepository) : 
     override suspend fun clearTableDb() {
         regionsRepository.clearTableDb()
     }
+
+    override suspend fun getCurrentCountryId(): String? {
+        return regionsRepository.getCurrentCountryId()
+    }
 }

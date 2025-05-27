@@ -10,10 +10,9 @@ import ru.practicum.android.diploma.regions.domain.models.Region
 
 class RegionsViewModel(
     private val regionsInteractor: RegionsInteractor,
-    private val countryId: String? = null
 ) : BaseSearchViewModel<Region>() {
 
-    private var currentList: List<Region> = mutableListOf()
+    private var currentCountryId: String? = null
 
     private val fullRegionListGetter: () -> Unit = {
         getFullRegionList()
@@ -33,7 +32,6 @@ class RegionsViewModel(
             when {
                 response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                 response.second.isNotEmpty() -> {
-                    currentList = response.second
                     screenStateLiveData.postValue(ListUiState.Content(response.second))
                 }
                 else -> screenStateLiveData.postValue(ListUiState.Empty)
@@ -60,11 +58,12 @@ class RegionsViewModel(
 
     private fun loadRegions() {
         viewModelScope.launch {
-            regionsInteractor.loadRegions(countryId).collect { response ->
+            currentCountryId = regionsInteractor.getCurrentCountryId()
+
+            regionsInteractor.loadRegions(currentCountryId).collect { response ->
                 when {
                     response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                     response.second.isNotEmpty() -> {
-                        currentList = response.second
                         screenStateLiveData.postValue(ListUiState.Content(response.second))
                     }
                     else -> screenStateLiveData.postValue(ListUiState.Empty)
@@ -78,8 +77,7 @@ class RegionsViewModel(
             regionsInteractor.getLocalRegionsList().collect { response ->
                 when {
                     response.second.isNotEmpty() -> {
-                        currentList = response.second
-                        screenStateLiveData.postValue(ListUiState.Content(currentList))
+                        screenStateLiveData.postValue(ListUiState.Content(response.second))
                     }
                     else -> screenStateLiveData.postValue(ListUiState.Empty)
                 }

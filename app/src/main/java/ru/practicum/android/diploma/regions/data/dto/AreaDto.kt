@@ -7,5 +7,5 @@ data class AreaDto(
     val name: String,
     @SerializedName("parent_id")
     val parentId: String? = null,
-    val areas: List<AreaDto> = emptyList(),
+    val areas: List<AreaDto>? = null,
 )

@@ -10,4 +10,5 @@ interface RegionsRepository {
     fun getLocalRegionsList(): Flow<Pair<Int, List<Region>>>
     fun insertFilterParameter(item: Region): Flow<Int>
     suspend fun clearTableDb()
+    suspend fun getCurrentCountryId(): String?
 }

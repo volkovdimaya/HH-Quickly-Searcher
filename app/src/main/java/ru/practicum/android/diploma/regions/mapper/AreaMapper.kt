@@ -23,7 +23,8 @@ object AreaMapper {
     fun AreaDto.toEntity(): AreaEntity {
         return AreaEntity(
             areaId = this.id,
-            areaName = this.name
+            areaName = this.name,
+            parentId = this.parentId,
         )
     }
 
@@ -33,7 +34,7 @@ object AreaMapper {
         fun addAreasRecursively(areas: List<AreaDto>) {
             areas.forEach { area ->
                 flattenedList.add(area)
-                if (area.areas.isNotEmpty()) {
+                if (!area.areas.isNullOrEmpty()) {
                     addAreasRecursively(area.areas)
                 }
             }

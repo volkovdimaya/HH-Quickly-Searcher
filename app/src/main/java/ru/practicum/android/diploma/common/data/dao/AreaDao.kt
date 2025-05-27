@@ -30,6 +30,9 @@ interface AreaDao : FilterUpdateParametersDao, FilterParametersCreateDao {
     @Query("DELETE FROM areas")
     suspend fun clearTable()
 
+    @Query("SELECT * FROM areas WHERE areaId = :countryId LIMIT 1")
+    suspend fun getAreaById(countryId: String): AreaEntity?
+
     @Transaction
     suspend fun updateAreaParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {

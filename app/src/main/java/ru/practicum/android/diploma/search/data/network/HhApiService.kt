@@ -32,5 +32,5 @@ interface HhApiService {
     suspend fun getAreas(): List<AreaDto>
 
     @GET("/areas/{area_id}")
-    suspend fun getAreasByCountry(@Path("area_id") areaId: String): List<AreaDto>
+    suspend fun getAreaById(@Path("area_id") areaId: String): AreaDto
 }

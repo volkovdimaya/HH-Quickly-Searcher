@@ -21,6 +21,7 @@ import ru.practicum.android.diploma.regions.mapper.AreaMapper.toEntity
 import ru.practicum.android.diploma.regions.mapper.AreaMapper.toRegion
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.util.isConnectedInternet
+import ru.practicum.android.diploma.workterritories.data.entity.AreaEntity
 
 class RegionsRepositoryImpl(
     private val localClient: LocalClient,
@@ -86,16 +87,48 @@ class RegionsRepositoryImpl(
     }
 
     override fun insertFilterParameter(item: Region): Flow<Int> = flow {
-        val filterParametersEntity =
-            FilterParametersEntity(regionId = item.regionId, regionName = item.regionName)
-        val response = localClient.doUpdate(filterParametersEntity) {
-            appDatabase.areaDao().updateAreaParameter(filterParametersEntity)
+        val currentFilter = appDatabase.filterParametersCreateDao().getParameters()
+
+        var countryId = currentFilter?.countryId
+        var countryName = currentFilter?.countryName
+
+        if (countryId.isNullOrBlank()) {
+            val country = findCountryForArea(item.regionId)
+            if (country != null) {
+                countryId = country.areaId
+                countryName = country.areaName
+            }
         }
+
+        val updatedFilterParameters = FilterParametersEntity(
+            id = currentFilter?.id ?: 1,
+            countryId = countryId,
+            countryName = countryName,
+            regionId = item.regionId,
+            regionName = item.regionName,
+            industryId = currentFilter?.industryId,
+            industryName = currentFilter?.industryName,
+            salary = currentFilter?.salary,
+            salaryType = currentFilter?.salaryType,
+            onlyWithSalary = currentFilter?.onlyWithSalary ?: false
+        )
+
+        val response = localClient.doUpdate(updatedFilterParameters) {
+            appDatabase.filterParametersCreateDao().insert(updatedFilterParameters)
+        }
+
         if (response.resultCode == INTERNAL_ERROR_CODE) {
             error("error")
         }
         emit(response.resultCode)
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun getCurrentCountryId(): String? {
+        return withContext(Dispatchers.IO) {
+            val currentFilter = appDatabase.filterParametersCreateDao().getParameters()
+            currentFilter?.countryId
+        }
+    }
 
     private suspend fun getAreasFromNetwork(countryId: String?): Response {
         val response = networkClient.doRequest(RegionRequest(countryId))
@@ -115,5 +148,20 @@ class RegionsRepositoryImpl(
         if (response.resultCode == INTERNAL_ERROR_CODE) {
             error("error")
         }
+    }
+
+    private suspend fun findCountryForArea(areaId: String): AreaEntity? {
+        var area = appDatabase.areaDao().getAreaById(areaId)
+        var parentArea: AreaEntity?
+
+        while (area?.parentId != null) {
+            parentArea = appDatabase.areaDao().getAreaById(area.parentId.toString())
+            if (parentArea != null) {
+                area = parentArea
+            } else {
+                break
+            }
+        }
+        return area
     }
 }
