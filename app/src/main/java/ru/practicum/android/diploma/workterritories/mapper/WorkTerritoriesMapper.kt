@@ -8,12 +8,12 @@ import ru.practicum.android.diploma.regions.domain.models.Region
 object WorkTerritoriesMapper {
     fun FilterParametersEntity.toWorkTerritory(): WorkTerritory {
         return WorkTerritory(
-            country = if (countryId.toString().isBlank()) {
+            country = if (countryId == null) {
                 null
             } else {
-                this.countryId?.let { Country(it, this.countryName ?: "") }
+                Country(countryId, this.countryName ?: "")
             },
-            regionWork = if (regionId.toString().isNullOrBlank()) {
+            regionWork = if (regionId == null) {
                 null
             } else {
                 Region(
