@@ -23,7 +23,8 @@ object FilterParametersMapper {
             regionId,
             industryId,
             salary,
-            onlyWithSalary
+            onlyWithSalary,
+            needToSearch
         )
     }
 
@@ -36,7 +37,8 @@ object FilterParametersMapper {
             this.onlyWithSalary,
             this.countryName,
             this.regionName,
-            this.industryName
+            this.industryName,
+            this.needToSearch
         )
     }
 }

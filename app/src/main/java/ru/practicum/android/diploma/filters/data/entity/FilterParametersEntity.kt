@@ -24,5 +24,7 @@ data class FilterParametersEntity(
     @ColumnInfo("region_name")
     val regionName: String? = null,
     @ColumnInfo("industry_name")
-    val industryName: String? = null
+    val industryName: String? = null,
+    @ColumnInfo("need_to_search")
+    val needToSearch: Boolean = false
 )

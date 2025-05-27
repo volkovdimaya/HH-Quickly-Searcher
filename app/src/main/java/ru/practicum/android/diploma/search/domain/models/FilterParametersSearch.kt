@@ -6,4 +6,5 @@ data class FilterParametersSearch(
     val industryId: String? = null,
     val salary: Int? = null,
     val onlyWithSalary: Boolean = false,
+    val needToSearch: Boolean = false
 )

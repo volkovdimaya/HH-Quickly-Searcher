@@ -40,18 +40,24 @@ class FiltersViewModel(
         addFilterParameter(parameter)
     }
 
-    private fun addFilterParameter(parameter: FilterParametersType) {
+    fun deleteAllFilters() {
+        viewModelScope.launch {
+            filterInteractor.deleteAllFilters()
+        }
+        updateFilters()
+    }
+
+    fun addFilterParameter(parameter: FilterParametersType) {
         viewModelScope.launch {
             filterInteractor.updateFilterParameter(parameter)
         }
+        updateFilters()
     }
 
     fun updateFilters() {
         viewModelScope.launch {
             filterInteractor.getFilterParameters().collect {
-                if (it != filterParametersState.value) {
-                    filterParametersState.postValue(it)
-                }
+                filterParametersState.postValue(it)
             }
         }
     }

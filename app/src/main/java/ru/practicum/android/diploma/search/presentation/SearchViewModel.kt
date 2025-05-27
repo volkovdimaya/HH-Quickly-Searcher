@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
+import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.debounce
@@ -73,12 +74,7 @@ class SearchViewModel(
             onClickDebounce(item)
         }
 
-        viewModelScope.launch {
-            filterParametersInteractor.getSearchFilterParameters().collect {
-                isFiltersEmptyState.postValue(isFilterEmpty(it))
-                currentFilters = it
-            }
-        }
+        getFilters()
     }
 
     fun restoreState() {
@@ -119,6 +115,19 @@ class SearchViewModel(
             screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
             searchVacancies()
             searchedFilters = currentFilters
+        }
+    }
+
+    fun getFilters() {
+        viewModelScope.launch {
+            filterParametersInteractor.getSearchFilterParameters().collect {
+                isFiltersEmptyState.postValue(isFilterEmpty(it))
+                currentFilters = it
+                if (it.needToSearch) {
+                    updateRequest(currentQuery)
+                    filterParametersInteractor.updateFilterParameter(FilterParametersType.NeedToSearch())
+                }
+            }
         }
     }
 
@@ -222,7 +231,6 @@ class SearchViewModel(
     private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
         var result = true
         listOf(
-            filterParameters.onlyWithSalary,
             filterParameters.salary,
             filterParameters.regionId,
             filterParameters.countryId,
@@ -231,6 +239,9 @@ class SearchViewModel(
             if (parameter != null) {
                 result = false
             }
+        }
+        if (filterParameters.onlyWithSalary) {
+            result = false
         }
         return result
     }
