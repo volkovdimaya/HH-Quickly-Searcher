@@ -30,6 +30,6 @@ val interactorModule = module {
         IndustriesInteractorImpl(get())
     }
     single<CountryInteractor> {
-        CountryInteractorImpl(get())
+        CountryInteractorImpl(get(), get())
     }
 }

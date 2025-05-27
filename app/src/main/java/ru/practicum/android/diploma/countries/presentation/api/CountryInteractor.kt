@@ -6,5 +6,5 @@ import ru.practicum.android.diploma.countries.data.dto.CountryResponse
 
 interface CountryInteractor {
     suspend fun getCountries(): Flow<Pair<Int, List<Country>>>
-    suspend fun saveCountry(country: Country): Flow<Int>
+    suspend fun saveCountry(country: Country)
 }

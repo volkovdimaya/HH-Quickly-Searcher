@@ -53,7 +53,8 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
 
     fun showSelectItem(it: Country) {
         viewModelScope.launch {
-            // TODO: добавить в базу данных  
+            // TODO: добавить в базу данных
+            interactor.saveCountry(it)
             screenStateLiveData.postValue(FiltersUiState.SuccessAddDb)
         }
         

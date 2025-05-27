@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AreaNetworkDto(
     @SerializedName("id")
-    val id: String,
+    val id: Int,
     @SerializedName("parent_id")
     val parentId: String?,
     @SerializedName("name")

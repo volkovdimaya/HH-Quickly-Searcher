@@ -31,16 +31,12 @@ class FilterParametersRepositoryImpl(
     override suspend fun saveFilterParameters(parameters: FilterParametersType) {
         val currentFilters = database.filterParametersDao().getFilters(FILTER_DB_ID)
         var newFilters = if (currentFilters.isEmpty()) {
-            FilterParametersEntity(FILTER_DB_ID)
+            FilterParametersEntity()
         } else {
             currentFilters[0]
         }
         newFilters = updateFiltersWithType(newFilters, parameters)
-        if (currentFilters.isEmpty()) {
-            database.filterParametersDao().createFilters(newFilters)
-        } else {
-            database.filterParametersDao().updateFilters(newFilters)
-        }
+        database.filterParametersDao().createFilters(newFilters)
     }
 
     private fun updateFiltersWithType(
