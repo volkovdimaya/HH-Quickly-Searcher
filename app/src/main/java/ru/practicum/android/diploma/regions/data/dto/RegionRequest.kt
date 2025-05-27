@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.regions.data.dto
 
-class AreasRequest
+class RegionRequest(val countryId: String? = null)
