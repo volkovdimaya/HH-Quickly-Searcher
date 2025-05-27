@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.common.data.dao
 
-import android.provider.SyncStateContract.Helpers.insert
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert

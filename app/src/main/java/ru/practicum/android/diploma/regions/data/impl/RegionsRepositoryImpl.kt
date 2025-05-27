@@ -40,7 +40,7 @@ class RegionsRepositoryImpl(
         val response = if (negativeResponseNetwork) {
             Response().apply { resultCode = INTERNAL_ERROR_CODE }
         } else {
-            getAreasFromNetwork(countryId)
+            getAreasFromNetwork(countryId?.toInt())
         }
         val result = if (response is RegionsResponse) {
             val areaDtoList = AreaMapper.flattenAreaDtoList(response.regions).sortedBy { it.name }
@@ -92,8 +92,8 @@ class RegionsRepositoryImpl(
         var countryId = currentFilter?.countryId
         var countryName = currentFilter?.countryName
 
-        if (countryId.toString().isNullOrBlank()) {
-            val country = findCountryForArea(item.regionId)
+        if (countryId.toString().isBlank()) {
+            val country = findCountryForArea(item.regionId.toInt())
             if (country != null) {
                 countryId = country.areaId
                 countryName = country.areaName
@@ -122,14 +122,14 @@ class RegionsRepositoryImpl(
         emit(response.resultCode)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getCurrentCountryId(): String? {
+    override suspend fun getCurrentCountryId(): Int? {
         return withContext(Dispatchers.IO) {
             val currentFilter = appDatabase.areaDao().getParameters()
-            currentFilter?.countryId.toString()
+            currentFilter.countryId
         }
     }
 
-    private suspend fun getAreasFromNetwork(countryId: String?): Response {
+    private suspend fun getAreasFromNetwork(countryId: Int?): Response {
         val response = networkClient.doRequest(RegionRequest(countryId))
         return if (response is RegionsResponse) {
             response
@@ -149,12 +149,12 @@ class RegionsRepositoryImpl(
         }
     }
 
-    private suspend fun findCountryForArea(areaId: String): AreaEntity? {
+    private suspend fun findCountryForArea(areaId: Int): AreaEntity? {
         var area = appDatabase.areaDao().getAreaById(areaId)
         var parentArea: AreaEntity?
 
         while (area?.parentId != null) {
-            parentArea = appDatabase.areaDao().getAreaById(area.parentId.toString())
+            parentArea = appDatabase.areaDao().getAreaById(area.parentId?.toInt()!!)
             if (parentArea != null) {
                 area = parentArea
             } else {

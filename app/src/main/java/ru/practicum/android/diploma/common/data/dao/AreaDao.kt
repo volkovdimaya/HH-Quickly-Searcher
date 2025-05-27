@@ -31,7 +31,7 @@ interface AreaDao : FilterParametersDao {
     suspend fun clearTable()
 
     @Query("SELECT * FROM areas WHERE areaId = :countryId LIMIT 1")
-    suspend fun getAreaById(countryId: String): AreaEntity?
+    suspend fun getAreaById(countryId: Int): AreaEntity?
 
     @Query("SELECT COUNT(*) FROM filter_parameters")
     suspend fun isFiltersEmpty(): Int
@@ -43,12 +43,14 @@ interface AreaDao : FilterParametersDao {
         "UPDATE filter_parameters SET region_id = :id, region_name = :regionName " +
             "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
     )
-    suspend fun updateRegion(id: String, regionName: String)
+    suspend fun updateRegion(id: Int?, regionName: String)
 
     @Transaction
     suspend fun updateAreaParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {
-            updateRegion(parameters.regionId.toString() ?: "", parameters.regionName ?: "")
+            val regionId = parameters.regionId ?: return
+            val regionName = parameters.regionName ?: ""
+            updateRegion(regionId, regionName)
         } else {
             saveFilters(parameters)
         }

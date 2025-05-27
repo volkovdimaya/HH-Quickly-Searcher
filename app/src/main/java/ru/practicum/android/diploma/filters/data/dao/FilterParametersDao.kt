@@ -27,5 +27,5 @@ interface FilterParametersDao {
         "UPDATE filter_parameters SET country_id = :id, industry_name = :industryName " +
             "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
     )
-    suspend fun updateCountry(id: Nothing?, industryName: Nothing?)
+    suspend fun updateCountry(id: Int?, industryName: String?)
 }
