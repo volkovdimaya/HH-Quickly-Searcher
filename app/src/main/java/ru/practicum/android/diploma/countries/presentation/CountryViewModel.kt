@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.Country
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
+import ru.practicum.android.diploma.common.presentation.FiltersUiState
 import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.countries.presentation.api.CountryInteractor
 import ru.practicum.android.diploma.countries.presentation.models.CountryState
@@ -51,7 +52,11 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
     }
 
     fun showSelectItem(it: Country) {
-
+        viewModelScope.launch {
+            // TODO: добавить в базу данных  
+            screenStateLiveData.postValue(FiltersUiState.SuccessAddDb)
+        }
+        
     }
 
     fun saveFilterParameter(item: Country) {

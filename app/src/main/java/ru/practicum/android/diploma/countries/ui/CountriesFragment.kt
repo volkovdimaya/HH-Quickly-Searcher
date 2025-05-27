@@ -46,13 +46,9 @@ class CountriesFragment() : ListWithInternetFragment<Country, FragmentCountriesB
 
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Country>) {
         when (state) {
-            is FiltersUiState.FilterItem -> {
-                saveFilterParameter(state.item)
+            is FiltersUiState.SuccessAddDb -> {
+                // TODO:
             }
-            is FiltersUiState.SelectPosition -> {
-                showSelectPosition(state.newList)
-            }
-            FiltersUiState.NoChange -> {}
         }
     }
 
