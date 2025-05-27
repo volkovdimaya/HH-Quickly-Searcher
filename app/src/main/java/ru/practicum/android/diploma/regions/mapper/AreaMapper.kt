@@ -8,7 +8,7 @@ object AreaMapper {
 
     fun AreaEntity.toRegion(): Region {
         return Region(
-            regionId = this.areaId,
+            regionId = this.areaId.toString(),
             regionName = this.areaName
         )
     }
@@ -22,7 +22,7 @@ object AreaMapper {
 
     fun AreaDto.toEntity(): AreaEntity {
         return AreaEntity(
-            areaId = this.id,
+            areaId = this.id.toInt(),
             areaName = this.name,
             parentId = this.parentId,
         )

@@ -1,17 +1,18 @@
 package ru.practicum.android.diploma.common.data.dao
 
+import android.provider.SyncStateContract.Helpers.insert
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import ru.practicum.android.diploma.filters.data.dao.FilterParametersCreateDao
+import ru.practicum.android.diploma.filters.data.dao.FilterParametersDao
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.industries.data.entity.IndustryEntity
 
 @Dao
-interface IndustryDao : FilterParametersCreateDao {
+interface IndustryDao : FilterParametersDao {
 
     // industries_table
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -34,7 +35,7 @@ interface IndustryDao : FilterParametersCreateDao {
 
     @Query(
         "UPDATE filter_parameters SET industry_id = :id, industry_name = :industryName " +
-            "WHERE id = (SELECT id FROM filter_parameters LIMIT 1)"
+            "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
     )
     suspend fun updateIndustry(id: String, industryName: String)
 
@@ -43,7 +44,7 @@ interface IndustryDao : FilterParametersCreateDao {
         if (isFiltersEmpty() == 1) {
             updateIndustry(parameters.industryId ?: "", parameters.industryName ?: "")
         } else {
-            insert(parameters)
+            saveFilters(parameters)
         }
     }
 }

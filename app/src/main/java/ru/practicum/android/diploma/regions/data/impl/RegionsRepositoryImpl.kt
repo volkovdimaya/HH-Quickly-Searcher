@@ -87,12 +87,12 @@ class RegionsRepositoryImpl(
     }
 
     override fun insertFilterParameter(item: Region): Flow<Int> = flow {
-        val currentFilter = appDatabase.filterParametersCreateDao().getParameters()
+        val currentFilter = appDatabase.areaDao().getParameters()
 
         var countryId = currentFilter?.countryId
         var countryName = currentFilter?.countryName
 
-        if (countryId.isNullOrBlank()) {
+        if (countryId.toString().isNullOrBlank()) {
             val country = findCountryForArea(item.regionId)
             if (country != null) {
                 countryId = country.areaId
@@ -101,20 +101,19 @@ class RegionsRepositoryImpl(
         }
 
         val updatedFilterParameters = FilterParametersEntity(
-            id = currentFilter?.id ?: 1,
+            filtersId = currentFilter?.filtersId ?:"1",
             countryId = countryId,
             countryName = countryName,
-            regionId = item.regionId,
+            regionId = item.regionId.toInt(),
             regionName = item.regionName,
             industryId = currentFilter?.industryId,
             industryName = currentFilter?.industryName,
             salary = currentFilter?.salary,
-            salaryType = currentFilter?.salaryType,
             onlyWithSalary = currentFilter?.onlyWithSalary ?: false
         )
 
         val response = localClient.doUpdate(updatedFilterParameters) {
-            appDatabase.filterParametersCreateDao().insert(updatedFilterParameters)
+            appDatabase.filterParametersDao().saveFilters(updatedFilterParameters)
         }
 
         if (response.resultCode == INTERNAL_ERROR_CODE) {
@@ -125,8 +124,8 @@ class RegionsRepositoryImpl(
 
     override suspend fun getCurrentCountryId(): String? {
         return withContext(Dispatchers.IO) {
-            val currentFilter = appDatabase.filterParametersCreateDao().getParameters()
-            currentFilter?.countryId
+            val currentFilter = appDatabase.areaDao().getParameters()
+            currentFilter?.countryId.toString()
         }
     }
 

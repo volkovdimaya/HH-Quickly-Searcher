@@ -13,7 +13,7 @@ class WorkTerritoryRepositoryImpl(
 ) : WorkTerritoriesRepository {
 
     override fun getWorkTerritories(): Flow<WorkTerritory> {
-        return appDatabase.filterUpdateParametersDao().observeFilterParameters()
+        return appDatabase.areaDao().observeFilterParameters()
             .map { it?.toWorkTerritory() ?: WorkTerritory() }
 
     }
