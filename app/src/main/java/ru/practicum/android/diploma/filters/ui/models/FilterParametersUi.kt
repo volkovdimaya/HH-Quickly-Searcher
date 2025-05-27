@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 data class FilterParametersUi(
     val countryId: Int? = null,
     val regionId: Int? = null,
-    val industryId: Int? = null,
+    val industryId: String? = null,
     val salary: Int? = null,
     val onlyWithSalary: Boolean = false,
 ) : Parcelable

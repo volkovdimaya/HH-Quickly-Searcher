@@ -33,7 +33,7 @@ interface IndustryDao : FilterUpdateParametersDao, FilterParametersCreateDao {
     @Transaction
     suspend fun updateIndustryParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {
-            updateIndustry(parameters.industryId ?: "", parameters.industryName ?: "")
+            updateIndustry((parameters.industryId ?: "").toString(), parameters.industryName ?: "")
         } else {
             insert(parameters)
         }
