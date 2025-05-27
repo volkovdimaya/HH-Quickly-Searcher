@@ -12,7 +12,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_56"
-        tools:text="@string/team"
+        android:text="@string/team"
         style="@style/Regular16Text"/>
 
     <ImageView

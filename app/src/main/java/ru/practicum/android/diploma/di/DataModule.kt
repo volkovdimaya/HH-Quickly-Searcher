@@ -61,4 +61,5 @@ val dataModule = module {
     single { ShortVacancyResponseMapper }
 
     single<Context> { androidApplication() }
+
 }

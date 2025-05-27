@@ -24,7 +24,7 @@ interface FilterClearParametersDao {
     suspend fun clearIndustry()
 
     @Query(
-        "UPDATE filter_parameters SET salary = NULL, salary_type = NULL " +
+        "UPDATE filter_parameters SET salary = NULL " +
             "WHERE country_id = (SELECT country_id FROM filter_parameters LIMIT 1)"
     )
     suspend fun clearSalary()

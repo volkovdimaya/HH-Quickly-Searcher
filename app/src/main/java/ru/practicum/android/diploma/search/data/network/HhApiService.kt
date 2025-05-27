@@ -4,8 +4,8 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
+import ru.practicum.android.diploma.countries.data.dto.AreaNetworkDto
 import ru.practicum.android.diploma.industries.data.dto.IndustryCategoryDto
-import ru.practicum.android.diploma.regions.data.dto.AreasResponse
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsResponse
 
@@ -29,5 +29,5 @@ interface HhApiService {
     suspend fun getIndustries(): List<IndustryCategoryDto>
 
     @GET("/areas")
-    suspend fun getAreas(): AreasResponse
+    suspend fun getAreas(): List<AreaNetworkDto>
 }

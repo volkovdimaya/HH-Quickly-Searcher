@@ -6,10 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "filter_parameters")
 data class FilterParametersEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey
+    @ColumnInfo("filters_id")
+    val filtersId: String = "filter_parameters_id",
     @ColumnInfo("country_id")
-    val countryId: Int = 0,
+    val countryId: Int? = null,
     @ColumnInfo("region_id")
     val regionId: Int? = null,
     @ColumnInfo("industry_id")
@@ -23,7 +24,5 @@ data class FilterParametersEntity(
     @ColumnInfo("region_name")
     val regionName: String? = null,
     @ColumnInfo("industry_name")
-    val industryName: String? = null,
-    @ColumnInfo("salary_type")
-    val salaryType: String? = null
+    val industryName: String? = null
 )

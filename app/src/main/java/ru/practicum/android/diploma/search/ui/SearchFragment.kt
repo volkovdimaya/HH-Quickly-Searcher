@@ -12,7 +12,6 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +23,6 @@ import ru.practicum.android.diploma.common.ui.fragments.ShortVacancyFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyProgressbarBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
-import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.util.TopSpacingItemDecoration
 
@@ -32,9 +30,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
     override val adapter = SearchAdapter()
     override val navigateIdAction: Int = R.id.vacancyDetailsFragment
-
-    private val args: SearchFragmentArgs by navArgs()
-    private var filterParameters: FilterParametersUi? = null
 
     private var _emptyBinding: LayoutErrorVacancyPlaceholderBinding? = null
     private val emptyBinding get() = _emptyBinding!!
@@ -63,8 +58,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         setupMenu()
-
-        filterParameters = args.filterParameters
 
         viewModel.observeState.observe(viewLifecycleOwner) {
             render(it)
@@ -236,6 +229,13 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
                 menuInflater.inflate(R.menu.search_fragment_toolbar_menu, menu)
             }
 
+            override fun onPrepareMenu(menu: Menu) {
+                super.onPrepareMenu(menu)
+                viewModel.isFiltersEmpty().observe(viewLifecycleOwner) {
+                    menu.findItem(R.id.action_filters_fragment).isChecked = !it
+                }
+            }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_filters_fragment -> {
@@ -252,7 +252,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         val query = binding.editText.text.toString().trim()
         if (query.isNotEmpty()) {
             hideKeyboard()
-            viewModel.updateRequest(query, filterParameters)
+            viewModel.updateRequest(query)
         }
     }
 

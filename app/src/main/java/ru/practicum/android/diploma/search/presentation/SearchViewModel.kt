@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +11,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
-import ru.practicum.android.diploma.filters.ui.models.FilterParametersUi
-import ru.practicum.android.diploma.filters.ui.models.toDomain
+import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.debounce
 
@@ -25,7 +25,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
     private var previousScreenStateLiveData = MutableLiveData<ShortVacancyListUiState>()
 
     private var currentQuery: String = ""
-    private var currentFilters: FilterParametersUi? = null
+    private var currentFilters: FilterParametersSearch? = null
+    private var searchedFilters: FilterParametersSearch? = null
     private var lastSearchedQuery: String = ""
 
     private var currentPage: Int = 0
@@ -40,6 +41,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
             this.value = newValue
         }
     }
+
+    private val isFiltersEmptyState = MutableLiveData<Boolean>()
+    fun isFiltersEmpty(): LiveData<Boolean> = isFiltersEmptyState
 
     private val searchDebouncer: (String) -> Unit
     private val onItemClickDebouncer: (VacancyShort) -> Unit
@@ -64,6 +68,13 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         ) { item ->
             onClickDebounce(item)
         }
+
+        viewModelScope.launch {
+            vacanciesInteractor.getSearchFilters().collect {
+                isFiltersEmptyState.postValue(isFilterEmpty(it))
+                currentFilters = it
+            }
+        }
     }
 
     fun restoreState() {
@@ -85,12 +96,11 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         }
     }
 
-    fun updateRequest(query: String, filters: FilterParametersUi? = null) {
+    fun updateRequest(query: String) {
         val queryChanged = currentQuery != query
-        val filtersChanged = currentFilters != filters
+        val filtersChanged = currentFilters != searchedFilters
 
         currentQuery = query
-        currentFilters = filters
 
         searchJob?.cancel()
         searchDebounceJob?.cancel()
@@ -104,6 +114,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
             resetPaginationState()
             screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
             searchVacancies()
+            searchedFilters = currentFilters
         }
     }
 
@@ -126,7 +137,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         lastSearchedQuery = currentQuery
 
         searchJob = viewModelScope.launch {
-            val domainFilters = currentFilters.toDomain()
+            val domainFilters = currentFilters
 
             vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
@@ -167,7 +178,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
         screenStateLiveData.postValue(ShortVacancyListUiState.LoadingMore(vacanciesList.toList()))
 
         loadMoreJob = viewModelScope.launch {
-            val domainFilters = currentFilters.toDomain()
+            val domainFilters = currentFilters
 
             vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
@@ -202,6 +213,22 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor) : Vi
 
     private fun onClickDebounce(item: VacancyShort) {
         screenStateLiveData.postValue(ShortVacancyListUiState.AnyItem(item.vacancyId))
+    }
+
+    private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
+        var result = true
+        listOf(
+            filterParameters.onlyWithSalary,
+            filterParameters.salary,
+            filterParameters.regionId,
+            filterParameters.countryId,
+            filterParameters.industryId
+        ).forEach { parameter ->
+            if (parameter != null) {
+                result = false
+            }
+        }
+        return result
     }
 
     companion object {

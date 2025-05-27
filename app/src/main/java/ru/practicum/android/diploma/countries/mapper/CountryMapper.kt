@@ -7,14 +7,14 @@ object CountryMapper {
 
     fun AreaEntity.toCountry(): Country {
         return Country(
-            countryId = this.areaId.toInt(),
+            countryId = this.areaId,
             countryName = this.areaName,
         )
     }
 
     fun Country.toAreaEntity(): AreaEntity {
         return AreaEntity(
-            areaId = this.countryId.toString(),
+            areaId = this.countryId,
             areaName = this.countryName,
             countryId = null
         )

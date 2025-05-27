@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.common.data.dao.VacancyDao
 import ru.practicum.android.diploma.favorites.data.entity.VacancyEntity
 import ru.practicum.android.diploma.filters.data.dao.FilterClearParametersDao
 import ru.practicum.android.diploma.filters.data.dao.FilterParametersCreateDao
+import ru.practicum.android.diploma.filters.data.dao.FilterParametersDao
 import ru.practicum.android.diploma.filters.data.dao.FilterUpdateParametersDao
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.industries.data.entity.IndustryEntity
@@ -29,6 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun vacancyDao(): VacancyDao
     abstract fun areaDao(): AreaDao
     abstract fun industryDao(): IndustryDao
+    abstract fun filterParametersDao(): FilterParametersDao
     abstract fun filterParametersCreateDao(): FilterParametersCreateDao
     abstract fun filterUpdateParametersDao(): FilterUpdateParametersDao
     abstract fun filterClearParametersDao(): FilterClearParametersDao

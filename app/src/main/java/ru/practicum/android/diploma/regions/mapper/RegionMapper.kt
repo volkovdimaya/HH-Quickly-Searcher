@@ -16,7 +16,7 @@ object RegionMapper {
 
     fun RegionWork.toAreaEntity(): AreaEntity {
         return AreaEntity(
-            areaId = this.regionId.toString(),
+            areaId = this.regionId!!,
             areaName = this.regionName,
             countryId = this.country.countryId.toString()
         )
