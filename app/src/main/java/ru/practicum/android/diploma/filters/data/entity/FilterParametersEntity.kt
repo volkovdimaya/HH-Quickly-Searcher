@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filters.data.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -7,22 +8,22 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "filter_parameters")
 data class FilterParametersEntity(
     @PrimaryKey
-    @SerializedName("filters_id")
+    @ColumnInfo("filters_id")
     val filtersId: String,
-    @SerializedName("country_id")
+    @ColumnInfo("country_id")
     val countryId: Int? = null,
-    @SerializedName("region_id")
+    @ColumnInfo("region_id")
     val regionId: Int? = null,
-    @SerializedName("industry_id")
+    @ColumnInfo("industry_id")
     val industryId: Int? = null,
-    @SerializedName("salary")
+    @ColumnInfo("salary")
     val salary: Int? = null,
-    @SerializedName("only_with_salary")
+    @ColumnInfo("only_with_salary")
     val onlyWithSalary: Boolean = false,
-    @SerializedName("country_name")
+    @ColumnInfo("country_name")
     val countryName: String? = null,
-    @SerializedName("region_name")
+    @ColumnInfo("region_name")
     val regionName: String? = null,
-    @SerializedName("industry_name")
+    @ColumnInfo("industry_name")
     val industryName: String? = null
 )
