@@ -79,14 +79,14 @@
         android:layout_height="@dimen/height_60">
 
         <TextView
-            android:id="@+id/choose_region"
+
             style="@style/WorkTerritoriesItemText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_56"
-            tools:text="@string/region" />
+            android:text="@string/region" />
 
         <ImageView
             android:layout_width="@dimen/size_arrow_button"
@@ -109,6 +109,7 @@
             android:orientation="vertical">
 
             <TextView
+
                 style="@style/Regular12Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,9 +117,10 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_56"
                 android:paddingTop="@dimen/padding_12"
-                tools:text="@string/region" />
+                android:text="@string/region" />
 
             <TextView
+                android:id="@+id/regionName"
                 style="@style/Regular16Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,10 +140,5 @@
             android:src="@drawable/ic_cross" />
 
     </FrameLayout>
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/could_not_get_list"/>
 
 </LinearLayout>

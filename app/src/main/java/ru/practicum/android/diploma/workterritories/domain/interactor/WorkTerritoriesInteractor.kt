@@ -1,12 +1,13 @@
-package ru.practicum.android.diploma.workterritories.domain.api
+package ru.practicum.android.diploma.workterritories.domain.interactor
 
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.common.domain.models.WorkTerritory
 
-interface WorkTerritoriesRepository {
+interface WorkTerritoriesInteractor {
 
     fun getWorkTerritories(): Flow<WorkTerritory>
-    suspend fun deleteRegionFilter()
-    suspend fun deleteCountryFilter()
 
+    suspend fun deleteRegionFilter()
+
+    suspend fun deleteCountryFilter()
 }

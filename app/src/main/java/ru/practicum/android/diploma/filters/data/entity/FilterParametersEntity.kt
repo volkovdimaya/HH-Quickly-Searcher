@@ -9,7 +9,7 @@ data class FilterParametersEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo("country_id")
-    val countryId: Int = 0,
+    val countryId: String? = null,
     @ColumnInfo("region_id")
     val regionId: String? = null,
     @ColumnInfo("industry_id")

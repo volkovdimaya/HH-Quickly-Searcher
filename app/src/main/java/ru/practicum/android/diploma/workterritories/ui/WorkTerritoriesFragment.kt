@@ -5,8 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.domain.models.WorkTerritory
+import ru.practicum.android.diploma.databinding.FragmentWorkTerritoriesBinding
+import ru.practicum.android.diploma.workterritories.presentation.WorkTerritoriesViewModel
 
 class WorkTerritoriesFragment : Fragment() {
 
@@ -39,37 +43,35 @@ class WorkTerritoriesFragment : Fragment() {
             findNavController().navigate(R.id.regionsFragment)
         }
 
-        binding.button.setOnClickListener {
-            viewModel.createfilt()
+        binding.countrySelectedDelete.setOnClickListener {
+            viewModel.deleteCountryFilter()
+        }
+
+        binding.regionSelectedDelete.setOnClickListener {
+            viewModel.deleteRegionFilter()
         }
 
     }
 
     private fun updateScreen(workTerritory: WorkTerritory) {
-        Log.d("workt","${workTerritory.country}")
         if (workTerritory.country == null) {
             binding.country.visibility = View.VISIBLE
             binding.countrySelected.visibility = View.GONE
-            vvv(workTerritory)
+
         } else {
             binding.countryName.text = workTerritory.country.countryName
             binding.country.visibility = View.GONE
             binding.countrySelected.visibility = View.VISIBLE
-            vvv(workTerritory)
+
         }
 
-binding.root.requestLayout()
-    }
-
-    fun vvv(workTerritory: WorkTerritory) {
         if (workTerritory.regionWork == null) {
             binding.region.visibility = View.VISIBLE
-            binding.region.requestLayout()
             binding.regionSelected.visibility = View.GONE
         } else {
             binding.region.visibility = View.GONE
             binding.regionSelected.visibility = View.VISIBLE
-            binding.chooseRegion.text = workTerritory.regionWork.regionName
+            binding.regionName.text = workTerritory.regionWork.regionName
         }
     }
 

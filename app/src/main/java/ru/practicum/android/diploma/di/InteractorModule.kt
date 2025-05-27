@@ -11,6 +11,8 @@ import ru.practicum.android.diploma.search.domain.impl.VacanciesInteractorImpl
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.impl.VacancyDetailsInteractorImpl
+import ru.practicum.android.diploma.workterritories.domain.impl.WorkTerritoriesInteractorImpl
+import ru.practicum.android.diploma.workterritories.domain.interactor.WorkTerritoriesInteractor
 
 val interactorModule = module {
 
@@ -32,5 +34,9 @@ val interactorModule = module {
 
     single<RegionsInteractor> {
         RegionsInteractorImpl(get())
+    }
+
+    single <WorkTerritoriesInteractor>{
+        WorkTerritoriesInteractorImpl(get())
     }
 }
