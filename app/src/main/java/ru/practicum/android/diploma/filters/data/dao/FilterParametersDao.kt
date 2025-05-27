@@ -28,4 +28,10 @@ interface FilterParametersDao {
             "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
     )
     suspend fun updateCountry(id: Int?, industryName: String?)
+
+    @Query(
+        "UPDATE filter_parameters SET region_id = :id, region_name = :regionName " +
+            "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
+    )
+    suspend fun updateRegion(id: Int?, regionName: String)
 }

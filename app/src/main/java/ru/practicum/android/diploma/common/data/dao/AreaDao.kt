@@ -39,12 +39,6 @@ interface AreaDao : FilterParametersDao {
     @Query("SELECT * FROM filter_parameters LIMIT 1")
     fun observeFilterParameters(): Flow<FilterParametersEntity?>
 
-    @Query(
-        "UPDATE filter_parameters SET region_id = :id, region_name = :regionName " +
-            "WHERE filters_id = (SELECT filters_id FROM filter_parameters LIMIT 1)"
-    )
-    suspend fun updateRegion(id: Int?, regionName: String)
-
     @Transaction
     suspend fun updateAreaParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {

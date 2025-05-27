@@ -101,7 +101,7 @@ class RegionsRepositoryImpl(
         }
 
         val updatedFilterParameters = FilterParametersEntity(
-            filtersId = currentFilter?.filtersId ?:"1",
+            filtersId = currentFilter.filtersId,
             countryId = countryId,
             countryName = countryName,
             regionId = item.regionId.toInt(),
