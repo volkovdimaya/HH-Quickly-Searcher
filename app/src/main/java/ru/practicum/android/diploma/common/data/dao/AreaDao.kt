@@ -6,13 +6,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.filters.data.dao.FilterParametersCreateDao
-import ru.practicum.android.diploma.filters.data.dao.FilterUpdateParametersDao
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.workterritories.data.entity.AreaEntity
 
 @Dao
-interface AreaDao : FilterUpdateParametersDao, FilterParametersCreateDao {
+interface AreaDao : FilterParametersCreateDao {
 
     // areas_table
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -32,6 +32,18 @@ interface AreaDao : FilterUpdateParametersDao, FilterParametersCreateDao {
 
     @Query("SELECT * FROM areas WHERE areaId = :countryId LIMIT 1")
     suspend fun getAreaById(countryId: String): AreaEntity?
+
+    @Query("SELECT COUNT(*) FROM filter_parameters")
+    suspend fun isFiltersEmpty(): Int
+
+    @Query("SELECT * FROM filter_parameters LIMIT 1")
+    fun observeFilterParameters(): Flow<FilterParametersEntity?>
+
+    @Query(
+        "UPDATE filter_parameters SET region_id = :id, region_name = :regionName " +
+            "WHERE id = (SELECT id FROM filter_parameters LIMIT 1)"
+    )
+    suspend fun updateRegion(id: String, regionName: String)
 
     @Transaction
     suspend fun updateAreaParameter(parameters: FilterParametersEntity) {
