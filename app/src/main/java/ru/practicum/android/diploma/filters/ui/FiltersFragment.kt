@@ -94,15 +94,15 @@ class FiltersFragment : Fragment() {
 
     private fun setSalaryListeners() {
         binding.expectedSalaryEditText.setOnFocusChangeListener { _, focused ->
-        binding.expectedSalaryLayout.hintTextColor = if (focused) {
-            requireContext().getColorStateList(R.color.blue)
-        } else if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
-            requireContext().getColorStateList(R.color.black)
-        } else {
-            requireContext().getColorStateList(R.color.colorOnSurfaceVariant)
-        }
-        binding.expectedSalaryLayout.isEndIconVisible = focused
-            && !binding.expectedSalaryEditText.text.isNullOrEmpty()
+            binding.expectedSalaryLayout.hintTextColor = if (focused) {
+                requireContext().getColorStateList(R.color.blue)
+            } else if (!binding.expectedSalaryEditText.text.isNullOrEmpty()) {
+                requireContext().getColorStateList(R.color.black)
+            } else {
+                requireContext().getColorStateList(R.color.colorOnSurfaceVariant)
+            }
+            binding.expectedSalaryLayout.isEndIconVisible = focused
+                && !binding.expectedSalaryEditText.text.isNullOrEmpty()
         }
 
         binding.expectedSalaryEditText.doOnTextChanged { text, _, _, _ ->
