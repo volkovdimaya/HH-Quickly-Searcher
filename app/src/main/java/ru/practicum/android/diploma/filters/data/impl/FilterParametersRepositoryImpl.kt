@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
+import ru.practicum.android.diploma.filters.domain.api.FilterParametersType
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDomain
 

@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.filters.ui.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
+import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 
 @Parcelize
 data class FilterParametersUi(
@@ -13,9 +13,9 @@ data class FilterParametersUi(
     val onlyWithSalary: Boolean = false,
 ) : Parcelable
 
-fun FilterParametersUi?.toDomain(): FilterParametersDomain? {
+fun FilterParametersUi?.toDomain(): FilterParameters? {
     return this?.let {
-        FilterParametersDomain(
+        FilterParameters(
             countryId = it.countryId,
             regionId = it.regionId,
             industryId = it.industryId,
