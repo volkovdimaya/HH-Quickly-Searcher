@@ -20,7 +20,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     init {
-        screenStateLiveData.value = ListUiState.Default
+        screenStateLiveData.value = ListUiState.Loading
         loadIndustries()
     }
 
@@ -31,8 +31,12 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     override suspend fun runSearch(currentQuery: String) {
         industriesInteractor.getSearchList(currentQuery).collect { respons ->
             when {
+                respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
                 respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
-                respons.second.isNotEmpty() -> screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                respons.second.isNotEmpty() -> {
+                    currentList = respons.second
+                    screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                }
                 else -> screenStateLiveData.postValue(ListUiState.Empty)
             }
         }
@@ -86,16 +90,20 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         }
     }
 
-    fun showSelectButton(item: Industry) {
-        currentList.forEach {
-            if (it == item) {
-                it.apply { select.isSelected = true }
+    fun showSelectItem(item: Industry) {
+        val newList = currentList.map { industry ->
+            val shouldBeSelected = industry.industryId == item.industryId
+            if (industry.select != shouldBeSelected) {
+                val copy = industry.copy(select = shouldBeSelected)
+                _currentIndustry = copy
+                copy
+            } else if (industry.select) {
+                industry.copy(select = false)
             } else {
-                it.apply { select.isSelected = false }
+                industry
             }
-
         }
-        screenStateLiveData.postValue(FiltersUiState.SelectPosition(currentList))
+        screenStateLiveData.postValue(FiltersUiState.SelectPosition(newList))
     }
 
     fun showAppropriateFragment() {
@@ -114,7 +122,21 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         _currentIndustry = null
     }
 
+    fun saveFilterParameter(item: Industry) {
+        viewModelScope.launch {
+            industriesInteractor.saveFilterParameter(item).collect { code ->
+                if (code == SUCCESS_CODE) {
+                    screenStateLiveData.postValue(ListUiState.AnyItem(code.toString()))
+                } else {
+                    screenStateLiveData.postValue(FiltersUiState.NoChange)
+                }
+            }
+        }
+    }
+
     companion object {
         private const val SUCCESS_CODE = 200
+        private const val BAD_REQUEST_CODE = 400
+        private const val INTERNAL_ERROR_CODE = 500
     }
 }

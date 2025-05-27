@@ -8,4 +8,5 @@ interface IndustriesInteractor {
     fun getSearchList(text: String): Flow<Pair<Int, List<Industry>>>
     fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>>
     suspend fun clearTableDb()
+    fun saveFilterParameter(item: Industry): Flow<Int>
 }

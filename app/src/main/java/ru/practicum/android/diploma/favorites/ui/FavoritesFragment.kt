@@ -55,8 +55,8 @@ class FavoritesFragment : BaseListFragment<VacancyShort, FragmentFavoritesBindin
         _emptyBinding = LayoutEmptyPlaceholderBinding.inflate(layoutInflater)
     }
 
-    override fun initShortVacancyListView() {
-        super.initShortVacancyListView()
+    override fun initListView() {
+        super.initListView()
         recyclerView.apply {
             layoutParams = ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

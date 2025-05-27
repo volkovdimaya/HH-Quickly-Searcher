@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.search.data.dto
 
+import ru.practicum.android.diploma.common.data.dto.Response
+
 class VacanciesResponse(
     val items: List<VacancyDto> = emptyList(),
     val found: Int = 0,

@@ -63,7 +63,7 @@ abstract class BaseSearchViewModel<T> : ViewModel() {
         }
 
         lastSearchedQuery = currentQuery
-
+        screenStateLiveData.postValue(ListUiState.Loading)
         searchJob = viewModelScope.launch {
             runSearch(currentQuery)
         }

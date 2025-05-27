@@ -10,11 +10,11 @@ data class FilterParametersEntity(
     @ColumnInfo("filters_id")
     val filtersId: String,
     @ColumnInfo("country_id")
-    val countryId: Int? = 0,
+    val countryId: Int? = null,
     @ColumnInfo("region_id")
     val regionId: Int? = null,
     @ColumnInfo("industry_id")
-    val industryId: Int? = null,
+    val industryId: String? = null,
     @ColumnInfo("salary")
     val salary: Int? = null,
     @ColumnInfo("only_with_salary")
