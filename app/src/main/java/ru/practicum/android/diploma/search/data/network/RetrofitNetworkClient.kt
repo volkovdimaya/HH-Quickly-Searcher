@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.regions.data.dto.RegionNetworkRequest
-import ru.practicum.android.diploma.regions.data.dto.RegionRequest
 import ru.practicum.android.diploma.regions.data.dto.RegionsResponse
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsRequest

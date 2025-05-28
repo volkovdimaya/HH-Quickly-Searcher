@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.regions.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
