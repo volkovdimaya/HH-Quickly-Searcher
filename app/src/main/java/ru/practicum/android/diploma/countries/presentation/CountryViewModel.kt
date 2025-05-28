@@ -16,7 +16,7 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
         getCountries()
     }
 
-    fun getCountries() {
+    private fun getCountries() {
         viewModelScope.launch {
             interactor.getCountries().collect { countryResponse ->
                 val code = countryResponse.first

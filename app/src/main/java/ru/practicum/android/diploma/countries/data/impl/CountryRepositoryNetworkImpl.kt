@@ -33,9 +33,7 @@ class CountryRepositoryNetworkImpl(
     }
 
     private fun mapper(countryResponse: CountryResponse): List<Country> {
-        return countryResponse.countries.filter { area ->
-            area.parentId == null
-        }.map { area ->
+        return countryResponse.countries.map { area ->
             Country(
                 countryId = area.id,
                 countryName = area.name
