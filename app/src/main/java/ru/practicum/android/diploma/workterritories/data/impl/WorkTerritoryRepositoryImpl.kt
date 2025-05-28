@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.workterritories.data.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.data.db.AppDatabase
@@ -15,14 +16,12 @@ class WorkTerritoryRepositoryImpl(
     override fun getWorkTerritories(): Flow<WorkTerritory> {
         return appDatabase.areaDao().observeFilterParameters()
             .map { it?.toWorkTerritory() ?: WorkTerritory() }
-
     }
 
     override suspend fun deleteRegionFilter() {
         val filterParametersEntity =
             FilterParametersEntity()
-        appDatabase.areaDao().updateAreaParameter(filterParametersEntity)
-
+            appDatabase.areaDao().updateAreaParameter(filterParametersEntity)
     }
 
     override suspend fun deleteCountryFilter() {

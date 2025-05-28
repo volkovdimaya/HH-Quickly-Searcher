@@ -39,7 +39,7 @@ class CountryInteractorImpl(
 
     override suspend fun saveCountry(country: Country) {
         repBd.saveFilterParameters(
-            FilterParametersType.Country()
+            FilterParametersType.Country(countryId = country.countryId, countryName = country.countryName)
         )
     }
 
