@@ -9,14 +9,17 @@ object AreaMapper {
     fun AreaEntity.toRegion(): Region {
         return Region(
             regionId = this.areaId.toString(),
-            regionName = this.areaName
+            regionName = this.areaName,
+            parentId = this.parentId
         )
     }
 
     private fun AreaDto.toRegion(): Region {
         return Region(
             regionId = this.id,
-            regionName = this.name
+            regionName = this.name,
+            parentId = this.parentId
+
         )
     }
 
@@ -31,16 +34,23 @@ object AreaMapper {
     fun flattenAreaDtoList(areaDtoList: List<AreaDto>): List<AreaDto> {
         val flattenedList = mutableListOf<AreaDto>()
 
-        fun addAreasRecursively(areas: List<AreaDto>) {
+        fun addAreasRecursively(areas: List<AreaDto>, rootParentId: String?) {
             areas.forEach { area ->
-                flattenedList.add(area)
+                val updatedArea = if (rootParentId != null && area.parentId != null) {
+                    area.copy(parentId = rootParentId)
+                } else {
+                    area
+                }
+                flattenedList.add(updatedArea)
+
                 if (!area.areas.isNullOrEmpty()) {
-                    addAreasRecursively(area.areas)
+                    val newRootId = rootParentId ?: area.id
+                    addAreasRecursively(area.areas, newRootId)
                 }
             }
         }
 
-        addAreasRecursively(areaDtoList)
+        addAreasRecursively(areaDtoList, null)
         return flattenedList
     }
 
