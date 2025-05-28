@@ -48,7 +48,7 @@ class RegionsRepositoryImpl(
             val filteredList = when {
                 countryId == 0.toString() -> areaDtoList.filter { it.parentId in getIdShortCountryList(areaDtoList) }
                 countryId != null -> areaDtoList.filter { it.parentId == countryId }
-                else -> areaDtoList
+                else -> areaDtoList.filter { it.parentId != null }
             }
 
             saveAreas(filteredList)
@@ -96,8 +96,8 @@ class RegionsRepositoryImpl(
     override fun insertFilterParameter(item: Region): Flow<Int> = flow {
         val currentFilter = appDatabase.areaDao().getParameters()
 
-        var countryId = currentFilter?.countryId
-        var countryName = currentFilter?.countryName
+        var countryId = currentFilter.countryId
+        var countryName = currentFilter.countryName
 
         if (countryId.toString().isBlank()) {
             val country = findCountryForArea(item.regionId.toInt())
@@ -113,10 +113,10 @@ class RegionsRepositoryImpl(
             countryName = countryName,
             regionId = item.regionId.toInt(),
             regionName = item.regionName,
-            industryId = currentFilter?.industryId,
-            industryName = currentFilter?.industryName,
-            salary = currentFilter?.salary,
-            onlyWithSalary = currentFilter?.onlyWithSalary ?: false
+            industryId = currentFilter.industryId,
+            industryName = currentFilter.industryName,
+            salary = currentFilter.salary,
+            onlyWithSalary = currentFilter.onlyWithSalary ?: false
         )
 
         val response = localClient.doUpdate(updatedFilterParameters) {
