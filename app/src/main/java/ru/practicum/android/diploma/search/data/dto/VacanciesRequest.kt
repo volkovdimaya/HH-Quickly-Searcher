@@ -12,7 +12,9 @@ data class VacanciesRequest(
 
 fun VacanciesRequest.toMap(): Map<String, String> = buildMap {
     put("text", text)
-    if (area.isNullOrBlank() && area != "0") { put("area", area!!) }
+    if (area.isNullOrBlank() && area != "0") {
+        put("area", area!!)
+    }
     industry?.let { put("industry", it) }
     salary?.let { put("salary", it.toString()) }
     put("only_with_salary", onlyWithSalary.toString())
