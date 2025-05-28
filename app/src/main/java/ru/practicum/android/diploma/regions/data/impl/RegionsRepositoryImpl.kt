@@ -44,11 +44,14 @@ class RegionsRepositoryImpl(
         }
         val result = if (response is RegionsResponse) {
             val areaDtoList = AreaMapper.flattenAreaDtoList(response.regions).sortedBy { it.name }
-            if (countryId != null) {
+
+            val filteredList = if (countryId != null) {
                 areaDtoList.filter { it.parentId == countryId }
+            } else {
+                areaDtoList
             }
-            saveAreas(areaDtoList)
-            Pair(response.resultCode, AreaMapper.mapAreaDtoToRegion(areaDtoList))
+            saveAreas(filteredList)
+            Pair(response.resultCode, AreaMapper.mapAreaDtoToRegion(filteredList))
         } else {
             Pair(response.resultCode, listOf())
         }
