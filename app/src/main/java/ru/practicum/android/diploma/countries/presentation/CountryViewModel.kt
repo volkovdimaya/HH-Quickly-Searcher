@@ -9,7 +9,9 @@ import ru.practicum.android.diploma.common.presentation.FiltersUiState
 import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.countries.presentation.api.CountryInteractor
 
+
 class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<Country>() {
+
     init {
         screenStateLiveData.value = ListUiState.Loading
         getCountries()
@@ -19,19 +21,23 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
         viewModelScope.launch {
             interactor.getCountries().collect { countryResponse ->
                 val code = countryResponse.first
-                if (code == BAD_REQUEST_CODE) {
-                    screenStateLiveData.postValue(ListUiState.Error)
-                } else {
-                    val countries = countryResponse.second as List<Country>
-                    screenStateLiveData.postValue(ListUiState.Content(countries))
-                }
+                when {
+                    code == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
+                    countryResponse.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
+                    countryResponse.second.isNotEmpty() -> screenStateLiveData.postValue(ListUiState.Content(countryResponse.second))
+                        else -> screenStateLiveData.postValue(ListUiState.Empty)
+                    }
+
+
             }
         }
 
     }
 
     companion object {
+        private const val SUCCESS_CODE = 200
         private const val BAD_REQUEST_CODE = 400
+        private const val INTERNAL_ERROR_CODE = 500
     }
 
     override suspend fun runSearch(currentQuery: String) {
