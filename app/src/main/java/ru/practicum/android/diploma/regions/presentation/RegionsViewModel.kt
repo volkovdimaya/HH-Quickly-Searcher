@@ -58,7 +58,7 @@ class RegionsViewModel(
     private fun loadRegions() {
         viewModelScope.launch {
             currentCountryId = regionsInteractor.getCurrentCountryId()
-            regionsInteractor.loadRegions(currentCountryId.toString()).collect { response ->
+            regionsInteractor.loadRegions(currentCountryId?.toString()).collect { response ->
                 when {
                     response.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
                     response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
