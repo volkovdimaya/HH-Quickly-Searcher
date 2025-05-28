@@ -9,7 +9,6 @@ import ru.practicum.android.diploma.common.presentation.FiltersUiState
 import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.countries.presentation.api.CountryInteractor
 
-
 class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<Country>() {
 
     init {
@@ -23,12 +22,14 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
                 val code = countryResponse.first
                 when {
                     code == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
-                    countryResponse.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
-                    countryResponse.second.isNotEmpty() -> screenStateLiveData.postValue(ListUiState.Content(countryResponse.second))
-                        else -> screenStateLiveData.postValue(ListUiState.Empty)
-                    }
+                    countryResponse.first != SUCCESS_CODE ->
+                        screenStateLiveData.postValue(ListUiState.Error)
 
+                    countryResponse.second.isNotEmpty() ->
+                        screenStateLiveData.postValue(ListUiState.Content(countryResponse.second))
 
+                    else -> screenStateLiveData.postValue(ListUiState.Empty)
+                }
             }
         }
 
