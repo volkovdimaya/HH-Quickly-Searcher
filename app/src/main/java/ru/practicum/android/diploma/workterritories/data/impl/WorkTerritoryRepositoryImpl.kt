@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.workterritories.data.impl
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.data.db.AppDatabase
