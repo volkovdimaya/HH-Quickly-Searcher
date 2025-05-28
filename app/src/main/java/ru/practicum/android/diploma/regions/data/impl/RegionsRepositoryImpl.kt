@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.favorites.data.local.LocalClient
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.regions.data.dto.AreaDto
-import ru.practicum.android.diploma.regions.data.dto.RegionRequest
+import ru.practicum.android.diploma.regions.data.dto.RegionNetworkRequest
 import ru.practicum.android.diploma.regions.data.dto.RegionsLocalResponse
 import ru.practicum.android.diploma.regions.data.dto.RegionsResponse
 import ru.practicum.android.diploma.regions.domain.api.RegionsRepository
@@ -40,10 +40,13 @@ class RegionsRepositoryImpl(
         val response = if (negativeResponseNetwork) {
             Response().apply { resultCode = INTERNAL_ERROR_CODE }
         } else {
-            getAreasFromNetwork(countryId?.toInt())
+            getAreasFromNetwork(countryId)
         }
         val result = if (response is RegionsResponse) {
             val areaDtoList = AreaMapper.flattenAreaDtoList(response.regions).sortedBy { it.name }
+            if (countryId != null) {
+                areaDtoList.filter { it.parentId == countryId }
+            }
             saveAreas(areaDtoList)
             Pair(response.resultCode, AreaMapper.mapAreaDtoToRegion(areaDtoList))
         } else {
@@ -129,8 +132,8 @@ class RegionsRepositoryImpl(
         }
     }
 
-    private suspend fun getAreasFromNetwork(countryId: Int?): Response {
-        val response = networkClient.doRequest(RegionRequest(countryId))
+    private suspend fun getAreasFromNetwork(countryId: String?): Response {
+        val response = networkClient.doRequest(RegionNetworkRequest(countryId))
         return if (response is RegionsResponse) {
             response
         } else {
