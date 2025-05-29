@@ -229,25 +229,25 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(object : MenuProvider {
-            var mutableIconActionFilters: View? = null
-            val iconActionFilters get() = mutableIconActionFilters!!
+            var iconActionFilters: View? = null
+
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_fragment_toolbar_menu, menu)
                 val menuItem = menu.findItem(R.id.action_filters_fragment)
 
                 val actionView = menuItem.actionView
                 if (actionView != null) {
-                    mutableIconActionFilters = actionView.findViewById<ImageView>(R.id.button_filter_menu)
+                    iconActionFilters = actionView.findViewById<ImageView>(R.id.button_filter_menu)
                 }
             }
 
             override fun onPrepareMenu(menu: Menu) {
                 super.onPrepareMenu(menu)
                 viewModel.isFiltersEmpty().observe(viewLifecycleOwner) {
-                    iconActionFilters.isSelected = !it
+                    iconActionFilters?.isSelected = !it
                 }
 
-                iconActionFilters.setOnClickListener {
+                iconActionFilters?.setOnClickListener {
                     findNavController().navigate(R.id.filtersFragment)
                 }
             }
