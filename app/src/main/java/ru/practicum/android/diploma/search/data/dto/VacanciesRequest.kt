@@ -11,14 +11,13 @@ data class VacanciesRequest(
 )
 
 fun VacanciesRequest.toMap(): Map<String, String> = buildMap {
-
     put("page", page.toString())
     put("per_page", perPage.toString())
-    if(text.isNotBlank()) {
+    if (text.isNotBlank()) {
         put("text", text)
     }
-    if (area.isNullOrBlank() && area != "0") {
-        put("area", area!!)
+    if (!area.isNullOrBlank() && area != "0") {
+        put("area", area)
     }
     industry?.let { put("industry", it) }
     salary?.let { put("salary", it.toString()) }
