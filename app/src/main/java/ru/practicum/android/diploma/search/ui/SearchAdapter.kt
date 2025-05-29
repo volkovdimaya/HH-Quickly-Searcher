@@ -135,4 +135,8 @@ class SearchAdapter : ShortVacancyAdapter() {
             layoutManager.scrollToPosition(lastVisiblePosition)
         }
     }
+
+    fun updateShortVacancyListNewItems() {
+        updateShortVacancyList(list)
+    }
 }
