@@ -151,10 +151,9 @@ class SearchViewModel(
 
         searchJob = viewModelScope.launch {
             val domainFilters = currentFilters
-
             vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
-                    screenStateLiveData.postValue(ShortVacancyListUiState.Error)
+                    screenStateLiveData.postValue(ShortVacancyListUiState.ServerError as ShortVacancyListUiState)
                 }
                 .collectLatest { searchResult ->
                     maxPages = searchResult.pages

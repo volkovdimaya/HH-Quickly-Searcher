@@ -32,6 +32,8 @@ interface ShortVacancyListUiState : ListUiState<VacancyShort> {
         val totalFound: Int
     ) : ShortVacancyListUiState
 
+    data object ServerError : ShortVacancyListUiState
+
     interface ShortVacancyListUiIncludeState : ListUiState.ListUiIncludeState<VacancyShort>,
         ShortVacancyListUiState
 }
