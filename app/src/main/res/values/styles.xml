@@ -143,6 +143,17 @@
         <item name="iconSize">@dimen/margin_24</item>
     </style>
 
+    <style name="Chose.Button" parent="Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">@dimen/margin_16</item>
+        <item name="android:layout_marginBottom">@dimen/margin_24</item>
+        <item name="android:text">@string/select</item>
+        <item name="android:padding">@dimen/margin_20</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/blue</item>
+        </style>
+
     <style name="ErrorImageView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
