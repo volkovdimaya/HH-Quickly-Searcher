@@ -117,6 +117,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
             ShortVacancyListUiState.Empty -> updateIncludeViewByEmpty()
             ShortVacancyListUiState.Loading -> updateIncludeViewByProgressBar()
             ShortVacancyListUiState.Error -> updateIncludeViewByError()
+            ShortVacancyListUiState.ServerError -> updateIncludeViewByServerError()
             is ShortVacancyListUiState.LoadingMore -> showLoadingMore()
             is ShortVacancyListUiState.LoadingMoreError -> handleLoadingMoreError()
             is ShortVacancyListUiState.Content -> updateIncludeViewByList(state.contentList)

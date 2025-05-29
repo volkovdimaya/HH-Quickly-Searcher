@@ -63,6 +63,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         viewModelScope.launch {
             industriesInteractor.loadIndustries().collect { respons ->
                 when {
+                    respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
                     respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                     respons.second.isNotEmpty() -> {
                         currentList = respons.second

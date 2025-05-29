@@ -80,8 +80,7 @@ class VacanciesRepositoryImpl(
 
     private fun buildAreaParameter(filters: FilterParametersDto): String? {
         return listOfNotNull(
-            filters.countryId?.toString(),
-            filters.regionId?.toString()
+            filters.regionId?.toString() ?: filters.countryId?.toString()
         ).takeIf { it.isNotEmpty() }?.joinToString(",")
     }
 }

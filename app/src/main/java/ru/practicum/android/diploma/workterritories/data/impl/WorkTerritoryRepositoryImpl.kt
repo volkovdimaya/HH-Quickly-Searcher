@@ -15,14 +15,12 @@ class WorkTerritoryRepositoryImpl(
     override fun getWorkTerritories(): Flow<WorkTerritory> {
         return appDatabase.areaDao().observeFilterParameters()
             .map { it?.toWorkTerritory() ?: WorkTerritory() }
-
     }
 
     override suspend fun deleteRegionFilter() {
         val filterParametersEntity =
             FilterParametersEntity()
         appDatabase.areaDao().updateAreaParameter(filterParametersEntity)
-
     }
 
     override suspend fun deleteCountryFilter() {

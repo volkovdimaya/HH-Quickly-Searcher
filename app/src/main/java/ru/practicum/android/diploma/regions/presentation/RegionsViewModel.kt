@@ -42,7 +42,6 @@ class RegionsViewModel(
     override fun onSearchTextChanged(text: String) {
         val textChanged = currentQuery != text
         currentQuery = text
-
         if (currentQuery.isEmpty()) {
             searchDebounceJob?.cancel()
             searchDebounceJob = viewModelScope.launch {
@@ -59,9 +58,9 @@ class RegionsViewModel(
     private fun loadRegions() {
         viewModelScope.launch {
             currentCountryId = regionsInteractor.getCurrentCountryId()
-
-            regionsInteractor.loadRegions(currentCountryId.toString()).collect { response ->
+            regionsInteractor.loadRegions(currentCountryId?.toString()).collect { response ->
                 when {
+                    response.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
                     response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                     response.second.isNotEmpty() -> {
                         screenStateLiveData.postValue(ListUiState.Content(response.second))
@@ -110,5 +109,6 @@ class RegionsViewModel(
 
     companion object {
         private const val SUCCESS_CODE = 200
+        private const val BAD_REQUEST_CODE = 400
     }
 }

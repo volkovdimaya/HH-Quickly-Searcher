@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.common.ui.fragments
 
 import androidx.viewbinding.ViewBinding
+import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.databinding.LayoutNoInternetBinding
 import ru.practicum.android.diploma.databinding.LayoutServerErrorBinding
 
@@ -30,5 +31,18 @@ abstract class ListWithInternetFragment<T, V : ViewBinding> : BaseListFragment<T
 
     open fun updateIncludeViewByServerError() {
         updateIncludeView(serverErrorBinding.root)
+    }
+
+    override fun render(state: ListUiState<T>) {
+        when (state) {
+            is ListUiState.AnyItem -> goToFragment(state.itemId)
+            is ListUiState.Content<T> -> updateIncludeViewByList(state.contentList)
+            ListUiState.Default -> updateIncludeViewByClear()
+            ListUiState.Empty -> updateIncludeViewByEmpty()
+            ListUiState.Loading -> updateIncludeViewByProgressBar()
+            ListUiState.Error -> updateIncludeViewByError()
+            ListUiState.ServerError -> updateIncludeViewByServerError()
+            is ListUiState.ListUiIncludeState -> renderIncludeState(state)
+        }
     }
 }

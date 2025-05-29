@@ -133,8 +133,8 @@ class FiltersFragment : Fragment() {
         binding.workTerritoriesSelected.isVisible = filters.countryId != null
         binding.workTerritoryName.text = makeWorkTerritoryName(filters)
 
-        binding.industry.isVisible = filters.industryId == null
-        binding.industrySelected.isVisible = filters.industryId != null
+        binding.industry.isVisible = filters.industryId.isNullOrBlank()
+        binding.industrySelected.isVisible = !filters.industryId.isNullOrBlank()
         binding.industryName.text = filters.industryName ?: ""
 
         if (needToChangeSalary) {
