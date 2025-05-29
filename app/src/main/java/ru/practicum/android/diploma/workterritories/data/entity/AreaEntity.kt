@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "areas")
 class AreaEntity(
     @PrimaryKey
-    val areaId: String,
+    val areaId: Int,
     val areaName: String,
-    val countryId: String? = null
+    val parentId: String? = null
 )

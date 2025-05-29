@@ -4,9 +4,13 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.common.data.dto.Response
+import ru.practicum.android.diploma.countries.data.dto.CountryResponse
 import ru.practicum.android.diploma.industries.data.dto.IndustriesRequest
+import ru.practicum.android.diploma.industries.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.regions.data.dto.AreasRequest
-import ru.practicum.android.diploma.search.data.dto.Response
+import ru.practicum.android.diploma.regions.data.dto.RegionNetworkRequest
+import ru.practicum.android.diploma.regions.data.dto.RegionsResponse
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.search.data.dto.toMap
@@ -29,7 +33,8 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
                 is VacanciesRequest -> handleVacanciesRequest(dto)
                 is VacancyDetailsRequest -> handleVacancyDetailsRequest(dto)
                 is IndustriesRequest -> handleIndustriesRequest()
-                is AreasRequest -> handleAreasRequest()
+                is RegionNetworkRequest -> handleAreasRequest(dto)
+                is AreasRequest -> handleCountriesRequest(dto)
                 else -> handleUnknownRequest()
             }
         }
@@ -57,7 +62,7 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
 
     private suspend fun handleIndustriesRequest(): Response {
         return try {
-            val response = hhApiService.getIndustries()
+            val response = IndustriesResponse(categories = hhApiService.getIndustries())
             response.apply { resultCode = SUCCESS_CODE }
         } catch (e: HttpException) {
             Log.d(TAG, e.message.toString())
@@ -65,9 +70,21 @@ class RetrofitNetworkClient(private val hhApiService: HhApiService) : NetworkCli
         }
     }
 
-    private suspend fun handleAreasRequest(): Response {
+    private suspend fun handleAreasRequest(dto: RegionNetworkRequest): Response {
         return try {
-            val response = hhApiService.getAreas()
+            val areas = hhApiService.getAreas()
+            val response = RegionsResponse(regions = areas)
+            response.apply { resultCode = SUCCESS_CODE }
+        } catch (e: HttpException) {
+            Log.d(TAG, e.message.toString())
+            Response().apply { resultCode = INTERNAL_ERROR_CODE }
+        }
+    }
+
+    private suspend fun handleCountriesRequest(dto: AreasRequest): Response {
+        return try {
+            val areas = hhApiService.getCountries()
+            val response = CountryResponse(countries = areas)
             response.apply { resultCode = SUCCESS_CODE }
         } catch (e: HttpException) {
             Log.d(TAG, e.message.toString())

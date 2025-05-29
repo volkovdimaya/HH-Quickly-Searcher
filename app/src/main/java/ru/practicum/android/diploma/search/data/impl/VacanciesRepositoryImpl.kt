@@ -5,13 +5,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import ru.practicum.android.diploma.filters.data.dto.FilterParametersDto
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersDomain
-import ru.practicum.android.diploma.filters.domain.models.toDto
+import ru.practicum.android.diploma.filters.mapper.FilterParametersMapper.toDto
+import ru.practicum.android.diploma.search.data.dto.FilterParametersDto
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.search.data.network.NetworkClient
 import ru.practicum.android.diploma.search.domain.api.VacanciesRepository
+import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.mapper.ShortVacancyResponseMapper
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
@@ -27,7 +27,7 @@ class VacanciesRepositoryImpl(
 
     override fun searchVacancies(
         text: String,
-        filters: FilterParametersDomain?,
+        filters: FilterParametersSearch?,
         page: Int,
     ): Flow<SearchResult> = flow {
         val request = createSearchRequest(text, filters, page)
@@ -62,7 +62,7 @@ class VacanciesRepositoryImpl(
 
     private fun createSearchRequest(
         text: String,
-        filters: FilterParametersDomain?,
+        filters: FilterParametersSearch?,
         page: Int
     ): VacanciesRequest {
         val filtersDto = filters?.toDto()
@@ -80,8 +80,7 @@ class VacanciesRepositoryImpl(
 
     private fun buildAreaParameter(filters: FilterParametersDto): String? {
         return listOfNotNull(
-            filters.countryId?.toString(),
-            filters.regionId?.toString()
+            filters.regionId?.toString() ?: filters.countryId?.toString()
         ).takeIf { it.isNotEmpty() }?.joinToString(",")
     }
 }

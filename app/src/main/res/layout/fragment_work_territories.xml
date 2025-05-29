@@ -1,14 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".workterritories.ui.WorkTerritoriesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
+        android:id="@+id/country"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="@dimen/height_60">
 
-</FrameLayout>
+        <TextView
+            style="@style/WorkTerritoriesItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginEnd="@dimen/margin_56"
+            android:text="@string/country" />
+
+        <ImageView
+            android:layout_width="@dimen/size_arrow_button"
+            android:layout_height="@dimen/size_arrow_button"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_arrow_forward" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/country_selected"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_60"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Regular12Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_56"
+                android:paddingTop="@dimen/padding_12"
+                android:text="@string/country" />
+
+            <TextView
+                android:id="@+id/countryName"
+                style="@style/Regular16Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_56"
+                tools:text="@string/choosing_country" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/country_selected_delete"
+            android:layout_width="@dimen/size_arrow_button"
+            android:layout_height="@dimen/size_arrow_button"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_cross" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/region"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_60">
+
+        <TextView
+
+            style="@style/WorkTerritoriesItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginEnd="@dimen/margin_56"
+            android:text="@string/region" />
+
+        <ImageView
+            android:layout_width="@dimen/size_arrow_button"
+            android:layout_height="@dimen/size_arrow_button"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_arrow_forward" />
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/region_selected"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_60"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+
+                style="@style/Regular12Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_56"
+                android:paddingTop="@dimen/padding_12"
+                android:text="@string/region" />
+
+            <TextView
+                android:id="@+id/regionName"
+                style="@style/Regular16Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_56"
+                tools:text="@string/choosing_country" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/region_selected_delete"
+            android:layout_width="@dimen/size_arrow_button"
+            android:layout_height="@dimen/size_arrow_button"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_cross" />
+
+    </FrameLayout>
+
+</LinearLayout>

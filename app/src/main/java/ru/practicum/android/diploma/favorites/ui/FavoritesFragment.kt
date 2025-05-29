@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
-import ru.practicum.android.diploma.common.ui.ShortVacancyFragment
+import ru.practicum.android.diploma.common.domain.models.VacancyShort
+import ru.practicum.android.diploma.common.presentation.ListUiState
+import ru.practicum.android.diploma.common.ui.fragments.BaseListFragment
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.databinding.LayoutEmptyPlaceholderBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
 import ru.practicum.android.diploma.favorites.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.util.SizeFormatter
 
-class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
+class FavoritesFragment : BaseListFragment<VacancyShort, FragmentFavoritesBinding>() {
 
     override val adapter = FavoritesAdapter()
     override val navigateIdAction: Int = R.id.vacancyDetailsFragment
@@ -32,8 +33,6 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
         createBindingInflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentFavoritesBinding {
-        _errorBinding = LayoutErrorVacancyPlaceholderBinding.inflate(layoutInflater)
-        _emptyBinding = LayoutEmptyPlaceholderBinding.inflate(layoutInflater)
         return FragmentFavoritesBinding.inflate(createBindingInflater, container, false)
     }
 
@@ -50,20 +49,23 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
         }
     }
 
-    override fun initShortVacancyListView() {
-        super.initShortVacancyListView()
+    override fun initViews() {
+        super.initViews()
+        _errorBinding = LayoutErrorVacancyPlaceholderBinding.inflate(layoutInflater)
+        _emptyBinding = LayoutEmptyPlaceholderBinding.inflate(layoutInflater)
+    }
+
+    override fun initListView() {
+        super.initListView()
         recyclerView.apply {
             layoutParams = ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply {
+                topMargin = SizeFormatter.dpToPx(TOP_MARGIN_DP, context)
                 marginStart = SizeFormatter.dpToPx(START_MARGIN_DP, context)
             }
         }
-    }
-
-    override fun updateIncludeViewByProgressBar() {
-        updateIncludeViewByClear()
     }
 
     override fun updateIncludeViewByEmpty() {
@@ -74,7 +76,7 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
         updateIncludeView(errorBinding.root)
     }
 
-    override fun renderIncludeState(state: ShortVacancyListUiState.ShortVacancyListUiIncludeState) {
+    override fun renderIncludeState(state: ListUiState.ListUiIncludeState<VacancyShort>) {
         // no states
     }
 
@@ -91,6 +93,7 @@ class FavoritesFragment : ShortVacancyFragment<FragmentFavoritesBinding>() {
     }
 
     companion object {
+        const val TOP_MARGIN_DP = 7f
         const val START_MARGIN_DP = 16f
     }
 }

@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.industries.domain.models
 
 data class Industry(
-    val industryId: Int? = null,
-    val industryName: String
+    val industryId: String,
+    val industryName: String,
+    val select: Boolean = false
 )

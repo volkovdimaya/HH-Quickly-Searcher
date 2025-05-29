@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -48,7 +49,7 @@ val dataModule = module {
     }
 
     single<ExternalNavigator> {
-        ExternalNavigatorImpl(androidContext())
+        ExternalNavigatorImpl(get())
     }
 
     factory { Gson() }
@@ -58,4 +59,7 @@ val dataModule = module {
     }
 
     single { ShortVacancyResponseMapper }
+
+    single<Context> { androidApplication() }
+
 }
