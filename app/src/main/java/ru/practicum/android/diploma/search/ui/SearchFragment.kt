@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -228,14 +229,26 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(object : MenuProvider {
+            var mutableIconActionFilters: View? = null
+            val iconActionFilters get() = mutableIconActionFilters!!
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_fragment_toolbar_menu, menu)
+                val menuItem = menu.findItem(R.id.action_filters_fragment)
+
+                val actionView = menuItem.actionView
+                if (actionView != null) {
+                    mutableIconActionFilters = actionView.findViewById<ImageView>(R.id.button_filter_menu)
+                }
             }
 
             override fun onPrepareMenu(menu: Menu) {
                 super.onPrepareMenu(menu)
                 viewModel.isFiltersEmpty().observe(viewLifecycleOwner) {
-                    menu.findItem(R.id.action_filters_fragment).isChecked = !it
+                    iconActionFilters.isSelected = !it
+                }
+
+                iconActionFilters.setOnClickListener {
+                    findNavController().navigate(R.id.filtersFragment)
                 }
             }
 
