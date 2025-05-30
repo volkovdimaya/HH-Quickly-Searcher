@@ -12,8 +12,8 @@ interface SearchWithPagingUiState<out T> : ListUiState.ListUiIncludeState<T> {
     ) : SearchWithPagingUiState<T>
 
     data class ContentWithMetadataRestate<T>(
-        val state : ContentWithMetadata<T>,
-        val pos : Int?
+        val state: ContentWithMetadata<T>,
+        val pos: Int?
     ) : SearchWithPagingUiState<T>
 
     data class LoadingMoreError<T>(val currentList: List<T>) : SearchWithPagingUiState<T>
@@ -27,5 +27,3 @@ interface SearchWithPagingUiState<out T> : ListUiState.ListUiIncludeState<T> {
 
     interface SearchWithPagingUiIncludeState<out T> : SearchWithPagingUiState<T>
 }
-
-
