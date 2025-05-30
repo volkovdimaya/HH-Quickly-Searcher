@@ -10,14 +10,14 @@ import ru.practicum.android.diploma.util.debounce
 
 abstract class BaseSearchViewModel<T> : ViewModel() {
 
-    private var searchJob: Job? = null
+    var searchJob: Job? = null
     var searchDebounceJob: Job? = null
 
     var screenStateLiveData = MutableLiveData<ListUiState<T>>(ListUiState.Default)
     private var previousScreenStateLiveData = MutableLiveData<ListUiState<T>>()
 
     var currentQuery: String = ""
-    private var lastSearchedQuery: String = ""
+    var lastSearchedQuery: String = ""
 
     private var list: MutableList<T> = mutableListOf()
 
@@ -29,7 +29,7 @@ abstract class BaseSearchViewModel<T> : ViewModel() {
     }
 
     val searchDebouncer: (String) -> Unit
-    private val onItemClickDebouncer: (T) -> Unit
+    val onItemClickDebouncer: (T) -> Unit
 
     init {
         searchDebouncer = debounce<String>(
