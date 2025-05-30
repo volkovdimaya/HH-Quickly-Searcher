@@ -10,6 +10,7 @@ koin = "3.5.0"
 viewmodel = "2.8.7"
 adapterdelegates = "4.3.2"
 java = "VERSION_1_8"
+okhttpLoggingInterceptor = "4.12.0"
 
 # Build constants
 minSdk = "26"
@@ -50,6 +51,9 @@ uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.5.1"
 #retrofit
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
+# okhttp
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
 
 #glide
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
