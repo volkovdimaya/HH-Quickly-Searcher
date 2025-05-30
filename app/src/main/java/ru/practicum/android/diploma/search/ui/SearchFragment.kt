@@ -216,7 +216,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     override fun goToFragment(entityId: String) {
         val directions = SearchFragmentDirections.actionSearchFragmentToVacancyDetailsFragment(entityId)
         findNavController().navigate(directions)
-        viewModel.updateShortVacancyListNewItems(firstVisibleItemPosition)
+        viewModel.saveSearchUiState(firstVisibleItemPosition)
     }
 
     private fun restate(state: SearchWithPagingUiState.ContentWithMetadata<VacancyShort>, pos: Int?) {
@@ -248,7 +248,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
                 iconActionFilters?.setOnClickListener {
                     findNavController().navigate(R.id.filtersFragment)
-                    viewModel.updateShortVacancyListNewItems(firstVisibleItemPosition?.let { it - 1 })
+                    viewModel.saveSearchUiState(firstVisibleItemPosition?.let { it - 1 })
                 }
             }
 

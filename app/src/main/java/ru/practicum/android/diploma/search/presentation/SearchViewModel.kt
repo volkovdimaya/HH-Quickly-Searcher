@@ -195,7 +195,7 @@ class SearchViewModel(
         return result
     }
 
-    fun updateShortVacancyListNewItems(pos: Int?) {
+    fun saveSearchUiState(pos: Int?) {
         screenStateLiveData.postValue(
             SearchWithPagingUiState
                 .ContentWithMetadataRestate(
