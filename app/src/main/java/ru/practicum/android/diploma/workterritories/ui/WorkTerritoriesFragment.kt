@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.models.WorkTerritory
@@ -19,11 +24,15 @@ class WorkTerritoriesFragment : Fragment() {
     private var _binding: FragmentWorkTerritoriesBinding? = null
     val binding get() = _binding!!
 
+    private var _topToolbar: Toolbar? = null
+    private val topToolbar get() = _topToolbar!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _topToolbar = requireActivity().findViewById(R.id.top_toolbar)
         _binding = FragmentWorkTerritoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,6 +52,14 @@ class WorkTerritoriesFragment : Fragment() {
             findNavController().navigate(R.id.regionsFragment)
         }
 
+        binding.countrySelected.setOnClickListener {
+            findNavController().navigate(R.id.countriesFragment)
+        }
+
+        binding.regionSelected.setOnClickListener {
+            findNavController().navigate(R.id.regionsFragment)
+        }
+
         binding.countrySelectedDelete.setOnClickListener {
             viewModel.deleteCountryFilter()
         }
@@ -51,28 +68,54 @@ class WorkTerritoriesFragment : Fragment() {
             viewModel.deleteRegionFilter()
         }
 
+        binding.buttonSelect.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        topToolbar.setNavigationOnClickListener {
+            deleteWorkTerritoryParameters()
+            findNavController().navigateUp()
+        }
+
+        val backCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                deleteWorkTerritoryParameters()
+                findNavController().navigateUp()
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
+    }
+
+    override fun onDestroyView() {
+        val appBarConfig = AppBarConfiguration(findNavController().graph)
+        topToolbar.setupWithNavController(findNavController(), appBarConfig)
+        _topToolbar = null
+        super.onDestroyView()
+    }
+
+    private fun deleteWorkTerritoryParameters() {
+        viewModel.deleteCountryFilter()
+        viewModel.deleteRegionFilter()
     }
 
     private fun updateScreen(workTerritory: WorkTerritory) {
-        if (workTerritory.country == null) {
-            binding.country.visibility = View.VISIBLE
-            binding.countrySelected.visibility = View.GONE
+        val visibleControllerCountry = workTerritory.country != null
+        val visibleControllerRegion = workTerritory.regionWork != null
+        binding.country.isVisible = !visibleControllerCountry
+        binding.countrySelected.isVisible = visibleControllerCountry
 
-        } else {
+        binding.region.isVisible = !visibleControllerRegion
+        binding.regionSelected.isVisible = visibleControllerRegion
+
+        if (workTerritory.country !== null) {
             binding.countryName.text = workTerritory.country.countryName
-            binding.country.visibility = View.GONE
-            binding.countrySelected.visibility = View.VISIBLE
-
         }
-
-        if (workTerritory.regionWork == null) {
-            binding.region.visibility = View.VISIBLE
-            binding.regionSelected.visibility = View.GONE
-        } else {
-            binding.region.visibility = View.GONE
-            binding.regionSelected.visibility = View.VISIBLE
+        if (workTerritory.regionWork != null) {
             binding.regionName.text = workTerritory.regionWork.regionName
         }
-    }
 
+        val visibleButton = workTerritory.regionWork != null || workTerritory.country != null
+        binding.buttonSelect.isVisible = visibleButton
+    }
 }

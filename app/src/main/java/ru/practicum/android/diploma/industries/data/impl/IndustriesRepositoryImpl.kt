@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.data.db.AppDatabase
 import ru.practicum.android.diploma.common.data.dto.Response
@@ -100,6 +101,11 @@ class IndustriesRepositoryImpl(
         }
         emit(response.resultCode)
     }.flowOn(Dispatchers.IO)
+
+    override fun getFilterIndustry(): Flow<Industry?> {
+        return appDatabase.areaDao().observeFilterParameters()
+            .map { it?.toIndustry() }
+    }
 
     private suspend fun getIndustriesFromNetwork(): Response {
         val response = networkClient.doRequest(IndustriesRequest())
