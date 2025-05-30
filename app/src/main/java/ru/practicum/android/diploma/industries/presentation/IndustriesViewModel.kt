@@ -74,6 +74,14 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
                 }
 
             }
+
+            industriesInteractor.getFilterIndustry()
+                .collect { respons ->
+                    if (respons != null) {
+                        _currentIndustry = respons
+                        showSelectItem(currentIndustry)
+                    }
+                }
         }
     }
 
