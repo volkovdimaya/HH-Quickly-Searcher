@@ -54,7 +54,7 @@ abstract class BaseSearchViewModel<T> : ViewModel() {
 
     abstract suspend fun runSearch(currentQuery: String)
 
-    private fun searchString() {
+    open fun searchString() {
         searchJob?.cancel()
 
         if (currentQuery.isBlank()) {
