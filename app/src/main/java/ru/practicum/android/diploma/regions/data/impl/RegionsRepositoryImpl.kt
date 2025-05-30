@@ -48,7 +48,7 @@ class RegionsRepositoryImpl(
             val filteredList = when {
                 countryId == 0.toString() -> areaDtoList.filter { it.parentId in getIdShortCountryList(areaDtoList) }
                 countryId != null -> areaDtoList.filter { it.parentId == countryId }
-                else -> areaDtoList.filter { it.parentId != null }
+                else -> areaDtoList
             }
 
             saveAreas(filteredList)
@@ -99,9 +99,9 @@ class RegionsRepositoryImpl(
         var countryId = currentFilter.countryId
         var countryName = currentFilter.countryName
 
-        if (countryId.toString().isBlank()) {
+        if (countryId == null) {
             val country = findCountryForArea(item.regionId.toInt())
-            if (country != null) {
+            if (country != null && country.parentId == null) {
                 countryId = country.areaId
                 countryName = country.areaName
             }
@@ -116,7 +116,7 @@ class RegionsRepositoryImpl(
             industryId = currentFilter.industryId,
             industryName = currentFilter.industryName,
             salary = currentFilter.salary,
-            onlyWithSalary = currentFilter.onlyWithSalary ?: false
+            onlyWithSalary = currentFilter.onlyWithSalary,
         )
 
         val response = localClient.doUpdate(updatedFilterParameters) {
@@ -158,16 +158,11 @@ class RegionsRepositoryImpl(
 
     private suspend fun findCountryForArea(areaId: Int): AreaEntity? {
         var area = appDatabase.areaDao().getAreaById(areaId)
-        var parentArea: AreaEntity?
 
         while (area?.parentId != null) {
-            parentArea = appDatabase.areaDao().getAreaById(area.parentId?.toInt()!!)
-            if (parentArea != null) {
-                area = parentArea
-            } else {
-                break
-            }
+            area = appDatabase.areaDao().getAreaById(area.parentId?.toInt()!!) ?: break
         }
+
         return area
     }
 
