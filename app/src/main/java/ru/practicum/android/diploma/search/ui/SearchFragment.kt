@@ -131,6 +131,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
         adapter.addItems(state.newItems)
         adapter.setLoadingMore(false)
+        adapter.updateShortVacancyListNewItems()
     }
 
     private fun updateIncludeViewByContentWithMetadata(state: ShortVacancyListUiState.ContentWithMetadata) {
