@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
-import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
+import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
@@ -26,8 +26,8 @@ class SearchViewModel(
     private var loadMoreJob: Job? = null
     private var searchDebounceJob: Job? = null
 
-    private var screenStateLiveData = MutableLiveData<ShortVacancyListUiState>(ShortVacancyListUiState.Default)
-    private var previousScreenStateLiveData = MutableLiveData<ShortVacancyListUiState>()
+    private var screenStateLiveData = MutableLiveData<ListUiState<VacancyShort>>(ListUiState.Default)
+    private var previousScreenStateLiveData = MutableLiveData<ListUiState<VacancyShort>>()
 
     private var currentQuery: String = ""
     private var currentFilters: FilterParametersSearch? = null
@@ -40,12 +40,14 @@ class SearchViewModel(
     private var isNextPageLoading: Boolean = false
     private var vacanciesList: MutableList<VacancyShort> = mutableListOf()
 
-    val observeState = MediatorLiveData<ShortVacancyListUiState>().apply {
+    val observeState = MediatorLiveData<ListUiState<VacancyShort>>().apply {
         addSource(screenStateLiveData) { newValue ->
             previousScreenStateLiveData.value = this.value
             this.value = newValue
         }
     }
+
+    fun getPreviousScreenState(): LiveData<ListUiState<VacancyShort>> = previousScreenStateLiveData
 
     private val isFiltersEmptyState = MutableLiveData<Boolean>()
     fun isFiltersEmpty(): LiveData<Boolean> = isFiltersEmptyState
@@ -61,7 +63,7 @@ class SearchViewModel(
         ) { query ->
             if (query.isNotEmpty() && query == currentQuery && query != lastSearchedQuery) {
                 resetPaginationState()
-                screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
+                screenStateLiveData.postValue(ListUiState.Loading)
                 searchVacancies()
             }
         }
@@ -106,13 +108,13 @@ class SearchViewModel(
         searchDebounceJob?.cancel()
 
         if (query.isBlank()) {
-            screenStateLiveData.postValue(ShortVacancyListUiState.Default)
+            screenStateLiveData.postValue(ListUiState.Default)
             return
         }
 
         if (queryChanged || filtersChanged || lastSearchedQuery != query) {
             resetPaginationState()
-            screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
+            screenStateLiveData.postValue(ListUiState.Loading)
             searchVacancies()
             searchedFilters = currentFilters
         }
@@ -143,7 +145,7 @@ class SearchViewModel(
         searchJob?.cancel()
 
         if (currentQuery.isBlank()) {
-            screenStateLiveData.postValue(ShortVacancyListUiState.Default)
+            screenStateLiveData.postValue(ListUiState.Default)
             return
         }
 
@@ -153,7 +155,7 @@ class SearchViewModel(
             val domainFilters = currentFilters
             vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
-                    screenStateLiveData.postValue(ShortVacancyListUiState.ServerError as ShortVacancyListUiState)
+                    screenStateLiveData.postValue(ListUiState.ServerError)
                 }
                 .collectLatest { searchResult ->
                     maxPages = searchResult.pages
@@ -164,14 +166,14 @@ class SearchViewModel(
                     vacanciesList.addAll(vacancies)
 
                     val screenState = if (vacanciesList.isNotEmpty()) {
-                        ShortVacancyListUiState.ContentWithMetadata(
+                        SearchWithPagingUiState.ContentWithMetadata(
                             contentList = vacanciesList.toList(),
                             totalFound = totalFound,
                             pages = maxPages,
                             currentPage = currentPage
                         )
                     } else {
-                        ShortVacancyListUiState.Empty
+                        ListUiState.Empty
                     }
 
                     screenStateLiveData.postValue(screenState)
@@ -187,7 +189,7 @@ class SearchViewModel(
         isNextPageLoading = true
         currentPage++
 
-        screenStateLiveData.postValue(ShortVacancyListUiState.LoadingMore(vacanciesList.toList()))
+        screenStateLiveData.postValue(SearchWithPagingUiState.LoadingMore(vacanciesList.toList()))
 
         loadMoreJob = viewModelScope.launch {
             val domainFilters = currentFilters
@@ -195,14 +197,14 @@ class SearchViewModel(
             vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
                     isNextPageLoading = false
-                    screenStateLiveData.postValue(ShortVacancyListUiState.LoadingMoreError(vacanciesList.toList()))
+                    screenStateLiveData.postValue(SearchWithPagingUiState.LoadingMoreError(vacanciesList.toList()))
                 }
                 .collectLatest { searchResult ->
                     isNextPageLoading = false
                     val newVacancies = searchResult.vacancies
 
                     screenStateLiveData.postValue(
-                        ShortVacancyListUiState.NewItems(
+                        SearchWithPagingUiState.NewItems(
                             newItems = newVacancies,
                             totalFound = totalFound
                         )
@@ -224,7 +226,7 @@ class SearchViewModel(
     }
 
     private fun onClickDebounce(item: VacancyShort) {
-        screenStateLiveData.postValue(ShortVacancyListUiState.AnyItem(item.vacancyId))
+        screenStateLiveData.postValue(ListUiState.AnyItem(item.vacancyId))
     }
 
     private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
@@ -243,6 +245,21 @@ class SearchViewModel(
             result = false
         }
         return result
+    }
+
+    fun updateShortVacancyListNewItems(pos: Int?) {
+        screenStateLiveData.postValue(
+            SearchWithPagingUiState
+                .ContentWithMetadataRestate(
+                    SearchWithPagingUiState.ContentWithMetadata(
+                        contentList = vacanciesList.toList(),
+                        totalFound = totalFound,
+                        pages = maxPages,
+                        currentPage = currentPage
+                    ), pos
+                )
+        )
+
     }
 
     companion object {
