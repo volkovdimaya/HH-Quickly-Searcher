@@ -20,7 +20,11 @@ class WorkTerritoriesViewModel(private val workTerritoryInteractor: WorkTerritor
         viewModelScope.launch {
             workTerritoryInteractor.getWorkTerritories()
                 .collect { region ->
-                    workTerritoryLiveData.postValue(region)
+                    if (region != null) {
+                        workTerritoryLiveData.postValue(region)
+                    } else {
+                        workTerritoryLiveData.postValue(WorkTerritory())
+                    }
                 }
         }
     }

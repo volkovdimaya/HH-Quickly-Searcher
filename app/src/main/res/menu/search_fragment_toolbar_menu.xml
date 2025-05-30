@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_filters_fragment"
-        android:icon="@drawable/ic_filter_on_off_selector_24px"
         android:title="@string/filter_settings"
         android:tooltipText="@null"
+        app:actionLayout="@layout/view_filter_menu_button"
         app:showAsAction="always" />
 </menu>

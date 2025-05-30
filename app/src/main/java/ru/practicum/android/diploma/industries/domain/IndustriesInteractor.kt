@@ -9,4 +9,5 @@ interface IndustriesInteractor {
     fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>>
     suspend fun clearTableDb()
     fun saveFilterParameter(item: Industry): Flow<Int>
+    fun getFilterIndustry(): Flow<Industry?>
 }
