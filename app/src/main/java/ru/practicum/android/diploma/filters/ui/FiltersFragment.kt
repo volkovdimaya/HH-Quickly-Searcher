@@ -23,8 +23,8 @@ class FiltersFragment : Fragment() {
 
     private val viewModel by viewModel<FiltersViewModel>()
 
-    private var startParameters: FilterParameters = FilterParameters()
-    private var startIsNotSet = true
+    private var initialFilters: FilterParameters = FilterParameters()
+    private var initialFiltersNotSet = true
     private var needToChangeSalary = true
 
     override fun onCreateView(
@@ -42,9 +42,9 @@ class FiltersFragment : Fragment() {
         setAllListeners()
 
         viewModel.getFilterParametersState().observe(viewLifecycleOwner) {
-            if (startIsNotSet) {
-                startParameters = it
-                startIsNotSet = false
+            if (initialFiltersNotSet) {
+                initialFilters = it
+                initialFiltersNotSet = false
             }
             render(it)
         }
@@ -53,7 +53,6 @@ class FiltersFragment : Fragment() {
     private fun setAllListeners() {
         setIndustryListeners()
         setWorkTerritoryListeners()
-
         setSalaryListeners()
 
         binding.buttonDeleteAll.setOnClickListener {
@@ -143,7 +142,7 @@ class FiltersFragment : Fragment() {
             needToChangeSalary = false
         }
 
-        startIsNotSet = false
+        initialFiltersNotSet = false
 
         val filtersChanged = hasFilterChanged(filters)
         binding.buttonApply.isVisible = filtersChanged
@@ -153,46 +152,19 @@ class FiltersFragment : Fragment() {
     }
 
     private fun hasFilterChanged(filters: FilterParameters): Boolean {
-        var result = false
-        if (filters.onlyWithSalary != startParameters.onlyWithSalary
-            || filters.salary != startParameters.salary
-        ) {
-            result = true
-        }
-        if (filters.regionId != startParameters.regionId
-            || filters.countryId != startParameters.countryId
-            || filters.industryId != startParameters.industryId
-        ) {
-            result = true
-        }
-        return result
+        return filters != initialFilters
     }
 
     private fun isFilterEmpty(filters: FilterParameters): Boolean {
-        var result = true
-        listOf(
+        return listOf(
             filters.salary,
             filters.regionId,
             filters.countryId,
             filters.industryId
-        ).forEach { parameter ->
-            if (parameter != null) {
-                result = false
-            }
-        }
-        if (filters.onlyWithSalary) {
-            result = false
-        }
-        return result
+        ).all { it == null } && !filters.onlyWithSalary
     }
 
     private fun makeWorkTerritoryName(filters: FilterParameters): String {
-        var result = ""
-        if (filters.countryName != null && filters.regionName != null) {
-            result = "${filters.countryName}, ${filters.regionName}"
-        } else if (filters.countryName != null) {
-            result = filters.countryName
-        }
-        return result
+        return listOfNotNull(filters.countryName, filters.regionName).joinToString(", ")
     }
 }
