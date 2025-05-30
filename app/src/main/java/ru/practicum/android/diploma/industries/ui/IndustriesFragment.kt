@@ -72,14 +72,7 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
     }
 
     override fun goToFragment(entityId: String) {
-        findNavController().navigate(
-            navigateIdAction,
-            null,
-            NavOptions.Builder()
-                .setPopUpTo(findNavController().currentDestination!!.id, true)
-                .setLaunchSingleTop(true)
-                .build()
-        )
+        findNavController().navigateUp()
     }
 
     override fun onSearchTextChanged(toString: String) {
