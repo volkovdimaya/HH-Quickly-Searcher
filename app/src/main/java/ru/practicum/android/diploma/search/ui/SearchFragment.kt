@@ -248,6 +248,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
                 iconActionFilters?.setOnClickListener {
                     findNavController().navigate(R.id.filtersFragment)
+                    viewModel.updateShortVacancyListNewItems(firstVisibleItemPosition)
                 }
             }
 
