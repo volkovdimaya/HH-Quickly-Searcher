@@ -86,8 +86,7 @@ class FiltersFragment : Fragment() {
             findNavController().navigate(R.id.workTerritoriesFragment)
         }
         binding.workTerritoryDelete.setOnClickListener {
-            viewModel.deleteFilterParameter(FilterParametersType.Country())
-            viewModel.deleteFilterParameter(FilterParametersType.Region())
+            viewModel.deleteWorkTerritoryFilter()
         }
     }
 
