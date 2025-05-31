@@ -44,6 +44,22 @@ class FilterParametersRepositoryImpl(
         database.filterParametersDao().saveFilters(newFilters)
     }
 
+    override suspend fun restoreFilters(filters: FilterParameters) {
+        val entity = FilterParametersEntity(
+            filtersId = FILTER_DB_ID,
+            countryId = filters.countryId,
+            regionId = filters.regionId,
+            industryId = filters.industryId,
+            salary = filters.salary,
+            onlyWithSalary = filters.onlyWithSalary,
+            countryName = filters.countryName,
+            regionName = filters.regionName,
+            industryName = filters.industryName,
+            needToSearch = filters.needToSearch
+        )
+        database.filterParametersDao().saveFilters(entity)
+    }
+
     private fun updateFiltersWithType(
         newFilters: FilterParametersEntity,
         parameters: FilterParametersType
