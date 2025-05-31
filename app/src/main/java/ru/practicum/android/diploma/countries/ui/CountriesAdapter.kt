@@ -25,7 +25,7 @@ class CountriesAdapter : BaseAdapter<Country>() {
     }
 
     override fun updateList(newCountries: List<Country>) {
-        list = newCountries.sortedBy { it.countryName }
+        list = newCountries
         notifyDataSetChanged()
     }
 

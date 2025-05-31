@@ -13,28 +13,28 @@ class CountryInteractorImpl(
     private val repBd: FilterParametersRepository
 ) : CountryInteractor {
 
-    override suspend fun getCountries(): Flow<Pair<Int, List<Country>>> {
-        return repNetwork.getCountries().map { pair ->
-            val code = pair.first
-            val countries = pair.second
-            val filtered = countries.filter { it.countryName in getShortCountryList() }
-                .sortedBy { it.countryName }
-            val manualCountry = Country(0, "Другие регионы")
-            code to filtered + manualCountry
-        }
-    }
-
-    private fun getShortCountryList(): List<String> {
-        return listOf(
+    companion object {
+        private val SHORT_COUNTRY_LIST = listOf(
             "Россия",
             "Украина",
             "Казахстан",
             "Азербайджан",
             "Беларусь",
             "Грузия",
-            "Кыргыстан",
-            "Узбекистан",
+            "Кыргызстан",
+            "Узбекистан"
         )
+    }
+
+
+    override suspend fun getCountries(): Flow<Pair<Int, List<Country>>> {
+        return repNetwork.getCountries().map { pair ->
+            val code = pair.first
+            val countries = pair.second
+            val filtered = countries.filter { it.countryName in SHORT_COUNTRY_LIST }
+            val manualCountry = Country(0, "Другие регионы")
+            code to filtered + manualCountry
+        }
     }
 
     override suspend fun saveCountry(country: Country) {
