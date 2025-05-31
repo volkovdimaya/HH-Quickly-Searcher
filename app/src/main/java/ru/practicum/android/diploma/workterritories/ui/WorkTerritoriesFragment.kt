@@ -61,7 +61,7 @@ class WorkTerritoriesFragment : Fragment() {
         }
 
         binding.countrySelectedDelete.setOnClickListener {
-            viewModel.deleteCountryFilter()
+            viewModel.deleteCountryAndRegionFilter()
         }
 
         binding.regionSelectedDelete.setOnClickListener {
@@ -95,8 +95,7 @@ class WorkTerritoriesFragment : Fragment() {
     }
 
     private fun deleteWorkTerritoryParameters() {
-        viewModel.deleteCountryFilter()
-        viewModel.deleteRegionFilter()
+        viewModel.deleteCountryAndRegionFilter()
     }
 
     private fun updateScreen(workTerritory: WorkTerritory) {

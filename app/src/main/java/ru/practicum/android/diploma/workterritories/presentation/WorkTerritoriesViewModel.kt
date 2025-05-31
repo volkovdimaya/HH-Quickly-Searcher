@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.workterritories.presentation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,25 +14,21 @@ class WorkTerritoriesViewModel(private val workTerritoryInteractor: WorkTerritor
         getCurrentWorkTerritories()
     }
 
-    private var workTerritoryLiveData = MutableLiveData(WorkTerritory())
-    fun getWorkTerritoryLiveData(): MutableLiveData<WorkTerritory> = workTerritoryLiveData
+    private var workTerritoryLiveData = MutableLiveData<WorkTerritory>()
+    fun getWorkTerritoryLiveData(): LiveData<WorkTerritory> = workTerritoryLiveData
 
     private fun getCurrentWorkTerritories() {
         viewModelScope.launch {
             workTerritoryInteractor.getWorkTerritories()
                 .collect { region ->
-                    if (region != null) {
-                        workTerritoryLiveData.postValue(region)
-                    } else {
-                        workTerritoryLiveData.postValue(WorkTerritory())
-                    }
+                    workTerritoryLiveData.postValue(region)
                 }
         }
     }
 
-    fun deleteCountryFilter() {
+    fun deleteCountryAndRegionFilter() {
         viewModelScope.launch {
-            workTerritoryInteractor.deleteCountryFilter()
+            workTerritoryInteractor.deleteCountryAndRegionFilter()
         }
     }
 

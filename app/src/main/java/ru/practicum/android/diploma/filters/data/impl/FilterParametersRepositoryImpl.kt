@@ -50,9 +50,12 @@ class FilterParametersRepositoryImpl(
     ): FilterParametersEntity {
         return when (parameters) {
             is FilterParametersType.Country -> {
+                val countryChanged = newFilters.countryId != parameters.countryId
                 newFilters.copy(
                     countryId = parameters.countryId,
-                    countryName = parameters.countryName
+                    countryName = parameters.countryName,
+                    regionId = if (countryChanged) null else newFilters.regionId,
+                    regionName = if (countryChanged) null else newFilters.regionName
                 )
             }
 
