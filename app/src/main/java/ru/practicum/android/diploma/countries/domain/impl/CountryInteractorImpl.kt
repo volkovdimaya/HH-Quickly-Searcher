@@ -26,7 +26,6 @@ class CountryInteractorImpl(
         )
     }
 
-
     override suspend fun getCountries(): Flow<Pair<Int, List<Country>>> {
         return repNetwork.getCountries().map { pair ->
             val code = pair.first
