@@ -33,6 +33,7 @@ val dataModule = module {
             Log.d("OkHttpClient", message)
         }.apply {
             level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BODY
         }
 
         OkHttpClient.Builder()
