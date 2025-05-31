@@ -18,12 +18,11 @@ class WorkTerritoryRepositoryImpl(
     }
 
     override suspend fun deleteRegionFilter() {
-        val filterParametersEntity =
-            FilterParametersEntity()
+        val filterParametersEntity = FilterParametersEntity()
         appDatabase.areaDao().updateAreaParameter(filterParametersEntity)
     }
 
-    override suspend fun deleteCountryFilter() {
+    override suspend fun deleteCountryAndRegionFilter() {
         appDatabase.areaDao().updateCountry(null, null)
         deleteRegionFilter()
     }

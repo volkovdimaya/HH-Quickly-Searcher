@@ -26,9 +26,9 @@ class WorkTerritoriesViewModel(private val workTerritoryInteractor: WorkTerritor
         }
     }
 
-    fun deleteCountryFilter() {
+    fun deleteCountryAndRegionFilter() {
         viewModelScope.launch {
-            workTerritoryInteractor.deleteCountryFilter()
+            workTerritoryInteractor.deleteCountryAndRegionFilter()
         }
     }
 

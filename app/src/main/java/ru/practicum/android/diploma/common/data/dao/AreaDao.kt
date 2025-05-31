@@ -42,7 +42,7 @@ interface AreaDao : FilterParametersDao {
     @Transaction
     suspend fun updateAreaParameter(parameters: FilterParametersEntity) {
         if (isFiltersEmpty() == 1) {
-            updateRegion(parameters.regionId, parameters.regionName ?: "")
+            updateRegion(parameters.regionId, parameters.regionName)
         } else {
             saveFilters(parameters)
         }
