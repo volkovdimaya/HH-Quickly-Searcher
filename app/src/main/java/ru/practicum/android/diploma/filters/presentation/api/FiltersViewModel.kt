@@ -53,7 +53,6 @@ class FiltersViewModel(
     fun deleteWorkTerritoryFilter() {
         viewModelScope.launch {
             filterInteractor.updateFilterParameter(FilterParametersType.Country())
-            filterInteractor.updateFilterParameter(FilterParametersType.Region())
         }
     }
 
