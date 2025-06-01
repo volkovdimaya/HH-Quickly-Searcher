@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toTopOf="@id/vacancy_error_txt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/vacancy_error_txt"
@@ -35,14 +35,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <ScrollView
         android:id="@+id/vacancy_details_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -107,25 +107,28 @@
 
             <TextView
                 android:id="@+id/company_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/ToolbarTitleAppearance"
                 android:textColor="@color/black"
                 android:maxLines="1"
                 tools:text="@string/test_name_employer"
                 app:layout_constraintStart_toEndOf="@id/company_logo"
+                app:layout_constraintEnd_toEndOf="@id/company_info_bg"
                 app:layout_constraintTop_toTopOf="@id/company_logo"
                 android:layout_marginStart="@dimen/margin_8"/>
 
             <TextView
                 android:id="@+id/vacancy_region"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/Regular16Text"
                 android:textColor="@color/black"
                 android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="@string/team"
                 app:layout_constraintStart_toStartOf="@id/company_name"
+                app:layout_constraintEnd_toEndOf="@id/company_info_bg"
                 app:layout_constraintTop_toBottomOf="@id/company_name"/>
 
             <TextView
