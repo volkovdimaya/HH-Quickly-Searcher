@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -72,14 +71,7 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
     }
 
     override fun goToFragment(entityId: String) {
-        findNavController().navigate(
-            navigateIdAction,
-            null,
-            NavOptions.Builder()
-                .setPopUpTo(findNavController().currentDestination!!.id, true)
-                .setLaunchSingleTop(true)
-                .build()
-        )
+        findNavController().navigateUp()
     }
 
     override fun onSearchTextChanged(toString: String) {
