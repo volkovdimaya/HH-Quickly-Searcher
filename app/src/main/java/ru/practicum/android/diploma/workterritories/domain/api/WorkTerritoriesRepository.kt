@@ -7,6 +7,6 @@ interface WorkTerritoriesRepository {
 
     fun getWorkTerritories(): Flow<WorkTerritory>
     suspend fun deleteRegionFilter()
-    suspend fun deleteCountryFilter()
+    suspend fun deleteCountryAndRegionFilter()
 
 }

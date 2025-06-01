@@ -72,6 +72,9 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
 
+    // okhttp
+    implementation(libs.okhttp.logging.interceptor)
+
     // room
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
