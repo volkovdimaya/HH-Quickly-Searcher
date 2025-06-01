@@ -4,11 +4,12 @@ import android.app.Application
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.runningFold
 import retrofit2.HttpException
 import ru.practicum.android.diploma.common.data.dto.Response
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
@@ -89,14 +90,17 @@ class VacanciesRepositoryImpl(
         emit(null)
     }
 
-    override fun getFilterParameters(): Flow<Pair<Boolean, FilterParameters>>  = flow {
-
-        emit(Pair(false, filtersRepository.getFilterParametersObserver().first()))
-
-        filtersRepository.refreshNotifier.collect {
-            emit(Pair(true, filtersRepository.getFilterParametersObserver().first()))
+    override fun getFilterParameters(): Flow<Pair<Boolean, FilterParameters>>  = filtersRepository.refreshNotifier
+        .onStart {
+            emit(Unit)
         }
-    }
+        .runningFold(0) { count, _ -> count + 1 }
+        .map { index ->
+            val filters = filtersRepository.getFilterParametersObserver().first()
+            val isFromNotifier = index != 1 // первый emit — onStart (index = 1)
+            Pair(isFromNotifier, filters)
+        }
+    .flowOn(Dispatchers.IO)
 
     private fun createSearchRequest(
         text: String,
