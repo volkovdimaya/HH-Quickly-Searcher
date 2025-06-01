@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.widget.Toolbar
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFiltersBinding
@@ -25,9 +21,6 @@ class FiltersFragment : Fragment() {
     private var _binding: FragmentFiltersBinding? = null
     private val binding get() = _binding!!
 
-    private var _toolbar: Toolbar? = null
-    private val toolbar get() = _toolbar!!
-
     private val viewModel by viewModel<FiltersViewModel>()
 
     private var initialFilters: FilterParameters = FilterParameters()
@@ -39,7 +32,6 @@ class FiltersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _toolbar = requireActivity().findViewById(R.id.top_toolbar)
         _binding = FragmentFiltersBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,27 +48,6 @@ class FiltersFragment : Fragment() {
             }
             render(it)
         }
-
-        val backCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                restoreFiltersAndNavigateBack()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        toolbar.setNavigationOnClickListener {
-            restoreFiltersAndNavigateBack()
-        }
-    }
-
-    override fun onDestroyView() {
-        val appBarConfig = AppBarConfiguration(findNavController().graph)
-        toolbar.setupWithNavController(findNavController(), appBarConfig)
-        _toolbar = null
-        super.onDestroyView()
     }
 
     private fun setAllListeners() {
@@ -194,10 +165,5 @@ class FiltersFragment : Fragment() {
 
     private fun makeWorkTerritoryName(filters: FilterParameters): String {
         return listOfNotNull(filters.countryName, filters.regionName).joinToString(", ")
-    }
-
-    private fun restoreFiltersAndNavigateBack() {
-        viewModel.restoreFilters(initialFilters)
-        findNavController().navigateUp()
     }
 }

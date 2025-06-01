@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
@@ -54,10 +53,6 @@ class FiltersViewModel(
         viewModelScope.launch {
             filterInteractor.updateFilterParameter(FilterParametersType.Country())
         }
-    }
-
-    fun restoreFilters(originalFilters: FilterParameters) = runBlocking {
-        filterInteractor.restoreFilters(originalFilters)
     }
 
     private fun updateFilters() {
