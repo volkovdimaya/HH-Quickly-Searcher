@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,9 +12,10 @@ import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
 import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
+import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
+import ru.practicum.android.diploma.search.domain.VacanciesInteractor
 import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
-import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 
 class SearchViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
@@ -22,8 +24,8 @@ class SearchViewModel(
 
     private var loadMoreJob: Job? = null
 
-    private var currentFilters: FilterParametersSearch? = null
-    private var searchedFilters: FilterParametersSearch? = null
+    private var currentFilters: FilterParameters? = null
+    private var searchedFilters: FilterParameters? = null
 
     private var currentPage: Int = 0
     private var maxPages: Int = 0
@@ -81,12 +83,12 @@ class SearchViewModel(
 
     fun getFilters() {
         viewModelScope.launch {
-            filterParametersInteractor.getSearchFilterParameters().collect {
-                isFiltersEmptyState.postValue(isFilterEmpty(it))
-                currentFilters = it
-                if (it.needToSearch) {
+            vacanciesInteractor.getFilterParameters().collect {
+                isFiltersEmptyState.postValue(isFilterEmpty(it.second))
+                Log.d("getFilterParameters", " ${it}")
+                currentFilters = it.second
+                if (it.first) {
                     updateRequest(currentQuery)
-                    filterParametersInteractor.updateFilterParameter(FilterParametersType.NeedToSearch())
                 }
             }
         }
@@ -107,25 +109,31 @@ class SearchViewModel(
                 screenStateLiveData.postValue(ListUiState.ServerError)
             }
             .collectLatest { searchResult ->
-                maxPages = searchResult.pages
-                totalFound = searchResult.found
+                when {
+                    searchResult.resultCode == INTERNAL_ERROR_CODE -> screenStateLiveData.postValue(ListUiState.Error)
+                    searchResult.resultCode != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
+                    else -> {
+                        maxPages = searchResult.pages
+                        totalFound = searchResult.found
 
-                val vacancies = searchResult.vacancies
-                vacanciesList.clear()
-                vacanciesList.addAll(vacancies)
+                        val vacancies = searchResult.vacancies
+                        vacanciesList.clear()
+                        vacanciesList.addAll(vacancies)
 
-                val screenState = if (vacanciesList.isNotEmpty()) {
-                    SearchWithPagingUiState.ContentWithMetadata(
-                        contentList = vacanciesList.toList(),
-                        totalFound = totalFound,
-                        pages = maxPages,
-                        currentPage = currentPage
-                    )
-                } else {
-                    ListUiState.Empty
+                        val screenState = if (vacanciesList.isNotEmpty()) {
+                            SearchWithPagingUiState.ContentWithMetadata(
+                                contentList = vacanciesList.toList(),
+                                totalFound = totalFound,
+                                pages = maxPages,
+                                currentPage = currentPage
+                            )
+                        } else {
+                            ListUiState.Empty
+                        }
+
+                        screenStateLiveData.postValue(screenState)
+                    }
                 }
-
-                screenStateLiveData.postValue(screenState)
             }
     }
 
@@ -159,6 +167,7 @@ class SearchViewModel(
                     )
 
                     vacanciesList.addAll(newVacancies)
+
                 }
         }
     }
@@ -177,7 +186,7 @@ class SearchViewModel(
         screenStateLiveData.postValue(ListUiState.AnyItem(item.vacancyId))
     }
 
-    private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
+    private fun isFilterEmpty(filterParameters: FilterParameters): Boolean {
         var result = true
         listOf(
             filterParameters.salary,
@@ -208,5 +217,11 @@ class SearchViewModel(
                     pos
                 )
         )
+    }
+
+    companion object {
+        private const val SUCCESS_CODE = 200
+        private const val BAD_REQUEST_CODE = 400
+        private const val INTERNAL_ERROR_CODE = 500
     }
 }

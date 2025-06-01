@@ -21,7 +21,7 @@ import ru.practicum.android.diploma.workterritories.domain.api.WorkTerritoriesRe
 val repositoryModule = module {
 
     single<VacanciesRepository> {
-        VacanciesRepositoryImpl(get(), get())
+        VacanciesRepositoryImpl(get(), get(), get(), get())
     }
 
     single<FavoritesRepository> {
