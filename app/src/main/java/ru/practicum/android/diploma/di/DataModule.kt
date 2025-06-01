@@ -2,8 +2,11 @@ package ru.practicum.android.diploma.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.room.Room
 import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -25,9 +28,23 @@ private const val SHARED_PREFERENCES_NAME = "shared_preferences"
 
 val dataModule = module {
 
+    single<OkHttpClient> {
+        val loggingInterceptor = HttpLoggingInterceptor { message ->
+            Log.d("OkHttpClient", message)
+        }.apply {
+            level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
     single<HhApiService> {
         Retrofit.Builder()
             .baseUrl(API_BASE_URL)
+            .client(get<OkHttpClient>())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HhApiService::class.java)
