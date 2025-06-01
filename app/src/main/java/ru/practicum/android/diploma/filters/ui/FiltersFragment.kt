@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFiltersBinding
@@ -21,10 +25,13 @@ class FiltersFragment : Fragment() {
     private var _binding: FragmentFiltersBinding? = null
     private val binding get() = _binding!!
 
+    private var _toolbar: Toolbar? = null
+    private val toolbar get() = _toolbar!!
+
     private val viewModel by viewModel<FiltersViewModel>()
 
-    private var startParameters: FilterParameters = FilterParameters()
-    private var startIsNotSet = true
+    private var initialFilters: FilterParameters = FilterParameters()
+    private var initialFiltersNotSet = true
     private var needToChangeSalary = true
 
     override fun onCreateView(
@@ -32,6 +39,7 @@ class FiltersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _toolbar = requireActivity().findViewById(R.id.top_toolbar)
         _binding = FragmentFiltersBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,18 +50,38 @@ class FiltersFragment : Fragment() {
         setAllListeners()
 
         viewModel.getFilterParametersState().observe(viewLifecycleOwner) {
-            if (startIsNotSet) {
-                startParameters = it
-                startIsNotSet = false
+            if (initialFiltersNotSet) {
+                initialFilters = it
+                initialFiltersNotSet = false
             }
             render(it)
         }
+
+        val backCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                restoreFiltersAndNavigateBack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbar.setNavigationOnClickListener {
+            restoreFiltersAndNavigateBack()
+        }
+    }
+
+    override fun onDestroyView() {
+        val appBarConfig = AppBarConfiguration(findNavController().graph)
+        toolbar.setupWithNavController(findNavController(), appBarConfig)
+        _toolbar = null
+        super.onDestroyView()
     }
 
     private fun setAllListeners() {
         setIndustryListeners()
         setWorkTerritoryListeners()
-
         setSalaryListeners()
 
         binding.buttonDeleteAll.setOnClickListener {
@@ -63,7 +91,7 @@ class FiltersFragment : Fragment() {
 
         binding.buttonApply.setOnClickListener {
             viewModel.addFilterParameter(FilterParametersType.NeedToSearch(true))
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().navigateUp()
         }
     }
 
@@ -87,8 +115,7 @@ class FiltersFragment : Fragment() {
             findNavController().navigate(R.id.workTerritoriesFragment)
         }
         binding.workTerritoryDelete.setOnClickListener {
-            viewModel.deleteFilterParameter(FilterParametersType.Country())
-            viewModel.deleteFilterParameter(FilterParametersType.Region())
+            viewModel.deleteWorkTerritoryFilter()
         }
     }
 
@@ -143,7 +170,7 @@ class FiltersFragment : Fragment() {
             needToChangeSalary = false
         }
 
-        startIsNotSet = false
+        initialFiltersNotSet = false
 
         val filtersChanged = hasFilterChanged(filters)
         binding.buttonApply.isVisible = filtersChanged
@@ -153,46 +180,24 @@ class FiltersFragment : Fragment() {
     }
 
     private fun hasFilterChanged(filters: FilterParameters): Boolean {
-        var result = false
-        if (filters.onlyWithSalary != startParameters.onlyWithSalary
-            || filters.salary != startParameters.salary
-        ) {
-            result = true
-        }
-        if (filters.regionId != startParameters.regionId
-            || filters.countryId != startParameters.countryId
-            || filters.industryId != startParameters.industryId
-        ) {
-            result = true
-        }
-        return result
+        return filters != initialFilters
     }
 
     private fun isFilterEmpty(filters: FilterParameters): Boolean {
-        var result = true
-        listOf(
+        return listOf(
             filters.salary,
             filters.regionId,
             filters.countryId,
             filters.industryId
-        ).forEach { parameter ->
-            if (parameter != null) {
-                result = false
-            }
-        }
-        if (filters.onlyWithSalary) {
-            result = false
-        }
-        return result
+        ).all { it == null } && !filters.onlyWithSalary
     }
 
     private fun makeWorkTerritoryName(filters: FilterParameters): String {
-        var result = ""
-        if (filters.countryName != null && filters.regionName != null) {
-            result = "${filters.countryName}, ${filters.regionName}"
-        } else if (filters.countryName != null) {
-            result = filters.countryName
-        }
-        return result
+        return listOfNotNull(filters.countryName, filters.regionName).joinToString(", ")
+    }
+
+    private fun restoreFiltersAndNavigateBack() {
+        viewModel.restoreFilters(initialFilters)
+        findNavController().navigateUp()
     }
 }
