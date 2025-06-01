@@ -11,7 +11,6 @@ interface FilterParametersRepository {
     fun getFilterParametersObserver(): Flow<FilterParameters>
     suspend fun deleteFilters()
     suspend fun saveFilterParameters(parameters: FilterParametersType)
-    suspend fun restoreFilters(filters: FilterParameters)
 
     fun notifyUpdateRequest()
     abstract val refreshNotifier: SharedFlow<Unit>

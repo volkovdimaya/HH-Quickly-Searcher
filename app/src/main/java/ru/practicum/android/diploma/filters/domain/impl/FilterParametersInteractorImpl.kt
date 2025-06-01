@@ -30,8 +30,4 @@ class FilterParametersInteractorImpl(
     override suspend fun updateFilterParameter(parameter: FilterParametersType) {
         filterParametersRepository.saveFilterParameters(parameter)
     }
-
-    override suspend fun restoreFilters(filters: FilterParameters) {
-        filterParametersRepository.restoreFilters(filters)
-    }
 }
