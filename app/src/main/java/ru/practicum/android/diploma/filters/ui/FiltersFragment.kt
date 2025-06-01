@@ -91,7 +91,7 @@ class FiltersFragment : Fragment() {
 
         binding.buttonApply.setOnClickListener {
             viewModel.addFilterParameter(FilterParametersType.NeedToSearch(true))
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().navigateUp()
         }
     }
 
