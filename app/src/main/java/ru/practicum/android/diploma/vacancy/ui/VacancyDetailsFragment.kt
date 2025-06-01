@@ -275,6 +275,7 @@ class VacancyDetailsFragment : Fragment() {
                     append(bullet)
                     append("\t\t")
                     append(it)
+                    append("\n")
                 }
             }
         }

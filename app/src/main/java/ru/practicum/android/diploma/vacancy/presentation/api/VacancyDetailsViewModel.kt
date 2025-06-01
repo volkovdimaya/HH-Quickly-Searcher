@@ -1,11 +1,12 @@
 package ru.practicum.android.diploma.vacancy.presentation.api
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 
 class VacancyDetailsViewModel(
@@ -16,25 +17,24 @@ class VacancyDetailsViewModel(
     fun getScreenStateLiveData(): LiveData<VacancyDetailsScreenState> = screenStateLiveData
 
     fun getVacancyDetails(vacancyId: String) {
-        screenStateLiveData.postValue(VacancyDetailsScreenState.Loading)
         viewModelScope.launch {
-            var isFavourite = false
-            interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
-                isFavourite = isVacancyFavourite
-                Log.d("666", isFavourite.toString())
-            }
-            interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
-                val code = detailsResponse.resultCode
-                Log.d("666", detailsResponse.vacancyDetail.toString())
-                if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
-                        detailsResponse.vacancyDetail[0],
-                        isFavourite
-                    ))
-                } else if (code == NOT_FOUND_CODE || detailsResponse.vacancyDetail.isNullOrEmpty()) {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.NothingFound)
-                } else {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.ServerError)
+            withContext(Dispatchers.IO) {
+                var isFavourite = false
+                interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
+                    isFavourite = isVacancyFavourite
+                }
+                interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
+                    val code = detailsResponse.resultCode
+                    if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
+                        screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
+                            detailsResponse.vacancyDetail[0],
+                            isFavourite
+                        ))
+                    } else if (code == NOT_FOUND_CODE || detailsResponse.vacancyDetail.isNullOrEmpty()) {
+                        screenStateLiveData.postValue(VacancyDetailsScreenState.NothingFound)
+                    } else {
+                        screenStateLiveData.postValue(VacancyDetailsScreenState.ServerError)
+                    }
                 }
             }
         }
