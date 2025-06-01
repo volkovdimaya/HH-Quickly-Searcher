@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.vacancy.ui
 
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -22,7 +21,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -209,11 +207,10 @@ class VacancyDetailsFragment : Fragment() {
         }
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
-            .transform(
-                RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())),
-                CenterCrop()
-            )
-            .placeholder(R.drawable.ic_placeholder_32px)
+            .error(R.drawable.ic_placeholder_48px)
+            .placeholder(R.drawable.ic_placeholder_48px)
+            .centerCrop()
+            .transform(RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())))
             .into(binding.companyLogo)
         binding.vacancyRegion.text = vacancyDetails.address.ifEmpty {
             vacancyDetails.workTerritory
@@ -281,7 +278,6 @@ class VacancyDetailsFragment : Fragment() {
                 }
             }
         }
-        Log.d("str", str.toString())
         return str
     }
 
