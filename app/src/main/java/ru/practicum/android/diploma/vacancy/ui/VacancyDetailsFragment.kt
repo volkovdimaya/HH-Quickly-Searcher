@@ -245,7 +245,7 @@ class VacancyDetailsFragment : Fragment() {
                 Html.fromHtml(
                     vacancyDetails.description,
                     Html.FROM_HTML_MODE_COMPACT
-                )
+                ).trimEnd()
             )
             binding.vacancyInfo.isVisible = true
             binding.vacancyInfoTitle.isVisible = true
@@ -266,7 +266,7 @@ class VacancyDetailsFragment : Fragment() {
         }
     }
 
-    private fun makeKeySkillsStr(list: List<String>): AnnotatedString {
+    private fun makeKeySkillsStr(list: List<String>): String {
         val bullet = "\u2022"
         val paragraphStyle = ParagraphStyle(textIndent = TextIndent(restLine = 12.sp))
         val str = buildAnnotatedString {
@@ -279,7 +279,7 @@ class VacancyDetailsFragment : Fragment() {
                 }
             }
         }
-        return str
+        return str.toString().trimEnd()
     }
 
     companion object {

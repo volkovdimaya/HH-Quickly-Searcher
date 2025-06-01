@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/vacancy_error_img"
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -175,6 +175,7 @@
                 app:layout_constraintStart_toEndOf="@id/start_gl"
                 app:layout_constraintEnd_toStartOf="@id/end_gl"
                 app:layout_constraintTop_toBottomOf="@id/working_hours"
+                app:layout_constraintBottom_toTopOf="@id/vacancy_info"
                 android:layout_marginTop="@dimen/margin_32"/>
 
             <TextView
@@ -186,7 +187,9 @@
                 app:layout_constraintStart_toEndOf="@id/start_gl"
                 app:layout_constraintEnd_toStartOf="@id/end_gl"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_info_title"
-                android:layout_marginTop="@dimen/margin_16"/>
+                app:layout_constraintBottom_toTopOf="@id/vacancy_key_skills_title"
+                android:layout_marginTop="@dimen/margin_16"
+                app:layout_goneMarginBottom="@dimen/margin_24"/>
 
             <TextView
                 android:id="@+id/vacancy_key_skills_title"
@@ -197,6 +200,7 @@
                 app:layout_constraintStart_toEndOf="@id/start_gl"
                 app:layout_constraintEnd_toStartOf="@id/end_gl"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_info"
+                app:layout_constraintBottom_toTopOf="@id/vacancy_key_skills"
                 android:layout_marginTop="@dimen/margin_24"/>
 
             <TextView
@@ -208,7 +212,9 @@
                 app:layout_constraintStart_toEndOf="@id/start_gl"
                 app:layout_constraintEnd_toStartOf="@id/end_gl"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_key_skills_title"
-                android:layout_marginTop="@dimen/margin_16"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_24"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
