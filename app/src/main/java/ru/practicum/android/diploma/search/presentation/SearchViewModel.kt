@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
+import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
-import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 import ru.practicum.android.diploma.search.presentation.api.VacanciesInteractor
 import ru.practicum.android.diploma.util.debounce
 
@@ -30,8 +30,8 @@ class SearchViewModel(
     private var previousScreenStateLiveData = MutableLiveData<ShortVacancyListUiState>()
 
     private var currentQuery: String = ""
-    private var currentFilters: FilterParametersSearch? = null
-    private var searchedFilters: FilterParametersSearch? = null
+    private var currentFilters: FilterParameters? = null
+    private var searchedFilters: FilterParameters? = null
     private var lastSearchedQuery: String = ""
 
     private var currentPage: Int = 0
@@ -39,6 +39,8 @@ class SearchViewModel(
     private var totalFound: Int = 0
     private var isNextPageLoading: Boolean = false
     private var vacanciesList: MutableList<VacancyShort> = mutableListOf()
+
+    private var isProcessingNeedToSearch = false
 
     val observeState = MediatorLiveData<ShortVacancyListUiState>().apply {
         addSource(screenStateLiveData) { newValue ->
@@ -59,7 +61,7 @@ class SearchViewModel(
             coroutineScope = viewModelScope,
             useLastParam = true
         ) { query ->
-            if (query.isNotEmpty() && query == currentQuery && query != lastSearchedQuery) {
+            if (query.isNotEmpty() && query == currentQuery) {
                 resetPaginationState()
                 screenStateLiveData.postValue(ShortVacancyListUiState.Loading)
                 searchVacancies()
@@ -120,12 +122,25 @@ class SearchViewModel(
 
     fun getFilters() {
         viewModelScope.launch {
-            filterParametersInteractor.getSearchFilterParameters().collect {
+            filterParametersInteractor.getFilterParameters().collect {
                 isFiltersEmptyState.postValue(isFilterEmpty(it))
                 currentFilters = it
-                if (it.needToSearch) {
-                    updateRequest(currentQuery)
-                    filterParametersInteractor.updateFilterParameter(FilterParametersType.NeedToSearch())
+
+                if (it.needToSearch && !isProcessingNeedToSearch) {
+                    isProcessingNeedToSearch = true
+
+                    val queryToSearch = if (lastSearchedQuery.isNotEmpty()) {
+                        lastSearchedQuery
+                    } else {
+                        currentQuery
+                    }
+
+                    if (queryToSearch.isNotEmpty()) {
+                        updateRequest(queryToSearch)
+                    }
+
+                    filterParametersInteractor.updateFilterParameter(FilterParametersType.NeedToSearch(false))
+                    isProcessingNeedToSearch = false
                 }
             }
         }
@@ -227,7 +242,7 @@ class SearchViewModel(
         screenStateLiveData.postValue(ShortVacancyListUiState.AnyItem(item.vacancyId))
     }
 
-    private fun isFilterEmpty(filterParameters: FilterParametersSearch): Boolean {
+    private fun isFilterEmpty(filterParameters: FilterParameters): Boolean {
         var result = true
         listOf(
             filterParameters.salary,
