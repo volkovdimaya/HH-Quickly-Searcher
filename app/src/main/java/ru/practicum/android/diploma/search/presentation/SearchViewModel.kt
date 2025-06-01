@@ -46,6 +46,7 @@ class SearchViewModel(
 
         if (currentQuery.isEmpty()) {
             searchDebounceJob?.cancel()
+            screenStateLiveData.postValue(ListUiState.Default)
             return
         } else if (textChanged) {
             searchDebounceJob?.cancel()

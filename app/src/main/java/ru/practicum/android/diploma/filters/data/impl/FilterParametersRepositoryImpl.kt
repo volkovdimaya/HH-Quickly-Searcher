@@ -101,7 +101,7 @@ class FilterParametersRepositoryImpl(
 
             is FilterParametersType.NeedToSearch -> {
                 notifyUpdateRequest()
-                newFilters.copy(needToSearch = parameters.state)
+                newFilters
             }
         }
     }
@@ -110,7 +110,7 @@ class FilterParametersRepositoryImpl(
         private const val FILTER_DB_ID = "filter_parameters_id"
     }
 
-    private val _refreshNotifier = MutableSharedFlow<Unit>(replay = 1)
+    private val _refreshNotifier = MutableSharedFlow<Unit>(replay = 0)
      override val refreshNotifier = _refreshNotifier.asSharedFlow()
 
      override fun notifyUpdateRequest() {
