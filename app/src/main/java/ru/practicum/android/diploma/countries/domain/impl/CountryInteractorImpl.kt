@@ -24,6 +24,7 @@ class CountryInteractorImpl(
             "Кыргызстан",
             "Узбекистан",
         )
+        private const val OTHER_REGIONS_ID = 1001
     }
 
     override suspend fun getCountries(): Flow<Pair<Int, List<Country>>> {
@@ -31,7 +32,7 @@ class CountryInteractorImpl(
             val code = pair.first
             val countries = pair.second
             val filtered = countries.filter { it.countryName in SHORT_COUNTRY_LIST }
-            val manualCountry = Country(1001, "Другие регионы")
+            val manualCountry = Country(OTHER_REGIONS_ID, "Другие регионы")
             code to filtered + manualCountry
         }
     }
