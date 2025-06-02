@@ -2,14 +2,12 @@ package ru.practicum.android.diploma.vacancy.ui
 
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextIndent
@@ -22,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -209,11 +206,10 @@ class VacancyDetailsFragment : Fragment() {
         }
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
-            .transform(
-                RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())),
-                CenterCrop()
-            )
-            .placeholder(R.drawable.ic_placeholder_32px)
+            .error(R.drawable.ic_placeholder_48px)
+            .placeholder(R.drawable.ic_placeholder_48px)
+            .centerCrop()
+            .transform(RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())))
             .into(binding.companyLogo)
         binding.vacancyRegion.text = vacancyDetails.address.ifEmpty {
             vacancyDetails.workTerritory
@@ -248,7 +244,7 @@ class VacancyDetailsFragment : Fragment() {
                 Html.fromHtml(
                     vacancyDetails.description,
                     Html.FROM_HTML_MODE_COMPACT
-                )
+                ).trimEnd()
             )
             binding.vacancyInfo.isVisible = true
             binding.vacancyInfoTitle.isVisible = true
@@ -269,7 +265,7 @@ class VacancyDetailsFragment : Fragment() {
         }
     }
 
-    private fun makeKeySkillsStr(list: List<String>): AnnotatedString {
+    private fun makeKeySkillsStr(list: List<String>): String {
         val bullet = "\u2022"
         val paragraphStyle = ParagraphStyle(textIndent = TextIndent(restLine = 12.sp))
         val str = buildAnnotatedString {
@@ -278,11 +274,11 @@ class VacancyDetailsFragment : Fragment() {
                     append(bullet)
                     append("\t\t")
                     append(it)
+                    append("\n")
                 }
             }
         }
-        Log.d("str", str.toString())
-        return str
+        return str.toString().trimEnd()
     }
 
     companion object {
