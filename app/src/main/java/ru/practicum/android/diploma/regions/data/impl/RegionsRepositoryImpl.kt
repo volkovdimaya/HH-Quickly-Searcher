@@ -45,10 +45,10 @@ class RegionsRepositoryImpl(
         val result = if (response is RegionsResponse) {
             val areaDtoList = AreaMapper.flattenAreaDtoList(response.regions).sortedBy { it.name }
 
-            val filteredList = when {
-                countryId == 0.toString() -> areaDtoList.filter { it.parentId in getIdShortCountryList(areaDtoList) }
-                countryId != null -> areaDtoList.filter { it.parentId == countryId }
-                else -> areaDtoList
+            val filteredList = if (countryId != null) {
+                areaDtoList.filter { it.parentId == countryId }
+            } else {
+                areaDtoList
             }
 
             saveAreas(filteredList)
@@ -164,24 +164,5 @@ class RegionsRepositoryImpl(
         }
 
         return area
-    }
-
-    private fun getShortCountryList(): List<String> {
-        return listOf(
-            "Россия",
-            "Украина",
-            "Казахстан",
-            "Азербайджан",
-            "Беларусь",
-            "Грузия",
-            "Кыргыстан",
-            "Узбекистан",
-        )
-    }
-
-    private fun getIdShortCountryList(areaDtoList: List<AreaDto>): List<String> {
-        val filtered = areaDtoList.filter { it.parentId == null }
-            .filter { it.name !in getShortCountryList() }
-        return filtered.map { it.id }
     }
 }

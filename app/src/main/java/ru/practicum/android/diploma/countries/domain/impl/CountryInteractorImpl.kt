@@ -31,7 +31,7 @@ class CountryInteractorImpl(
             val code = pair.first
             val countries = pair.second
             val filtered = countries.filter { it.countryName in SHORT_COUNTRY_LIST }
-            val manualCountry = Country(0, "Другие регионы")
+            val manualCountry = Country(1001, "Другие регионы")
             code to filtered + manualCountry
         }
     }
