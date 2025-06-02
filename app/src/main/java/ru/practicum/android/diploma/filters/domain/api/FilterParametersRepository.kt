@@ -12,6 +12,6 @@ interface FilterParametersRepository {
     suspend fun deleteFilters()
     suspend fun saveFilterParameters(parameters: FilterParametersType)
 
-    fun notifyUpdateRequest()
-    val refreshNotifier: SharedFlow<Unit>
+    fun notifyUpdateSearchRequest()
+    val updateSearchNotifier: SharedFlow<Unit>
 }

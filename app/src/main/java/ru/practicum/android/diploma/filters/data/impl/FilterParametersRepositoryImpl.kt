@@ -93,13 +93,13 @@ class FilterParametersRepositoryImpl(
         private const val FILTER_DB_ID = "filter_parameters_id"
     }
 
-    private val _refreshNotifier = MutableSharedFlow<Unit>(
+    private val _updateSearchNotifier = MutableSharedFlow<Unit>(
         replay = 0,
         extraBufferCapacity = 1
     )
-    override val refreshNotifier: SharedFlow<Unit> = _refreshNotifier
+    override val updateSearchNotifier: SharedFlow<Unit> = _updateSearchNotifier
 
-    override fun notifyUpdateRequest() {
-        _refreshNotifier.tryEmit(Unit)
+    override fun notifyUpdateSearchRequest() {
+        _updateSearchNotifier.tryEmit(Unit)
     }
 }

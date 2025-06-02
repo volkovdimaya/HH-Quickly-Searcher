@@ -33,7 +33,7 @@ class SearchViewModel(
     private val isFiltersEmptyState = MutableLiveData<Boolean>()
     fun isFiltersEmpty(): LiveData<Boolean> = isFiltersEmptyState
 
-    private val filterEvents: SharedFlow<Unit> = vacanciesInteractor.filterEvents
+    private val updateSearchNotifier: SharedFlow<Unit> = vacanciesInteractor.updateSearchNotifier
 
     init {
         getFilters()
@@ -82,7 +82,7 @@ class SearchViewModel(
 
     fun getFilters() {
         viewModelScope.launch(Dispatchers.IO) {
-            filterEvents.collect {
+            updateSearchNotifier.collect {
                 updateRequest(currentQuery)
             }
         }

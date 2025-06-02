@@ -31,7 +31,7 @@ class FilterParametersInteractorImpl(
         filterParametersRepository.saveFilterParameters(parameter)
     }
 
-    override fun notifyUpdateRequest() {
-        filterParametersRepository.notifyUpdateRequest()
+    override fun notifyUpdateSearchRequest() {
+        filterParametersRepository.notifyUpdateSearchRequest()
     }
 }

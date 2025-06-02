@@ -14,7 +14,7 @@ class VacanciesInteractorImpl(
     private val filtersRepository: FilterParametersRepository,
 ) : VacanciesInteractor {
 
-    override val filterEvents: SharedFlow<Unit> = filtersRepository.refreshNotifier
+    override val updateSearchNotifier: SharedFlow<Unit> = filtersRepository.updateSearchNotifier
 
     override fun searchVacancies(
         query: String,

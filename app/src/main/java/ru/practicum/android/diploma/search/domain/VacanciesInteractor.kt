@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 interface VacanciesInteractor {
 
-    val filterEvents: SharedFlow<Unit>
+    val updateSearchNotifier: SharedFlow<Unit>
 
     fun searchVacancies(
         query: String,

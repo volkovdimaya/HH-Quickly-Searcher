@@ -11,5 +11,5 @@ interface FilterParametersInteractor {
     fun getFilterParameters(): Flow<FilterParameters>
     suspend fun deleteAllFilters()
     suspend fun updateFilterParameter(parameter: FilterParametersType)
-    fun notifyUpdateRequest()
+    fun notifyUpdateSearchRequest()
 }
