@@ -61,7 +61,7 @@ class FiltersFragment : Fragment() {
         }
 
         binding.buttonApply.setOnClickListener {
-            viewModel.addFilterParameter(FilterParametersType.NeedToSearch(true))
+            viewModel.notifyUpdateSearchRequest()
             findNavController().navigateUp()
         }
     }
