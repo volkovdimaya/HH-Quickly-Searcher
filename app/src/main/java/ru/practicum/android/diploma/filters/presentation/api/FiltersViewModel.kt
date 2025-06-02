@@ -49,10 +49,6 @@ class FiltersViewModel(
         }
     }
 
-    suspend fun addFilterParameterSync(parameter: FilterParametersType) {
-        filterInteractor.updateFilterParameter(parameter)
-    }
-
     fun deleteWorkTerritoryFilter() {
         viewModelScope.launch {
             filterInteractor.updateFilterParameter(FilterParametersType.Country())
