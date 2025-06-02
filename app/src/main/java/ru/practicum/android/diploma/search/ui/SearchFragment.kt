@@ -19,12 +19,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.ListUiState
-import ru.practicum.android.diploma.common.presentation.ShortVacancyListUiState
 import ru.practicum.android.diploma.common.ui.fragments.ShortVacancyFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyProgressbarBinding
 import ru.practicum.android.diploma.databinding.LayoutErrorVacancyPlaceholderBinding
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
+import ru.practicum.android.diploma.search.presentation.SearchWithPagingUiState
 import ru.practicum.android.diploma.util.TopSpacingItemDecoration
 
 class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
@@ -37,6 +37,8 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
     private var _progressBarBinding: ItemVacancyProgressbarBinding? = null
     private val progressBarBinding get() = _progressBarBinding!!
+
+    var firstVisibleItemPosition: Int? = null
 
     private val viewModel by viewModel<SearchViewModel>()
 
@@ -67,8 +69,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         adapter.setOnItemClickListener = { vacancyShort ->
             viewModel.showVacancyDetails(vacancyShort)
         }
-
-        viewModel.getFilters()
     }
 
     override fun onDestroyView() {
@@ -98,7 +98,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                     val totalItemCount = layoutManager.itemCount
-
+                    firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
                     if (lastVisibleItemPosition >= totalItemCount - LOAD_MORE_THRESHOLD && !adapter.isLoadingMore) {
                         viewModel.onLastItemReached()
                     }
@@ -109,33 +109,17 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         needToInitRecyclerView = false
     }
 
-    override fun render(state: ListUiState<VacancyShort>) {
-        when (state) {
-            is ShortVacancyListUiState.AnyItem -> goToFragment(state.itemId)
-            is ShortVacancyListUiState.ContentWithMetadata -> updateIncludeViewByContentWithMetadata(state)
-            is ShortVacancyListUiState.NewItems -> addNewItems(state)
-            ShortVacancyListUiState.Default -> updateIncludeViewByClear()
-            ShortVacancyListUiState.Empty -> updateIncludeViewByEmpty()
-            ShortVacancyListUiState.Loading -> updateIncludeViewByProgressBar()
-            ShortVacancyListUiState.Error -> updateIncludeViewByError()
-            ShortVacancyListUiState.ServerError -> updateIncludeViewByServerError()
-            is ShortVacancyListUiState.LoadingMore -> showLoadingMore()
-            is ShortVacancyListUiState.LoadingMoreError -> handleLoadingMoreError()
-            is ShortVacancyListUiState.Content -> updateIncludeViewByList(state.contentList)
-            is ShortVacancyListUiState.ShortVacancyListUiIncludeState -> renderIncludeState(state)
-        }
-    }
-
-    private fun addNewItems(state: ShortVacancyListUiState.NewItems) {
+    private fun addNewItems(state: SearchWithPagingUiState.NewItems<VacancyShort>) {
         val headerText = getString(R.string.search_result_count, state.totalFound.toString())
         binding.responseHeader.text = headerText
-
         adapter.addItems(state.newItems)
         adapter.setLoadingMore(false)
         adapter.updateShortVacancyListNewItems()
     }
 
-    private fun updateIncludeViewByContentWithMetadata(state: ShortVacancyListUiState.ContentWithMetadata) {
+    private fun updateIncludeViewByContentWithMetadata(
+        state: SearchWithPagingUiState.ContentWithMetadata<VacancyShort>
+    ) {
         binding.imageSearchIdle.visibility = View.GONE
         binding.includeView.visibility = View.VISIBLE
         binding.responseHeader.visibility = View.VISIBLE
@@ -217,13 +201,25 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
     }
 
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<VacancyShort>) {
-        // no states
+        when (state) {
+            is SearchWithPagingUiState.ContentWithMetadata -> updateIncludeViewByContentWithMetadata(state)
+            is SearchWithPagingUiState.NewItems -> addNewItems(state)
+            is SearchWithPagingUiState.LoadingMore -> showLoadingMore()
+            is SearchWithPagingUiState.LoadingMoreError -> handleLoadingMoreError()
+            is SearchWithPagingUiState.ContentWithMetadataRestate -> restate(state.state, state.pos)
+            is SearchWithPagingUiState.SearchWithPagingUiIncludeState -> {}
+        }
     }
 
     override fun goToFragment(entityId: String) {
         val directions = SearchFragmentDirections.actionSearchFragmentToVacancyDetailsFragment(entityId)
         findNavController().navigate(directions)
-        viewModel.restoreState()
+        viewModel.saveSearchUiState(firstVisibleItemPosition)
+    }
+
+    private fun restate(state: SearchWithPagingUiState.ContentWithMetadata<VacancyShort>, pos: Int?) {
+        updateIncludeViewByContentWithMetadata(state)
+        pos?.let { recyclerView.scrollToPosition(it + 1) }
     }
 
     private fun setupMenu() {
@@ -250,6 +246,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
 
                 iconActionFilters?.setOnClickListener {
                     findNavController().navigate(R.id.filtersFragment)
+                    viewModel.saveSearchUiState(firstVisibleItemPosition?.let { it - 1 })
                 }
             }
 

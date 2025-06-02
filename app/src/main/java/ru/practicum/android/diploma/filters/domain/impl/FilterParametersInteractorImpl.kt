@@ -21,4 +21,8 @@ class FilterParametersInteractorImpl(
     override suspend fun updateFilterParameter(parameter: FilterParametersType) {
         filterParametersRepository.saveFilterParameters(parameter)
     }
+
+    override fun notifyUpdateSearchRequest() {
+        filterParametersRepository.notifyUpdateSearchRequest()
+    }
 }
