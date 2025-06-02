@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.filters.data.impl
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.data.db.AppDatabase
@@ -82,12 +84,22 @@ class FilterParametersRepositoryImpl(
             }
 
             is FilterParametersType.NeedToSearch -> {
-                newFilters.copy(needToSearch = parameters.state)
+                newFilters
             }
         }
     }
 
     companion object {
         private const val FILTER_DB_ID = "filter_parameters_id"
+    }
+
+    private val _updateSearchNotifier = MutableSharedFlow<Unit>(
+        replay = 0,
+        extraBufferCapacity = 1
+    )
+    override val updateSearchNotifier: SharedFlow<Unit> = _updateSearchNotifier
+
+    override fun notifyUpdateSearchRequest() {
+        _updateSearchNotifier.tryEmit(Unit)
     }
 }
