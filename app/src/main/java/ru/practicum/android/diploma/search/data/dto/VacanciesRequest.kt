@@ -16,7 +16,7 @@ fun VacanciesRequest.toMap(): Map<String, String> = buildMap {
     if (text.isNotBlank()) {
         put("text", text)
     }
-    if (!area.isNullOrBlank() && area != "0") {
+    if (!area.isNullOrBlank()) {
         put("area", area)
     }
     industry?.let { put("industry", it) }
