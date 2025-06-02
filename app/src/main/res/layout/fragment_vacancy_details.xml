@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toTopOf="@id/vacancy_error_txt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/vacancy_error_txt"
@@ -35,7 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <ScrollView
         android:id="@+id/vacancy_details_layout"
@@ -103,7 +103,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/company_info_bg"
                 app:layout_constraintStart_toStartOf="@id/company_info_bg"
                 android:layout_marginStart="@dimen/margin_16"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:id="@+id/company_name"
@@ -189,7 +189,7 @@
                 app:layout_constraintTop_toBottomOf="@id/vacancy_info_title"
                 app:layout_constraintBottom_toTopOf="@id/vacancy_key_skills_title"
                 android:layout_marginTop="@dimen/margin_16"
-                app:layout_goneMarginBottom="@dimen/margin_24" />
+                app:layout_goneMarginBottom="@dimen/margin_24"/>
 
             <TextView
                 android:id="@+id/vacancy_key_skills_title"
@@ -214,7 +214,7 @@
                 app:layout_constraintTop_toBottomOf="@id/vacancy_key_skills_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_24" />
+                android:layout_marginBottom="@dimen/margin_24"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

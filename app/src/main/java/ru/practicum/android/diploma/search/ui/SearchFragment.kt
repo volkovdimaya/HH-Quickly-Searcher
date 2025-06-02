@@ -207,7 +207,7 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
             is SearchWithPagingUiState.LoadingMore -> showLoadingMore()
             is SearchWithPagingUiState.LoadingMoreError -> handleLoadingMoreError()
             is SearchWithPagingUiState.ContentWithMetadataRestate -> restate(state.state, state.pos)
-            is SearchWithPagingUiState.SearchWithPagingUiIncludeState -> {}
+            is SearchWithPagingUiState.SearchWithPagingUiIncludeState -> { }
         }
     }
 
