@@ -1,25 +1,22 @@
 package ru.practicum.android.diploma.search.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.models.VacancyShort
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
 import ru.practicum.android.diploma.common.presentation.ListUiState
-import ru.practicum.android.diploma.filters.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
-import ru.practicum.android.diploma.filters.domain.models.FilterParametersType
 import ru.practicum.android.diploma.search.domain.VacanciesInteractor
-import ru.practicum.android.diploma.search.domain.models.FilterParametersSearch
 
 class SearchViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
-    private val filterParametersInteractor: FilterParametersInteractor
 ) : BaseSearchViewModel<VacancyShort>() {
 
     private var loadMoreJob: Job? = null
@@ -35,6 +32,8 @@ class SearchViewModel(
 
     private val isFiltersEmptyState = MutableLiveData<Boolean>()
     fun isFiltersEmpty(): LiveData<Boolean> = isFiltersEmptyState
+
+    private val filterEvents: SharedFlow<Unit> = vacanciesInteractor.filterEvents
 
     init {
         getFilters()
@@ -78,19 +77,20 @@ class SearchViewModel(
         if (queryChanged || filtersChanged || lastSearchedQuery != query) {
             screenStateLiveData.postValue(ListUiState.Loading)
             searchString()
-            searchedFilters = currentFilters
         }
     }
 
     fun getFilters() {
+        viewModelScope.launch(Dispatchers.IO) {
+            filterEvents.collect {
+                updateRequest(currentQuery)
+            }
+        }
+
         viewModelScope.launch {
-            vacanciesInteractor.getFilterParameters().collect {
-                isFiltersEmptyState.postValue(isFilterEmpty(it.second))
-                Log.d("getFilterParameters", " ${it}")
-                currentFilters = it.second
-                if (it.first) {
-                    updateRequest(currentQuery)
-                }
+            vacanciesInteractor.getFilterParametersObserver().collect { filters ->
+                currentFilters = filters
+                isFiltersEmptyState.postValue(isFilterEmpty(currentFilters!!))
             }
         }
     }
@@ -105,6 +105,7 @@ class SearchViewModel(
 
     override suspend fun runSearch(currentQuery: String) {
         val domainFilters = currentFilters
+
         vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
             .catch {
                 screenStateLiveData.postValue(ListUiState.ServerError)
@@ -126,12 +127,12 @@ class SearchViewModel(
                                 contentList = vacanciesList.toList(),
                                 totalFound = totalFound,
                                 pages = maxPages,
-                                currentPage = currentPage
+                                currentPage = currentPage,
                             )
                         } else {
                             ListUiState.Empty
                         }
-
+                        searchedFilters = domainFilters?.copy()
                         screenStateLiveData.postValue(screenState)
                     }
                 }
@@ -149,8 +150,7 @@ class SearchViewModel(
         screenStateLiveData.postValue(SearchWithPagingUiState.LoadingMore(vacanciesList.toList()))
 
         loadMoreJob = viewModelScope.launch {
-            val domainFilters = currentFilters
-
+            val domainFilters = searchedFilters
             vacanciesInteractor.searchVacancies(currentQuery, domainFilters, currentPage)
                 .catch {
                     isNextPageLoading = false
@@ -213,7 +213,7 @@ class SearchViewModel(
                         contentList = vacanciesList.toList(),
                         totalFound = totalFound,
                         pages = maxPages,
-                        currentPage = currentPage
+                        currentPage = currentPage,
                     ),
                     pos
                 )

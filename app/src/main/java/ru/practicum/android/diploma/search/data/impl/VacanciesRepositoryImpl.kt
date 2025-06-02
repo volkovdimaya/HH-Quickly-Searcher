@@ -4,15 +4,10 @@ import android.app.Application
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.runningFold
 import retrofit2.HttpException
 import ru.practicum.android.diploma.common.data.dto.Response
-import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.search.data.dto.VacanciesRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
@@ -27,7 +22,6 @@ class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
     private val application: Application,
     private val vacancyResponseMapper: ShortVacancyResponseMapper,
-    private val filtersRepository : FilterParametersRepository
 ) : VacanciesRepository {
 
     companion object {
@@ -35,8 +29,6 @@ class VacanciesRepositoryImpl(
         private const val INTERNAL_ERROR_CODE = 500
         private const val BAD_REQUEST_CODE = 400
     }
-
-
 
     override fun searchVacancies(
         text: String,
@@ -90,24 +82,11 @@ class VacanciesRepositoryImpl(
         emit(null)
     }
 
-    override fun getFilterParameters(): Flow<Pair<Boolean, FilterParameters>>  = filtersRepository.refreshNotifier
-        .onStart {
-            emit(Unit)
-        }
-        .runningFold(0) { count, _ -> count + 1 }
-        .map { index ->
-            val filters = filtersRepository.getFilterParametersObserver().first()
-            val isFromNotifier = index != 1 // первый emit — onStart (index = 1)
-            Pair(isFromNotifier, filters)
-        }
-    .flowOn(Dispatchers.IO)
-
     private fun createSearchRequest(
         text: String,
         filters: FilterParameters?,
         page: Int
     ): VacanciesRequest {
-
         return VacanciesRequest(
             text = text,
             area = filters?.let { buildAreaParameter(it) },

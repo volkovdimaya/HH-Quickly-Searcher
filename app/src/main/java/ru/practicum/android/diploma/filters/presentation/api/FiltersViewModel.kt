@@ -63,6 +63,10 @@ class FiltersViewModel(
         }
     }
 
+    fun notifyUpdateRequest() {
+        filterInteractor.notifyUpdateRequest()
+    }
+
     companion object {
         private const val SAVE_DEBOUNCE_DELAY = 300L
     }

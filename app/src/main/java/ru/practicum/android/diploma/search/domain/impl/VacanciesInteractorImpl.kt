@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.domain.impl
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import ru.practicum.android.diploma.filters.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.filters.domain.models.FilterParameters
 import ru.practicum.android.diploma.search.domain.VacanciesInteractor
@@ -10,7 +11,10 @@ import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetail
 
 class VacanciesInteractorImpl(
     private val vacanciesRepository: VacanciesRepository,
+    private val filtersRepository: FilterParametersRepository,
 ) : VacanciesInteractor {
+
+    override val filterEvents: SharedFlow<Unit> = filtersRepository.refreshNotifier
 
     override fun searchVacancies(
         query: String,
@@ -24,8 +28,8 @@ class VacanciesInteractorImpl(
         return vacanciesRepository.getVacancyDetails(id)
     }
 
-    override fun getFilterParameters(): Flow<Pair<Boolean,FilterParameters>> {
-        return vacanciesRepository.getFilterParameters()
+    override fun getFilterParametersObserver(): Flow<FilterParameters> {
+        return filtersRepository.getFilterParametersObserver()
     }
 
 }
