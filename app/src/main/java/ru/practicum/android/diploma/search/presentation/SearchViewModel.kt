@@ -87,6 +87,7 @@ class SearchViewModel(
 
         if (currentQuery.isEmpty()) {
             searchDebounceJob?.cancel()
+            lastSearchedQuery = ""
             return
         } else if (textChanged) {
             searchDebounceJob?.cancel()
