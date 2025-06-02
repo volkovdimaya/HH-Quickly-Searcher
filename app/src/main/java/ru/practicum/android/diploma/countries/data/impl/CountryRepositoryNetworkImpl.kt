@@ -14,6 +14,7 @@ class CountryRepositoryNetworkImpl(
     private val networkClient: NetworkClient,
     private val application: Application
 ) : CountryRepositoryNetwork {
+
     override suspend fun getCountries(): Flow<Pair<Int, List<Country>>> = flow {
         if (isConnectedInternet(application)) {
             emit(getCountriesFromNetwork())
