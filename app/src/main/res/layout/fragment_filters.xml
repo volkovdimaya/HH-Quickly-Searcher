@@ -168,6 +168,7 @@
                 android:layout_height="match_parent"
                 style="@style/FullTextInputEditText"
                 android:inputType="number"
+                android:maxLength="9"
                 android:hint="@string/enter_amount"/>
         </com.google.android.material.textfield.TextInputLayout>
 
