@@ -69,8 +69,6 @@ class SearchFragment : ShortVacancyFragment<FragmentSearchBinding>() {
         adapter.setOnItemClickListener = { vacancyShort ->
             viewModel.showVacancyDetails(vacancyShort)
         }
-
-        viewModel.getFilters()
     }
 
     override fun onDestroyView() {
