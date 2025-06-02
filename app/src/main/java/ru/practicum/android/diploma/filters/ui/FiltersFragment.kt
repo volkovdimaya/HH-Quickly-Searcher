@@ -61,7 +61,7 @@ class FiltersFragment : Fragment() {
         }
 
         binding.buttonApply.setOnClickListener {
-            viewModel.notifyUpdateRequest()
+            viewModel.notifyUpdateSearchRequest()
             findNavController().navigateUp()
         }
     }

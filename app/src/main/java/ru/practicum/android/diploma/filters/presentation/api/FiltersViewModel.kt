@@ -63,8 +63,8 @@ class FiltersViewModel(
         }
     }
 
-    fun notifyUpdateRequest() {
-        filterInteractor.notifyUpdateRequest()
+    fun notifyUpdateSearchRequest() {
+        filterInteractor.notifyUpdateSearchRequest()
     }
 
     companion object {
