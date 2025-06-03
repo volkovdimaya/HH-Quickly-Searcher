@@ -77,7 +77,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
 
             industriesInteractor.getFilterIndustry()
                 .collect { respons ->
-                    if (respons != null) {
+                    if (respons != null && screenStateLiveData.value is ListUiState.Content) {
                         _currentIndustry = respons
                         showSelectItem(currentIndustry)
                     }
