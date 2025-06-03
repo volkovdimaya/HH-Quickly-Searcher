@@ -63,4 +63,5 @@
     <string name="test_salary">от 1 500 $</string>
     <string name="vacancy_key_skills">Ключевые навыки</string>
     <string name="sharing_title">Выберите способ отправки</string>
+    <string name="empty_industry_list">Такой отрасли нет</string>
 </resources>

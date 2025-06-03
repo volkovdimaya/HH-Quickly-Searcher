@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
 import ru.practicum.android.diploma.common.ui.fragments.ListWithSearchFragment
 import ru.practicum.android.diploma.databinding.FragmentIndustriesBinding
+import ru.practicum.android.diploma.databinding.LayoutIndustryEmptyPlaceholderBinding
 import ru.practicum.android.diploma.industries.domain.models.Industry
 import ru.practicum.android.diploma.industries.presentation.IndustriesViewModel
 
@@ -20,6 +21,9 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
     override val adapter: BaseAdapter<Industry> = IndustryAdapter()
     override val navigateIdAction: Int = R.id.filtersFragment
     private val viewModel: IndustriesViewModel by viewModel()
+
+    private var _emptyBinding: LayoutIndustryEmptyPlaceholderBinding? = null
+    private val emptyBinding get() = _emptyBinding!!
 
     override fun createBinding(
         createBindingInflater: LayoutInflater,
@@ -47,6 +51,20 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         binding.editText.setOnClickListener {
             binding.buttonSelect.visibility = View.GONE
         }
+    }
+
+    override fun initViews() {
+        super.initViews()
+        _emptyBinding = LayoutIndustryEmptyPlaceholderBinding.inflate(layoutInflater)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _emptyBinding = null
+    }
+
+    override fun updateIncludeViewByEmpty() {
+        updateIncludeView(emptyBinding.root)
     }
 
     override fun renderIncludeState(state: ListUiState.ListUiIncludeState<Industry>) {
