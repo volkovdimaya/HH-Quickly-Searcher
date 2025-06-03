@@ -25,8 +25,12 @@ class CountryViewModel(val interactor: CountryInteractor) : BaseSearchViewModel<
                     countryResponse.first != SUCCESS_CODE ->
                         screenStateLiveData.postValue(ListUiState.Error)
 
-                    countryResponse.second.isNotEmpty() ->
-                        screenStateLiveData.postValue(ListUiState.Content(countryResponse.second))
+                    countryResponse.second.isNotEmpty() -> {
+                        val sortedList = countryResponse.second.sortedBy {
+                            it.countryName == "Другие регионы"
+                        }
+                        screenStateLiveData.postValue(ListUiState.Content(sortedList))
+                    }
 
                     else -> screenStateLiveData.postValue(ListUiState.Empty)
                 }
