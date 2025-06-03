@@ -152,6 +152,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_select"
         style="@style/Chose.Button"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:visibility="gone"/>
 
 </LinearLayout>
