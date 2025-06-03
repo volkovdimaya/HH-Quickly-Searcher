@@ -110,7 +110,8 @@
         <FrameLayout
             android:id="@+id/industry_selected"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_60"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/height_60"
             android:visibility="gone">
 
             <LinearLayout
