@@ -149,7 +149,7 @@ class RegionsRepositoryImpl(
         val areaEntities = areas.map { it.toEntity() }
 
         val response = localClient.doWrite(areaEntities) {
-            appDatabase.areaDao().insertAreas(areaEntities)
+            appDatabase.areaDao().saveAreas(areaEntities)
         }
         if (response.resultCode == INTERNAL_ERROR_CODE) {
             error("error")

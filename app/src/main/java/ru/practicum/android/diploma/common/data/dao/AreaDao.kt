@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.filters.data.dao.FilterParametersDao
 import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
@@ -40,4 +41,10 @@ interface AreaDao : FilterParametersDao {
 
     @Query("SELECT * FROM filter_parameters LIMIT 1")
     suspend fun getParameters(): FilterParametersEntity
+
+    @Transaction
+    suspend fun saveAreas(areaEntities: List<AreaEntity>) {
+        clearTable()
+        insertAreas(areaEntities)
+    }
 }
