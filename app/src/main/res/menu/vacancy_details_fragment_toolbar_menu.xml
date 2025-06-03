@@ -9,8 +9,8 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_favorite"
-        android:icon="@drawable/ic_favorites_on_off_selector_24px"
         android:title="@string/favorites"
         android:tooltipText="@null"
+        app:actionLayout="@layout/view_detail_menu_button"
         app:showAsAction="always" />
 </menu>
