@@ -10,25 +10,35 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 
 class VacancyDetailsViewModel(
+    vacancyId: String,
     private val interactor: VacancyDetailsInteractor
 ) : ViewModel() {
 
     private val screenStateLiveData = MutableLiveData<VacancyDetailsScreenState>(VacancyDetailsScreenState.Loading)
     fun getScreenStateLiveData(): LiveData<VacancyDetailsScreenState> = screenStateLiveData
+    private var favouriteStatus: Boolean = false
 
-    fun getVacancyDetails(vacancyId: String) {
+    private val isFavoriteState = MutableLiveData<Boolean>()
+    fun isFavorite(): LiveData<Boolean> = isFavoriteState
+
+    init {
+        screenStateLiveData.value = VacancyDetailsScreenState.Loading
+        getVacancyDetails(vacancyId)
+    }
+
+    private fun getVacancyDetails(vacancyId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                var isFavourite = false
                 interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
-                    isFavourite = isVacancyFavourite
+                    favouriteStatus = isVacancyFavourite
+                    isFavoriteState.postValue(isVacancyFavourite)
                 }
-                interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
+                interactor.getVacancyDetails(vacancyId, favouriteStatus).collect { detailsResponse ->
                     val code = detailsResponse.resultCode
                     if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
                         screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
                             detailsResponse.vacancyDetail[0],
-                            isFavourite
+                            favouriteStatus
                         ))
                     } else if (code == NOT_FOUND_CODE || detailsResponse.vacancyDetail.isNullOrEmpty()) {
                         screenStateLiveData.postValue(VacancyDetailsScreenState.NothingFound)
@@ -43,18 +53,13 @@ class VacancyDetailsViewModel(
     fun onFavouriteClick() {
         val currentScreenState = screenStateLiveData.value
         if (currentScreenState is VacancyDetailsScreenState.Data) {
-            val currentFavouriteState = currentScreenState.isFavourite
             viewModelScope.launch {
-                if (currentFavouriteState) {
+                if (favouriteStatus) {
                     deleteFavorite(currentScreenState)
                 } else {
                     addFavorite(currentScreenState)
                 }
             }
-            screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
-                currentScreenState.vacancyDetails,
-                !currentFavouriteState
-            ))
         }
     }
 
@@ -66,7 +71,10 @@ class VacancyDetailsViewModel(
         interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
             when (code) {
                 INTERNAL_ERROR_CODE -> {}
-                else -> {}
+                else -> {
+                    favouriteStatus = false
+                    isFavoriteState.postValue(false)
+                }
             }
         }
     }
@@ -75,7 +83,10 @@ class VacancyDetailsViewModel(
         interactor.addFavourite(currentScreenState.vacancyDetails).collect { code ->
             when (code) {
                 INTERNAL_ERROR_CODE -> {}
-                else -> {}
+                else -> {
+                    favouriteStatus = true
+                    isFavoriteState.postValue(true)
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextIndent
@@ -21,7 +22,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.util.SizeFormatter
@@ -33,8 +35,8 @@ import ru.practicum.android.diploma.vacancy.presentation.api.VacancyDetailsViewM
 
 class VacancyDetailsFragment : Fragment() {
 
-    private val viewModel by viewModel<VacancyDetailsViewModel>()
     private val args: VacancyDetailsFragmentArgs by navArgs()
+    private val viewModel: VacancyDetailsViewModel by lazy { getViewModel { parametersOf(args.vacancyId) } }
 
     private var _binding: FragmentVacancyDetailsBinding? = null
     private val binding get() = _binding!!
@@ -52,33 +54,28 @@ class VacancyDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val menuHost: MenuHost = requireActivity()
-        val vacancyId = args.vacancyId
+        var iconActionFavorite: View? = null
 
         menuHost.addMenuProvider(object : MenuProvider {
+
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.vacancy_details_fragment_toolbar_menu, menu)
+
+                val menuItem = menu.findItem(R.id.action_favorite)
+                val actionView = menuItem.actionView
+                if (actionView != null) {
+                    iconActionFavorite = actionView.findViewById<ImageView>(R.id.button_detail_menu)
+                }
             }
 
             override fun onPrepareMenu(menu: Menu) {
                 super.onPrepareMenu(menu)
-                viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
-                    when (state) {
-                        is VacancyDetailsScreenState.Data -> {
-                            menu.findItem(R.id.action_favorite)?.isEnabled = true
-                            menu.findItem(R.id.actionSharing)?.isEnabled = true
-                            if (state.isFavourite) {
-                                menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_on_24px)
-                            } else {
-                                menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_off_24px)
-                            }
-                        }
 
-                        else -> {
-                            menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_off_24px)
-                            menu.findItem(R.id.action_favorite)?.isEnabled = false
-                            menu.findItem(R.id.actionSharing)?.isEnabled = false
-                        }
-                    }
+                viewModel.isFavorite().observe(viewLifecycleOwner) {
+                    iconActionFavorite?.isSelected = it
+                }
+                iconActionFavorite?.setOnClickListener {
+                    viewModel.onFavouriteClick()
                 }
             }
 
@@ -97,7 +94,7 @@ class VacancyDetailsFragment : Fragment() {
                     else -> false
                 }
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }, viewLifecycleOwner, Lifecycle.State.STARTED)
 
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -115,7 +112,6 @@ class VacancyDetailsFragment : Fragment() {
                 is VacancyDetailsScreenState.Data -> renderData(state.vacancyDetails)
             }
         }
-        viewModel.getVacancyDetails(vacancyId)
     }
 
     override fun onDestroyView() {
