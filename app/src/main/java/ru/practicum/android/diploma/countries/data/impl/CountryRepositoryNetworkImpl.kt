@@ -19,7 +19,7 @@ class CountryRepositoryNetworkImpl(
         if (isConnectedInternet(application)) {
             emit(getCountriesFromNetwork())
         } else {
-            emit(Pair(BAD_REQUEST_CODE, listOf()))
+            emit(Pair(INTERNAL_ERROR_CODE, listOf()))
         }
     }
 
@@ -44,5 +44,6 @@ class CountryRepositoryNetworkImpl(
 
     companion object {
         private const val BAD_REQUEST_CODE = 400
+        private const val INTERNAL_ERROR_CODE = 500
     }
 }
