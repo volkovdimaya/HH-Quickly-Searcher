@@ -88,8 +88,10 @@ class WorkTerritoriesFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        val appBarConfig = AppBarConfiguration(findNavController().graph)
-        topToolbar.setupWithNavController(findNavController(), appBarConfig)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.teamFragment, R.id.searchFragment, R.id.favoritesFragment)
+        )
+        topToolbar.setupWithNavController(findNavController(), appBarConfiguration)
         _topToolbar = null
         super.onDestroyView()
     }
