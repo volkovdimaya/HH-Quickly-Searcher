@@ -60,17 +60,23 @@ class RegionsRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun getSearchList(text: String): Flow<Pair<Int, List<Region>>> = flow {
-        val response: RegionsLocalResponse = localClient.doRead {
-            RegionsLocalResponse(
-                areas = appDatabase.areaDao().searchAreas(text)
-            )
-        }
-        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
-            response.areas.map { it.toRegion() }.sortedBy { it.regionName }
+        val negativeResponseNetwork = !isConnectedInternet(application)
+        val result = if (negativeResponseNetwork) {
+            Pair(INTERNAL_ERROR_CODE, listOf())
         } else {
-            listOf()
+            val response: RegionsLocalResponse = localClient.doRead {
+                RegionsLocalResponse(
+                    areas = appDatabase.areaDao().searchAreas(text)
+                )
+            }
+            val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
+                response.areas.map { it.toRegion() }.sortedBy { it.regionName }
+            } else {
+                listOf()
+            }
+            Pair(response.resultCode, mappedList)
         }
-        emit(Pair(response.resultCode, mappedList))
+        emit(result)
     }.flowOn(Dispatchers.IO)
 
     override fun getLocalRegionsList(): Flow<Pair<Int, List<Region>>> = flow {
