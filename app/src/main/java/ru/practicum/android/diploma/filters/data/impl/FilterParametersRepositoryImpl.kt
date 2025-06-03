@@ -82,10 +82,6 @@ class FilterParametersRepositoryImpl(
             is FilterParametersType.Salary -> {
                 newFilters.copy(salary = parameters.salary)
             }
-
-            is FilterParametersType.NeedToSearch -> {
-                newFilters
-            }
         }
     }
 

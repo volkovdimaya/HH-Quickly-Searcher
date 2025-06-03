@@ -26,7 +26,6 @@ object FilterParametersMapper {
             this.countryName,
             this.regionName,
             this.industryName,
-            this.needToSearch
         )
     }
 }
