@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.industries.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
@@ -31,7 +30,6 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
 
     override suspend fun runSearch(currentQuery: String) {
         industriesInteractor.getSearchList(currentQuery).collect { respons ->
-            Log.d("observeState", " state ${respons.first}")
             when {
                 respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
                 respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
