@@ -56,12 +56,17 @@ class IndustriesRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun getSearchList(text: String): Flow<Pair<Int, List<Industry>>> = flow {
-        val response: IndustryLocalResponse = localClient.doRead {
-            IndustryLocalResponse(
-                industries = appDatabase.industryDao().searchIndustries(text)
-            )
+        val response = if (!isConnectedInternet(application)) {
+            Response().apply { resultCode = INTERNAL_ERROR_CODE }
+        } else {
+            localClient.doRead {
+                IndustryLocalResponse(
+                    industries = appDatabase.industryDao().searchIndustries(text)
+                )
+            }
         }
-        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
+
+        val mappedList = if (response is IndustryLocalResponse) {
             response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
         } else {
             listOf()
@@ -70,12 +75,16 @@ class IndustriesRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>> = flow {
-        val response: IndustryLocalResponse = localClient.doRead {
-            IndustryLocalResponse(
-                industries = appDatabase.industryDao().getIndustries()
-            )
+        val response = if (!isConnectedInternet(application)) {
+            Response().apply { resultCode = INTERNAL_ERROR_CODE }
+        } else {
+            localClient.doRead {
+                IndustryLocalResponse(
+                    industries = appDatabase.industryDao().getIndustries()
+                )
+            }
         }
-        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
+        val mappedList = if (response is IndustryLocalResponse) {
             response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
         } else {
             listOf()
