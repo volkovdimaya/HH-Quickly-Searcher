@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
@@ -33,8 +31,6 @@ class RootActivity : AppCompatActivity() {
         _binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
         _topToolbar = binding.topToolbar
-        // Пример использования access token для HeadHunter API
-        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
 
@@ -67,18 +63,8 @@ class RootActivity : AppCompatActivity() {
                 else -> {
                     bottomNavigationView.visibility = View.GONE
                     binding.divider.visibility = View.GONE
-
-                    val icon = ContextCompat.getDrawable(this, R.drawable.ic_back_arrow)?.mutate()
-                    topToolbar.navigationIcon = icon
-
                 }
             }
-
         }
-
-    }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
     }
 }
