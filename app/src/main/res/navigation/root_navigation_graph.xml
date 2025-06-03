@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/vacancyDetailsFragment"
         android:name="ru.practicum.android.diploma.vacancy.ui.VacancyDetailsFragment"
-        android:label="@string/vacancy"
+        android:label="@string/vacancy_title"
         tools:layout="@layout/fragment_vacancy_details">
         <argument
             android:name="vacancyId"
