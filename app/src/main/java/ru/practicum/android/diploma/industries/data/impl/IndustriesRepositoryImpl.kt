@@ -56,36 +56,27 @@ class IndustriesRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun getSearchList(text: String): Flow<Pair<Int, List<Industry>>> = flow {
-        val negativeResponseNetwork = !isConnectedInternet(application)
-        val result = if (negativeResponseNetwork) {
-            Pair(INTERNAL_ERROR_CODE, listOf())
-        } else {
-            val response: IndustryLocalResponse = localClient.doRead {
-                IndustryLocalResponse(
-                    industries = appDatabase.industryDao().searchIndustries(text)
-                )
-            }
-            val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
-                response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
-            } else {
-                listOf()
-            }
-            Pair(response.resultCode, mappedList)
+        val response: IndustryLocalResponse = localClient.doRead {
+            IndustryLocalResponse(
+                industries = appDatabase.industryDao().searchIndustries(text)
+            )
         }
-        emit(result)
+        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
+            response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
+        } else {
+            listOf()
+        }
+        emit(Pair(response.resultCode, mappedList))
+
     }.flowOn(Dispatchers.IO)
 
     override fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>> = flow {
-        val response = if (!isConnectedInternet(application)) {
-            Response().apply { resultCode = INTERNAL_ERROR_CODE }
-        } else {
-            localClient.doRead {
-                IndustryLocalResponse(
-                    industries = appDatabase.industryDao().getIndustries()
-                )
-            }
+        val response: IndustryLocalResponse = localClient.doRead {
+            IndustryLocalResponse(
+                industries = appDatabase.industryDao().getIndustries()
+            )
         }
-        val mappedList = if (response is IndustryLocalResponse) {
+        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
             response.industries.map { it.toIndustry() }.sortedBy { it.industryName }
         } else {
             listOf()
