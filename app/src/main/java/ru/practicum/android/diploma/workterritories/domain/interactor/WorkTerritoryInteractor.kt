@@ -9,5 +9,5 @@ interface WorkTerritoryInteractor {
 
     suspend fun deleteRegionFilter()
 
-    suspend fun deleteCountryFilter()
+    suspend fun deleteCountryAndRegionFilter()
 }

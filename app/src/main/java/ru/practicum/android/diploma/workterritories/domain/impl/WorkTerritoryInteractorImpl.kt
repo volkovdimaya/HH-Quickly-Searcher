@@ -16,7 +16,7 @@ class WorkTerritoryInteractorImpl(private val workTerritoriesRepository: WorkTer
         workTerritoriesRepository.deleteRegionFilter()
     }
 
-    override suspend fun deleteCountryFilter() {
-        workTerritoriesRepository.deleteCountryFilter()
+    override suspend fun deleteCountryAndRegionFilter() {
+        workTerritoriesRepository.deleteCountryAndRegionFilter()
     }
 }

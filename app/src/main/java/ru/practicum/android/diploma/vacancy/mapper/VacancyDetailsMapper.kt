@@ -18,7 +18,7 @@ object VacancyDetailsMapper {
             Salary(
                 vacancyEntity.salaryFrom,
                 vacancyEntity.salaryTo,
-                Currency.currencyFromAbbr(vacancyEntity.salaryCurrencyAbbr)!!
+                Currency.currencyFromAbbr(vacancyEntity.salaryCurrencyAbbr)
             ),
             vacancyEntity.logoUrl,
             vacancyEntity.employer,
@@ -73,10 +73,10 @@ object VacancyDetailsMapper {
             dto.description,
             makeAddressStr(dto.address),
             EmploymentType(
-                dto.employmentForm?.name ?: "",
-                dto.workFormat?.name ?: ""
+                dto.employment?.name ?: "",
+                dto.workFormat?.joinToString { it.name } ?: ""
             ),
-            dto.keySkills ?: emptyList(),
+            dto.keySkills?.map { it.name } ?: emptyList(),
             dto.experience?.name ?: "",
             dto.alternateUrl ?: ""
         )

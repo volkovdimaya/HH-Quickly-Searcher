@@ -11,6 +11,10 @@ class IndustriesInteractorImpl(private val industriesRepository: IndustriesRepos
         return industriesRepository.loadIndustries()
     }
 
+    override fun getFilterIndustry(): Flow<Industry?> {
+        return industriesRepository.getFilterIndustry()
+    }
+
     override fun getSearchList(text: String): Flow<Pair<Int, List<Industry>>> {
         return industriesRepository.getSearchList(text)
     }

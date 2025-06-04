@@ -45,10 +45,10 @@ class RegionsRepositoryImpl(
         val result = if (response is RegionsResponse) {
             val areaDtoList = AreaMapper.flattenAreaDtoList(response.regions).sortedBy { it.name }
 
-            val filteredList = when {
-                countryId == 0.toString() -> areaDtoList.filter { it.parentId in getIdShortCountryList(areaDtoList) }
-                countryId != null -> areaDtoList.filter { it.parentId == countryId }
-                else -> areaDtoList.filter { it.parentId != null }
+            val filteredList = if (countryId != null) {
+                areaDtoList.filter { it.parentId == countryId }
+            } else {
+                areaDtoList
             }
 
             saveAreas(filteredList)
@@ -60,17 +60,23 @@ class RegionsRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun getSearchList(text: String): Flow<Pair<Int, List<Region>>> = flow {
-        val response: RegionsLocalResponse = localClient.doRead {
-            RegionsLocalResponse(
-                areas = appDatabase.areaDao().searchAreas(text)
-            )
-        }
-        val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
-            response.areas.map { it.toRegion() }.sortedBy { it.regionName }
+        val negativeResponseNetwork = !isConnectedInternet(application)
+        val result = if (negativeResponseNetwork) {
+            Pair(INTERNAL_ERROR_CODE, listOf())
         } else {
-            listOf()
+            val response: RegionsLocalResponse = localClient.doRead {
+                RegionsLocalResponse(
+                    areas = appDatabase.areaDao().searchAreas(text)
+                )
+            }
+            val mappedList = if (response.resultCode != INTERNAL_ERROR_CODE) {
+                response.areas.map { it.toRegion() }.sortedBy { it.regionName }
+            } else {
+                listOf()
+            }
+            Pair(response.resultCode, mappedList)
         }
-        emit(Pair(response.resultCode, mappedList))
+        emit(result)
     }.flowOn(Dispatchers.IO)
 
     override fun getLocalRegionsList(): Flow<Pair<Int, List<Region>>> = flow {
@@ -99,9 +105,9 @@ class RegionsRepositoryImpl(
         var countryId = currentFilter.countryId
         var countryName = currentFilter.countryName
 
-        if (countryId.toString().isBlank()) {
+        if (countryId == null) {
             val country = findCountryForArea(item.regionId.toInt())
-            if (country != null) {
+            if (country != null && country.parentId == null) {
                 countryId = country.areaId
                 countryName = country.areaName
             }
@@ -116,7 +122,7 @@ class RegionsRepositoryImpl(
             industryId = currentFilter.industryId,
             industryName = currentFilter.industryName,
             salary = currentFilter.salary,
-            onlyWithSalary = currentFilter.onlyWithSalary ?: false
+            onlyWithSalary = currentFilter.onlyWithSalary,
         )
 
         val response = localClient.doUpdate(updatedFilterParameters) {
@@ -149,7 +155,7 @@ class RegionsRepositoryImpl(
         val areaEntities = areas.map { it.toEntity() }
 
         val response = localClient.doWrite(areaEntities) {
-            appDatabase.areaDao().insertAreas(areaEntities)
+            appDatabase.areaDao().saveAreas(areaEntities)
         }
         if (response.resultCode == INTERNAL_ERROR_CODE) {
             error("error")
@@ -158,35 +164,11 @@ class RegionsRepositoryImpl(
 
     private suspend fun findCountryForArea(areaId: Int): AreaEntity? {
         var area = appDatabase.areaDao().getAreaById(areaId)
-        var parentArea: AreaEntity?
 
         while (area?.parentId != null) {
-            parentArea = appDatabase.areaDao().getAreaById(area.parentId?.toInt()!!)
-            if (parentArea != null) {
-                area = parentArea
-            } else {
-                break
-            }
+            area = appDatabase.areaDao().getAreaById(area.parentId?.toInt()!!) ?: break
         }
+
         return area
-    }
-
-    private fun getShortCountryList(): List<String> {
-        return listOf(
-            "Россия",
-            "Украина",
-            "Казахстан",
-            "Азербайджан",
-            "Беларусь",
-            "Грузия",
-            "Кыргыстан",
-            "Узбекистан",
-        )
-    }
-
-    private fun getIdShortCountryList(areaDtoList: List<AreaDto>): List<String> {
-        val filtered = areaDtoList.filter { it.parentId == null }
-            .filter { it.name !in getShortCountryList() }
-        return filtered.map { it.id }
     }
 }

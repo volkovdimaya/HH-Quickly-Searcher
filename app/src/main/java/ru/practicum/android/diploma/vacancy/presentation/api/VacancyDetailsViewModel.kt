@@ -1,40 +1,50 @@
 package ru.practicum.android.diploma.vacancy.presentation.api
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 
 class VacancyDetailsViewModel(
+    vacancyId: String,
     private val interactor: VacancyDetailsInteractor
 ) : ViewModel() {
 
     private val screenStateLiveData = MutableLiveData<VacancyDetailsScreenState>(VacancyDetailsScreenState.Loading)
     fun getScreenStateLiveData(): LiveData<VacancyDetailsScreenState> = screenStateLiveData
+    private var favouriteStatus: Boolean = false
 
-    fun getVacancyDetails(vacancyId: String) {
-        screenStateLiveData.postValue(VacancyDetailsScreenState.Loading)
+    private val isFavoriteState = MutableLiveData<Boolean>()
+    fun isFavorite(): LiveData<Boolean> = isFavoriteState
+
+    init {
+        screenStateLiveData.value = VacancyDetailsScreenState.Loading
+        getVacancyDetails(vacancyId)
+    }
+
+    private fun getVacancyDetails(vacancyId: String) {
         viewModelScope.launch {
-            var isFavourite = false
-            interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
-                isFavourite = isVacancyFavourite
-                Log.d("666", isFavourite.toString())
-            }
-            interactor.getVacancyDetails(vacancyId, isFavourite).collect { detailsResponse ->
-                val code = detailsResponse.resultCode
-                Log.d("666", detailsResponse.vacancyDetail.toString())
-                if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
-                        detailsResponse.vacancyDetail[0],
-                        isFavourite
-                    ))
-                } else if (code == NOT_FOUND_CODE || detailsResponse.vacancyDetail.isNullOrEmpty()) {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.NothingFound)
-                } else {
-                    screenStateLiveData.postValue(VacancyDetailsScreenState.ServerError)
+            withContext(Dispatchers.IO) {
+                interactor.isVacancyFavourite(vacancyId).collect { isVacancyFavourite ->
+                    favouriteStatus = isVacancyFavourite
+                    isFavoriteState.postValue(isVacancyFavourite)
+                }
+                interactor.getVacancyDetails(vacancyId, favouriteStatus).collect { detailsResponse ->
+                    val code = detailsResponse.resultCode
+                    if (code == SUCCESS_CODE && !detailsResponse.vacancyDetail.isNullOrEmpty()) {
+                        screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
+                            detailsResponse.vacancyDetail[0],
+                            favouriteStatus
+                        ))
+                    } else if (code == NOT_FOUND_CODE || detailsResponse.vacancyDetail.isNullOrEmpty()) {
+                        screenStateLiveData.postValue(VacancyDetailsScreenState.NothingFound)
+                    } else {
+                        screenStateLiveData.postValue(VacancyDetailsScreenState.ServerError)
+                    }
                 }
             }
         }
@@ -43,18 +53,13 @@ class VacancyDetailsViewModel(
     fun onFavouriteClick() {
         val currentScreenState = screenStateLiveData.value
         if (currentScreenState is VacancyDetailsScreenState.Data) {
-            val currentFavouriteState = currentScreenState.isFavourite
             viewModelScope.launch {
-                if (currentFavouriteState) {
+                if (favouriteStatus) {
                     deleteFavorite(currentScreenState)
                 } else {
                     addFavorite(currentScreenState)
                 }
             }
-            screenStateLiveData.postValue(VacancyDetailsScreenState.Data(
-                currentScreenState.vacancyDetails,
-                !currentFavouriteState
-            ))
         }
     }
 
@@ -66,7 +71,10 @@ class VacancyDetailsViewModel(
         interactor.deleteFavourite(currentScreenState.vacancyDetails).collect { code ->
             when (code) {
                 INTERNAL_ERROR_CODE -> {}
-                else -> {}
+                else -> {
+                    favouriteStatus = false
+                    isFavoriteState.postValue(false)
+                }
             }
         }
     }
@@ -75,7 +83,10 @@ class VacancyDetailsViewModel(
         interactor.addFavourite(currentScreenState.vacancyDetails).collect { code ->
             when (code) {
                 INTERNAL_ERROR_CODE -> {}
-                else -> {}
+                else -> {
+                    favouriteStatus = true
+                    isFavoriteState.postValue(true)
+                }
             }
         }
     }

@@ -6,5 +6,6 @@ data class SearchResult(
     val vacancies: List<VacancyShort>,
     val found: Int,
     val pages: Int,
-    val currentPage: Int
+    val currentPage: Int,
+    val resultCode: Int = 0
 )

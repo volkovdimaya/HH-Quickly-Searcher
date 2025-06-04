@@ -9,4 +9,5 @@ interface IndustriesRepository {
     fun getLocalIndustryList(): Flow<Pair<Int, List<Industry>>>
     suspend fun clearTableDb()
     fun insertFilterParameter(item: Industry): Flow<Int>
+    fun getFilterIndustry(): Flow<Industry?>
 }

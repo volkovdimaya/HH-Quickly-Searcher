@@ -33,8 +33,8 @@ interface HhApiService {
     suspend fun getAreas(): List<AreaDto>
 
     @GET("/areas/{area_id}")
-    suspend fun getAreaById(@Path("area_id") areaId: String): AreaDto
+    suspend fun getAreasById(@Path("area_id") areaId: String): AreaDto
 
-    @GET("/areas/countries")
+    @GET("/areas")
     suspend fun getCountries(): List<CountryDto>
 }

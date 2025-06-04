@@ -29,5 +29,6 @@
     <dimen name="margin_1">1dp</dimen>
     <dimen name="margin_135">135dp</dimen>
     <dimen name="height_52">52dp</dimen>
+    <dimen name="margin_22">22dp</dimen>
 
 </resources>

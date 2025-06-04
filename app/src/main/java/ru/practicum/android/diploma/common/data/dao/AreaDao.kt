@@ -39,15 +39,12 @@ interface AreaDao : FilterParametersDao {
     @Query("SELECT * FROM filter_parameters LIMIT 1")
     fun observeFilterParameters(): Flow<FilterParametersEntity?>
 
-    @Transaction
-    suspend fun updateAreaParameter(parameters: FilterParametersEntity) {
-        if (isFiltersEmpty() == 1) {
-            updateRegion(parameters.regionId, parameters.regionName ?: "")
-        } else {
-            saveFilters(parameters)
-        }
-    }
-
     @Query("SELECT * FROM filter_parameters LIMIT 1")
     suspend fun getParameters(): FilterParametersEntity
+
+    @Transaction
+    suspend fun saveAreas(areaEntities: List<AreaEntity>) {
+        clearTable()
+        insertAreas(areaEntities)
+    }
 }

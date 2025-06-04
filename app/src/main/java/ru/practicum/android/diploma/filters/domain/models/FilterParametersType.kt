@@ -6,5 +6,4 @@ sealed class FilterParametersType {
     class Industry(val industryId: String? = null, val industryName: String? = null) : FilterParametersType()
     class Salary(val salary: Int? = null) : FilterParametersType()
     class OnlyWithSalary(val onlyWithSalary: Boolean = false) : FilterParametersType()
-    class NeedToSearch(val state: Boolean = false) : FilterParametersType()
 }

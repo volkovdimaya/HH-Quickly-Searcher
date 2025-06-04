@@ -13,7 +13,7 @@
         android:padding="@dimen/padding_1"
         android:background="@drawable/bg_item_logo"
         android:scaleType="fitCenter"
-        tools:scr="@drawable/ic_placeholder_48px"
+        tools:src="@drawable/ic_placeholder_48px"
         android:contentDescription="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

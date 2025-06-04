@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.industries.presentation
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.presentation.BaseSearchViewModel
 import ru.practicum.android.diploma.common.presentation.FiltersUiState
@@ -13,7 +14,12 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     private var _currentIndustry: Industry? = null
     private val currentIndustry get() = _currentIndustry!!
 
+    private var _loadedToLocalBaseFlag: Boolean? = null
+    private val loadedToLocalBaseFlag get() = _loadedToLocalBaseFlag!!
+
     private var currentList: List<Industry> = mutableListOf()
+
+    private var pendingQuery: String? = null
 
     private val fullIndustryListGetter: () -> Unit = {
         getFullIndustryList()
@@ -21,7 +27,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
 
     init {
         screenStateLiveData.value = ListUiState.Loading
-        loadIndustries()
+        getFilterIndustry()
     }
 
     override fun onClickDebounce(item: Industry) {
@@ -29,10 +35,15 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     }
 
     override suspend fun runSearch(currentQuery: String) {
+        if (!loadedToLocalBaseFlag) {
+            pendingQuery = currentQuery
+            loadIndustries()
+            return
+        }
+
         industriesInteractor.getSearchList(currentQuery).collect { respons ->
             when {
                 respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
-                respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
                 respons.second.isNotEmpty() -> {
                     currentList = respons.second
                     screenStateLiveData.postValue(ListUiState.Content(respons.second))
@@ -44,6 +55,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
 
     override fun onSearchTextChanged(text: String) {
         val textChanged = currentQuery != text
+        _currentIndustry = null
         currentQuery = text
 
         if (currentQuery.isEmpty()) {
@@ -63,29 +75,59 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         viewModelScope.launch {
             industriesInteractor.loadIndustries().collect { respons ->
                 when {
-                    respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
-                    respons.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
-                    respons.second.isNotEmpty() -> {
-                        currentList = respons.second
-                        screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                    respons.first == BAD_REQUEST_CODE -> {
+                        _loadedToLocalBaseFlag = false
+                        screenStateLiveData.postValue(ListUiState.ServerError)
+                    }
+
+                    respons.first != SUCCESS_CODE -> {
+                        _loadedToLocalBaseFlag = false
+                        screenStateLiveData.postValue(ListUiState.Error)
 
                     }
-                    else -> screenStateLiveData.postValue(ListUiState.Empty)
-                }
+                    respons.second.isNotEmpty() -> {
+                        _loadedToLocalBaseFlag = true
+                        currentList = respons.second
 
+                        screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                        _currentIndustry?.let {
+                            _currentIndustry = null
+                            delay(UI_UPDATE_DELAY_MS)
+                            showSelectItem(it)
+                        }
+
+                        pendingQuery?.let { query ->
+                            pendingQuery = null
+                            runSearch(query)
+                        }
+                    }
+
+                    else -> {
+                        _loadedToLocalBaseFlag = true
+                        screenStateLiveData.postValue(ListUiState.Empty)
+                    }
+                }
             }
         }
     }
 
     private fun getFullIndustryList() {
-        viewModelScope.launch {
-            industriesInteractor.getLocalIndustryList().collect { respons ->
-                when {
-                    respons.second.isNotEmpty() -> {
-                        currentList = respons.second
-                        screenStateLiveData.postValue(ListUiState.Content(currentList))
+        _currentIndustry = null
+        if (!loadedToLocalBaseFlag) {
+            screenStateLiveData.postValue(ListUiState.Error)
+        } else {
+            viewModelScope.launch {
+                industriesInteractor.getLocalIndustryList().collect { respons ->
+                    when {
+                        respons.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
+                        respons.second.isNotEmpty() -> {
+                            currentList = respons.second
+
+                            screenStateLiveData.postValue(ListUiState.Content(respons.second))
+                        }
+
+                        else -> screenStateLiveData.postValue(ListUiState.Empty)
                     }
-                    else -> screenStateLiveData.postValue(ListUiState.Empty)
                 }
             }
         }
@@ -120,6 +162,7 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
     override fun onCleared() {
         super.onCleared()
         clearTableDb()
+        _loadedToLocalBaseFlag = null
         _currentIndustry = null
     }
 
@@ -135,7 +178,19 @@ class IndustriesViewModel(private val industriesInteractor: IndustriesInteractor
         }
     }
 
+    private fun getFilterIndustry() {
+        viewModelScope.launch {
+            industriesInteractor.getFilterIndustry()
+                .collect { respons ->
+                    _currentIndustry = respons
+                    loadIndustries()
+                }
+
+        }
+    }
+
     companion object {
+        private const val UI_UPDATE_DELAY_MS = 50L
         private const val SUCCESS_CODE = 200
         private const val BAD_REQUEST_CODE = 400
         private const val INTERNAL_ERROR_CODE = 500
