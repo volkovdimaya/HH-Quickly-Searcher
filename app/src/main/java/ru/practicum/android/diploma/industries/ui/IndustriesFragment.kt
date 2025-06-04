@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -36,6 +37,7 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeState.observe(viewLifecycleOwner) {
+            buttonSelectRender(it is FiltersUiState.SelectPosition)
             render(it)
         }
 
@@ -98,5 +100,9 @@ class IndustriesFragment : ListWithSearchFragment<Industry, FragmentIndustriesBi
 
     override fun performSearch() {
         //
+    }
+
+    private fun buttonSelectRender(isSelected: Boolean) {
+        binding.buttonSelect.isVisible = isSelected
     }
 }
