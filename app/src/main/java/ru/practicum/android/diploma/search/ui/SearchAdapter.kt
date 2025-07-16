@@ -33,10 +33,6 @@ class SearchAdapter : ShortVacancyAdapter() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (recyclerView == null && parent is RecyclerView) {
-            recyclerView = parent
-        }
-
         val layoutInflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
@@ -70,8 +66,8 @@ class SearchAdapter : ShortVacancyAdapter() {
 
     override fun updateShortVacancyList(newList: List<VacancyShort>) {
         saveScrollPosition()
-
         val oldSearchList = list
+
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int {
                 return oldSearchList.size
@@ -92,7 +88,6 @@ class SearchAdapter : ShortVacancyAdapter() {
 
         this.list = newList.toList()
         diffResult.dispatchUpdatesTo(this)
-
         restoreScrollPosition()
     }
 
@@ -134,5 +129,12 @@ class SearchAdapter : ShortVacancyAdapter() {
         recyclerView?.post {
             layoutManager.scrollToPosition(lastVisiblePosition)
         }
+    }
+
+    fun updateShortVacancyListNewItems() {
+        val oldLoadingMore = isLoadingMore
+        isLoadingMore = false
+        updateShortVacancyList(list)
+        isLoadingMore = oldLoadingMore
     }
 }

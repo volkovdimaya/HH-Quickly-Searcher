@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.common.presentation.ListUiState
 import ru.practicum.android.diploma.common.ui.adapters.BaseAdapter
 import ru.practicum.android.diploma.common.ui.fragments.ListWithSearchFragment
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
+import ru.practicum.android.diploma.databinding.LayoutRegionEmptyPlaceholderBinding
 import ru.practicum.android.diploma.regions.domain.models.Region
 import ru.practicum.android.diploma.regions.presentation.RegionsViewModel
 
@@ -22,6 +23,23 @@ class RegionsFragment : ListWithSearchFragment<Region, FragmentRegionsBinding>()
     override val navigateIdAction: Int = R.id.workTerritoriesFragment
 
     private val viewModel: RegionsViewModel by viewModel()
+
+    private var _emptyBinding: LayoutRegionEmptyPlaceholderBinding? = null
+    private val emptyBinding get() = _emptyBinding!!
+
+    override fun initViews() {
+        super.initViews()
+        _emptyBinding = LayoutRegionEmptyPlaceholderBinding.inflate(layoutInflater)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _emptyBinding = null
+    }
+
+    override fun updateIncludeViewByEmpty() {
+        updateIncludeView(emptyBinding.root)
+    }
 
     override fun createBinding(
         createBindingInflater: LayoutInflater,

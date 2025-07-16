@@ -33,7 +33,8 @@
     <FrameLayout
         android:id="@+id/country_selected"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_60"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/height_60"
         android:visibility="gone">
 
         <LinearLayout
@@ -97,10 +98,12 @@
             android:src="@drawable/ic_arrow_forward" />
 
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/region_selected"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_60"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/height_60"
         android:visibility="gone" >
 
         <LinearLayout
@@ -140,5 +143,16 @@
             android:src="@drawable/ic_cross" />
 
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_select"
+        style="@style/Chose.Button"
+        android:layout_gravity="bottom"
+        android:visibility="gone"/>
 
 </LinearLayout>

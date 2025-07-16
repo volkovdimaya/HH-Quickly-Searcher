@@ -24,6 +24,7 @@
         <item name="android:textCursorDrawable">"@null"</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
@@ -44,11 +45,11 @@
         <item name="cornerRadius">12dp</item>
     </style>
 
-    <style name="BottomNavigationAppearance" parent="TextAppearance.MaterialComponents.Caption" >
+    <style name="BottomNavigationAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
-      
+
     <style name="TheBiggestTitleText">
         <item name="android:textSize">32sp</item>
         <item name="fontFamily">@font/ys_display_bold</item>
@@ -66,14 +67,14 @@
         <item name="android:layout_marginHorizontal">@dimen/margin_16</item>
         <item name="android:layout_marginVertical">@dimen/margin_8</item>
     </style>
-    
+
     <style name="TextWarning">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:textSize">22sp</item>
     </style>
-    
+
     <style name="ResponseSearchText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -85,13 +86,14 @@
         <item name="android:layout_marginTop">@dimen/margin_3</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
-    
+
     <style name="Regular16Text">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:fontWeight">400</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+
     <style name="Regular12Text">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:fontWeight">400</item>
@@ -120,6 +122,7 @@
         <item name="endIconMode">custom</item>
         <item name="endIconTint">@color/black</item>
         <item name="hintEnabled">false</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
         <item name="hintTextAppearance">@style/TextInputLayoutHint</item>
     </style>
 
@@ -129,6 +132,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:imeOptions">actionSearch</item>
         <item name="android:inputType">text</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
         <item name="android:textCursorDrawable">@drawable/blue_cursor</item>
     </style>
 
@@ -143,6 +147,17 @@
         <item name="iconSize">@dimen/margin_24</item>
     </style>
 
+    <style name="Chose.Button" parent="Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">@dimen/margin_16</item>
+        <item name="android:layout_marginBottom">@dimen/margin_24</item>
+        <item name="android:text">@string/select</item>
+        <item name="android:padding">@dimen/margin_20</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/blue</item>
+    </style>
+
     <style name="ErrorImageView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -151,7 +166,7 @@
         <item name="marginHorizontal">@dimen/margin_16</item>
         <item name="android:layout_marginBottom">@dimen/margin_16</item>
     </style>
-    
+
     <style name="ErrorTextView" parent="TextWarning">\
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>

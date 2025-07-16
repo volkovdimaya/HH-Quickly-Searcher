@@ -2,14 +2,13 @@ package ru.practicum.android.diploma.vacancy.ui
 
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.text.AnnotatedString
+import android.widget.ImageView
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextIndent
@@ -22,9 +21,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.util.SizeFormatter
@@ -36,8 +35,8 @@ import ru.practicum.android.diploma.vacancy.presentation.api.VacancyDetailsViewM
 
 class VacancyDetailsFragment : Fragment() {
 
-    private val viewModel by viewModel<VacancyDetailsViewModel>()
     private val args: VacancyDetailsFragmentArgs by navArgs()
+    private val viewModel: VacancyDetailsViewModel by lazy { getViewModel { parametersOf(args.vacancyId) } }
 
     private var _binding: FragmentVacancyDetailsBinding? = null
     private val binding get() = _binding!!
@@ -55,33 +54,28 @@ class VacancyDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val menuHost: MenuHost = requireActivity()
-        val vacancyId = args.vacancyId
+        var iconActionFavorite: View? = null
 
         menuHost.addMenuProvider(object : MenuProvider {
+
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.vacancy_details_fragment_toolbar_menu, menu)
+
+                val menuItem = menu.findItem(R.id.action_favorite)
+                val actionView = menuItem.actionView
+                if (actionView != null) {
+                    iconActionFavorite = actionView.findViewById<ImageView>(R.id.button_detail_menu)
+                }
             }
 
             override fun onPrepareMenu(menu: Menu) {
                 super.onPrepareMenu(menu)
-                viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
-                    when (state) {
-                        is VacancyDetailsScreenState.Data -> {
-                            menu.findItem(R.id.action_favorite)?.isEnabled = true
-                            menu.findItem(R.id.actionSharing)?.isEnabled = true
-                            if (state.isFavourite) {
-                                menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_on_24px)
-                            } else {
-                                menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_off_24px)
-                            }
-                        }
 
-                        else -> {
-                            menu.findItem(R.id.action_favorite)?.setIcon(R.drawable.ic_favorites_off_24px)
-                            menu.findItem(R.id.action_favorite)?.isEnabled = false
-                            menu.findItem(R.id.actionSharing)?.isEnabled = false
-                        }
-                    }
+                viewModel.isFavorite().observe(viewLifecycleOwner) {
+                    iconActionFavorite?.isSelected = it
+                }
+                iconActionFavorite?.setOnClickListener {
+                    viewModel.onFavouriteClick()
                 }
             }
 
@@ -100,7 +94,7 @@ class VacancyDetailsFragment : Fragment() {
                     else -> false
                 }
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }, viewLifecycleOwner, Lifecycle.State.STARTED)
 
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -118,7 +112,6 @@ class VacancyDetailsFragment : Fragment() {
                 is VacancyDetailsScreenState.Data -> renderData(state.vacancyDetails)
             }
         }
-        viewModel.getVacancyDetails(vacancyId)
     }
 
     override fun onDestroyView() {
@@ -209,11 +202,10 @@ class VacancyDetailsFragment : Fragment() {
         }
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
-            .transform(
-                RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())),
-                CenterCrop()
-            )
-            .placeholder(R.drawable.ic_placeholder_32px)
+            .error(R.drawable.ic_placeholder_48px)
+            .placeholder(R.drawable.ic_placeholder_48px)
+            .centerCrop()
+            .transform(RoundedCorners(SizeFormatter.dpToPx(CORNER_RADIUS, requireContext())))
             .into(binding.companyLogo)
         binding.vacancyRegion.text = vacancyDetails.address.ifEmpty {
             vacancyDetails.workTerritory
@@ -248,7 +240,7 @@ class VacancyDetailsFragment : Fragment() {
                 Html.fromHtml(
                     vacancyDetails.description,
                     Html.FROM_HTML_MODE_COMPACT
-                )
+                ).trimEnd()
             )
             binding.vacancyInfo.isVisible = true
             binding.vacancyInfoTitle.isVisible = true
@@ -269,7 +261,7 @@ class VacancyDetailsFragment : Fragment() {
         }
     }
 
-    private fun makeKeySkillsStr(list: List<String>): AnnotatedString {
+    private fun makeKeySkillsStr(list: List<String>): String {
         val bullet = "\u2022"
         val paragraphStyle = ParagraphStyle(textIndent = TextIndent(restLine = 12.sp))
         val str = buildAnnotatedString {
@@ -278,11 +270,11 @@ class VacancyDetailsFragment : Fragment() {
                     append(bullet)
                     append("\t\t")
                     append(it)
+                    append("\n")
                 }
             }
         }
-        Log.d("str", str.toString())
-        return str
+        return str.toString().trimEnd()
     }
 
     companion object {

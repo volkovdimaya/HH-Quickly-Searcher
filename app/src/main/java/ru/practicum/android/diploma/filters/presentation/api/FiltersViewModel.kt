@@ -49,12 +49,22 @@ class FiltersViewModel(
         }
     }
 
+    fun deleteWorkTerritoryFilter() {
+        viewModelScope.launch {
+            filterInteractor.updateFilterParameter(FilterParametersType.Country())
+        }
+    }
+
     private fun updateFilters() {
         viewModelScope.launch {
             filterInteractor.getFilterParameters().collect {
                 filterParametersState.postValue(it)
             }
         }
+    }
+
+    fun notifyUpdateSearchRequest() {
+        filterInteractor.notifyUpdateSearchRequest()
     }
 
     companion object {

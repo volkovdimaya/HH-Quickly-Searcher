@@ -9,6 +9,7 @@
     <!-- toolbar title-->
     <string name="search_vacancy">Поиск вакансий</string>
     <string name="vacancy">Вакансия</string>
+    <string name="vacancy_title">Вакансия\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0</string>
     <string name="filter_settings">Настройки фильтрации</string>
     <string name="choosing_industry">Выбор отрасли</string>
     <string name="choosing_work_territory">Выбор места работы</string>
@@ -62,4 +63,5 @@
     <string name="test_salary">от 1 500 $</string>
     <string name="vacancy_key_skills">Ключевые навыки</string>
     <string name="sharing_title">Выберите способ отправки</string>
+    <string name="empty_industry_list">Такой отрасли нет</string>
 </resources>

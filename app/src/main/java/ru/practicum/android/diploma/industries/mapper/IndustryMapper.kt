@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.industries.mapper
 
+import ru.practicum.android.diploma.filters.data.entity.FilterParametersEntity
 import ru.practicum.android.diploma.industries.data.dto.IndustryCategoryDto
 import ru.practicum.android.diploma.industries.data.dto.IndustryDto
 import ru.practicum.android.diploma.industries.data.entity.IndustryEntity
@@ -11,13 +12,6 @@ object IndustryMapper {
         return Industry(
             industryId = this.industryId,
             industryName = this.industryName
-        )
-    }
-
-    private fun IndustryEntity.toDto(): IndustryDto {
-        return IndustryDto(
-            id = this.industryId,
-            name = this.industryName
         )
     }
 
@@ -42,18 +36,13 @@ object IndustryMapper {
         )
     }
 
-    fun Industry.toDto(): IndustryDto {
-        return IndustryDto(
-            id = this.industryId,
-            name = this.industryName,
-        )
-    }
-
-    fun Industry.toEntity(): IndustryEntity {
-        return IndustryEntity(
-            industryId = this.industryId,
-            industryName = this.industryName
-        )
+    fun FilterParametersEntity.toIndustry(): Industry? {
+        return industryId?.let {
+            Industry(
+                industryId = this.industryId,
+                industryName = this.industryName ?: "",
+            )
+        }
     }
 
     fun mapIndustryCategoryDtoToIndustryDto(

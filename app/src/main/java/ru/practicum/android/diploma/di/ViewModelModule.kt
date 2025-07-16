@@ -13,12 +13,12 @@ import ru.practicum.android.diploma.workterritories.presentation.WorkTerritories
 
 val viewModelModule = module {
 
-    viewModel {
-        VacancyDetailsViewModel(get())
+    viewModel { (vacancyId: String) ->
+        VacancyDetailsViewModel(vacancyId, get())
     }
 
     viewModel {
-        SearchViewModel(get(), get())
+        SearchViewModel(get(),)
     }
 
     viewModel {

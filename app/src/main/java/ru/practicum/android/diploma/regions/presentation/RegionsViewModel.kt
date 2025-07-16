@@ -14,6 +14,10 @@ class RegionsViewModel(
 
     private var currentCountryId: Int? = null
 
+    private var loadedToLocalBaseFlag: Boolean = false
+
+    private var pendingQuery: String? = null
+
     private val fullRegionListGetter: () -> Unit = {
         getFullRegionList()
     }
@@ -28,9 +32,21 @@ class RegionsViewModel(
     }
 
     override suspend fun runSearch(currentQuery: String) {
+        if (!loadedToLocalBaseFlag) {
+            pendingQuery = currentQuery
+            loadRegions()
+            return
+        }
+
         regionsInteractor.getSearchList(currentQuery).collect { response ->
             when {
-                response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
+                response.first == INTERNAL_ERROR_CODE -> {
+                    loadedToLocalBaseFlag = false
+                    screenStateLiveData.postValue(ListUiState.Error)
+                }
+                response.first != SUCCESS_CODE -> {
+                    screenStateLiveData.postValue(ListUiState.ServerError)
+                }
                 response.second.isNotEmpty() -> {
                     screenStateLiveData.postValue(ListUiState.Content(response.second))
                 }
@@ -60,25 +76,43 @@ class RegionsViewModel(
             currentCountryId = regionsInteractor.getCurrentCountryId()
             regionsInteractor.loadRegions(currentCountryId?.toString()).collect { response ->
                 when {
-                    response.first == BAD_REQUEST_CODE -> screenStateLiveData.postValue(ListUiState.ServerError)
-                    response.first != SUCCESS_CODE -> screenStateLiveData.postValue(ListUiState.Error)
-                    response.second.isNotEmpty() -> {
-                        screenStateLiveData.postValue(ListUiState.Content(response.second))
+                    response.first == BAD_REQUEST_CODE -> {
+                        loadedToLocalBaseFlag = false
+                        screenStateLiveData.postValue(ListUiState.ServerError)
                     }
-                    else -> screenStateLiveData.postValue(ListUiState.Empty)
+                    response.first != SUCCESS_CODE -> {
+                        loadedToLocalBaseFlag = false
+                        screenStateLiveData.postValue(ListUiState.Error)
+                    }
+                    response.second.isNotEmpty() -> {
+                        loadedToLocalBaseFlag = true
+                        pendingQuery?.let { query ->
+                            pendingQuery = null
+                            runSearch(query)
+                        } ?: screenStateLiveData.postValue(ListUiState.Content(response.second))
+                    }
+                    else -> {
+                        loadedToLocalBaseFlag = true
+                        screenStateLiveData.postValue(ListUiState.Empty)
+                    }
                 }
             }
         }
     }
 
     private fun getFullRegionList() {
-        viewModelScope.launch {
-            regionsInteractor.getLocalRegionsList().collect { response ->
-                when {
-                    response.second.isNotEmpty() -> {
-                        screenStateLiveData.postValue(ListUiState.Content(response.second))
+        if (!loadedToLocalBaseFlag) {
+            screenStateLiveData.postValue(ListUiState.Error)
+        } else {
+            viewModelScope.launch {
+                regionsInteractor.getLocalRegionsList().collect { response ->
+                    when {
+                        response.second.isNotEmpty() -> {
+                            screenStateLiveData.postValue(ListUiState.Content(response.second))
+                        }
+
+                        else -> screenStateLiveData.postValue(ListUiState.Empty)
                     }
-                    else -> screenStateLiveData.postValue(ListUiState.Empty)
                 }
             }
         }
@@ -110,5 +144,6 @@ class RegionsViewModel(
     companion object {
         private const val SUCCESS_CODE = 200
         private const val BAD_REQUEST_CODE = 400
+        private const val INTERNAL_ERROR_CODE = 500
     }
 }

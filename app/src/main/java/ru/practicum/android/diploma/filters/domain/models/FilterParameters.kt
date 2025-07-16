@@ -9,5 +9,4 @@ data class FilterParameters(
     val countryName: String? = null,
     val regionName: String? = null,
     val industryName: String? = null,
-    val needToSearch: Boolean = false
 )
